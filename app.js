@@ -6,7 +6,7 @@ var config = require('./config'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    mongoStore = require('connect-mongo')(session),
+    RedisStore = require('connect-redis')(session),
     http = require('http'),
     path = require('path'),
     passport = require('passport'),
@@ -43,7 +43,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: config.cryptoKey,
-  store: new mongoStore({ url: config.mongodb.uri })
+  store: new RedisStore({})
 }));
 app.use(passport.initialize());
 app.use(passport.session());

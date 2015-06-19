@@ -6,17 +6,17 @@
   app = app || {};
 
   app.Account = Backbone.Model.extend({
-    idAttribute: '_id',
+    idAttribute: 'id',
     url: '/account/settings/'
   });
 
   app.User = Backbone.Model.extend({
-    idAttribute: '_id',
+    idAttribute: 'id',
     url: '/account/settings/'
   });
 
   app.Details = Backbone.Model.extend({
-    idAttribute: '_id',
+    idAttribute: 'id',
     defaults: {
       success: false,
       errors: [],
@@ -40,7 +40,7 @@
   });
 
   app.Identity = Backbone.Model.extend({
-    idAttribute: '_id',
+    idAttribute: 'id',
     defaults: {
       success: false,
       errors: [],
@@ -60,7 +60,7 @@
   });
 
   app.Password = Backbone.Model.extend({
-    idAttribute: '_id',
+    idAttribute: 'id',
     defaults: {
       success: false,
       errors: [],
@@ -94,7 +94,7 @@
     },
     syncUp: function() {
       this.model.set({
-        _id: app.mainView.account.id,
+        id: app.mainView.account.id,
         first: app.mainView.account.get('name').first,
         middle: app.mainView.account.get('name').middle,
         last: app.mainView.account.get('name').last,
@@ -139,7 +139,7 @@
     },
     syncUp: function() {
       this.model.set({
-        _id: app.mainView.user.id,
+        id: app.mainView.user.id,
         username: app.mainView.user.get('username'),
         email: app.mainView.user.get('email')
       });
@@ -168,7 +168,7 @@
       'click .btn-password': 'password'
     },
     initialize: function() {
-      this.model = new app.Password({ _id: app.mainView.user.id });
+      this.model = new app.Password({ id: app.mainView.user.id });
       this.listenTo(this.model, 'sync', this.render);
       this.render();
     },

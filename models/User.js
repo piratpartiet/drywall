@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true,
         instanceMethods: {
             canPlayRoleOf: function(role) {
-                return false;
+                return true;
             },
             defaultReturnUrl: function() {
                 var returnUrl = '/';
