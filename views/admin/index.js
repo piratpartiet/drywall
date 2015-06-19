@@ -7,13 +7,12 @@ exports.init = function(req, res, next){
 
   collections.forEach(function(el, i, arr) {
     queries.push(function(done) {
-      req.app.db.models[el].count({}, function(err, count) {
-        if (err) {
-          return done(err, null);
-        }
-
+      req.app.db[el].count({}).then(function(count) {
         sigma['count'+ el] = count;
         done(null, el);
+      })
+      .catch(function(err){
+          return done(err, null);
       });
     });
   });

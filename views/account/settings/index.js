@@ -348,7 +348,7 @@ exports.update = function(req, res, next) {
                     .then(function(account) {
                         workflow.outcome.account = account;
                         return workflow.emit('response');
-                    })
+                    });
             })
             .catch(function(err) {
                 return workflow.emit('exception', err);
