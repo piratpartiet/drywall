@@ -10,7 +10,7 @@ var config = require('./config'),
     http = require('http'),
     path = require('path'),
     passport = require('passport'),
-    mongoose = require('mongoose'),
+    models = require('./models/index'),
     helmet = require('helmet'),
     csrf = require('csurf');
 
@@ -23,15 +23,7 @@ app.config = config;
 //setup the web server
 app.server = http.createServer(app);
 
-//setup mongoose
-app.db = mongoose.createConnection(config.mongodb.uri);
-app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
-app.db.once('open', function () {
-  //and... we have a data store
-});
-
-//config data models
-require('./models')(app, mongoose);
+app.db = models;
 
 //settings
 app.disable('x-powered-by');
