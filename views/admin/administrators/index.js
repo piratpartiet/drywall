@@ -11,27 +11,24 @@ exports.find = function(req, res, next){
     filters.search = new RegExp('^.*?'+ req.query.search +'.*$', 'i');
   }
 
-  req.app.db.models.Admin.pagedFind({
-    filters: filters,
-    keys: 'name.full',
-    limit: req.query.limit,
-    page: req.query.page,
-    sort: req.query.sort
-  }, function(err, results) {
-    if (err) {
-      return next(err);
-    }
-
-    if (req.xhr) {
-      res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
-      results.filters = req.query;
-      res.send(results);
-    }
-    else {
-      results.filters = req.query;
-      res.render('admin/administrators/index', { data: { results: escape(JSON.stringify(results)) } });
-    }
-  });
+  req.app.db.Admin.findAll()
+      .then(function(results) {
+          if (req.xhr) {
+              res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+              results.filters = req.query;
+              res.send(results);
+          } else {
+              results.filters = req.query;
+              res.render('admin/administrators/index', {
+                  data: {
+                      results: escape(JSON.stringify(results))
+                  }
+              });
+          }
+      })
+      .catch(function(err) {
+          return next(err);
+      });
 };
 
 exports.read = function(req, res, next){

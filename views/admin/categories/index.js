@@ -14,31 +14,24 @@ exports.find = function(req, res, next) {
     if (req.query.name) {
         filters.name = new RegExp('^.*?' + req.query.name + '.*$', 'i');
     }
-
-    req.app.db.models.Category.pagedFind({
-        filters: filters,
-        keys: 'pivot name',
-        limit: req.query.limit,
-        page: req.query.page,
-        sort: req.query.sort
-    }, function(err, results) {
-        if (err) {
+    // TODO: add filtering, offset, limit , etc
+    req.app.db.Category.findAll().then(function(results) {
+            if (req.xhr) {
+                res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+                results.filters = req.query;
+                res.send(results);
+            } else {
+                results.filters = req.query;
+                res.render('admin/categories/index', {
+                    data: {
+                        results: escape(JSON.stringify(results))
+                    }
+                });
+            }
+        })
+        .catch(function(err) {
             return next(err);
-        }
-
-        if (req.xhr) {
-            res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
-            results.filters = req.query;
-            res.send(results);
-        } else {
-            results.filters = req.query;
-            res.render('admin/categories/index', {
-                data: {
-                    results: escape(JSON.stringify(results))
-                }
-            });
-        }
-    });
+        });
 };
 
 exports.read = function(req, res, next) {
