@@ -1,5 +1,5 @@
 {
-  "name": "Drywall",
+  "name": "Wetwall",
   "version": "0.16.1",
   "private": true,
   "scripts": {
@@ -20,7 +20,6 @@
     "helmet": "^0.7.x",
     "jade": "^1.x.x",
     "method-override": "^2.x.x",
-    "mongoose": "^4.x.x",
     "morgan": "^1.x.x",
     "passport": "^0.2.x",
     "passport-facebook": "^2.x.x",
@@ -30,9 +29,9 @@
     "passport-oauth": "^1.x.x",
     "passport-tumblr": "^0.1.x",
     "passport-twitter": "^1.x.x",
-    "pg": "^4.4.0",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "^3.2.0",
+    "pg": "^4.4.x",
+    "pg-hstore": "^2.3.x",
+    "sequelize": "^3.2.x",
     "serve-static": "^1.9.x",
     "underscore": "^1.x.x"
   },
