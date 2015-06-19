@@ -47,25 +47,31 @@ exports.login = function(req, res){
   workflow.on('abuseFilter', function() {
     var getIpCount = function(done) {
       var conditions = { ip: req.ip };
-      req.app.db.models.LoginAttempt.count(conditions, function(err, count) {
-        if (err) {
-          return done(err);
-        }
-
-        done(null, count);
-      });
+      req.app.db.LoginAttempt.count(conditions)
+          .then(function(count) {
+              console.log('Count ', count);
+              done(null, count);
+          })
+          .catch(function(err) {
+              return done(err);
+          });
     };
 
     var getIpUserCount = function(done) {
-      var conditions = { ip: req.ip, user: req.body.username };
-      req.app.db.models.LoginAttempt.count(conditions, function(err, count) {
-        if (err) {
-          return done(err);
-        }
-
-        done(null, count);
-      });
+        var conditions = {
+            ip: req.ip,
+            user: req.body.username
+        };
+        req.app.db.LoginAttempt.count(conditions)
+            .then(function(count) {
+                console.log('Count ', count);
+                done(null, count);
+            })
+            .catch(function(err) {
+                return done(err);
+            });
     };
+
 
     var asyncFinally = function(err, results) {
       if (err) {

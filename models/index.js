@@ -28,7 +28,7 @@ Object.keys(db).forEach(function(modelName) {
 });
 
 let options = {
-    force: true
+//    force: true
 }
 
 db.sequelize = sequelize;
