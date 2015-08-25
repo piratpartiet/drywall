@@ -2,6 +2,8 @@
 
 A website and user system starter. Implemented with Express and Backbone.
 
+# This fork uses sequelize to connect to RDBMSes instead of using Mongoose to connect to Mongo
+
 [![Dependency Status](https://david-dm.org/jedireza/drywall.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall)
 [![devDependency Status](https://david-dm.org/jedireza/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall#info=devDependencies)
 
@@ -18,7 +20,7 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 | ------------- | -------------- | ----------- |
 | Express       | Bootstrap      | Grunt       |
 | Jade          | Backbone.js    |             |
-| Mongoose      | jQuery         |             |
+| Sequelize     | jQuery         |             |
 | Passport      | Underscore.js  |             |
 | Async         | Font-Awesome   |             |
 | EmailJS       | Moment.js      |             |
@@ -37,8 +39,9 @@ order to keep the app ready to use at all times.
 
 ## Requirements
 
-You need [Node.js](http://nodejs.org/download/) and
-[MongoDB](http://www.mongodb.org/downloads) installed and running.
+You need [Node.js](http://nodejs.org/download/) and a Relational Database 
+Management System such as [Postgres](http://www.postgresql.org/download) 
+installed and running.
 
 We use [`bcrypt`](https://github.com/ncb000gt/node.bcrypt.js) for hashing
 secrets. If you have issues during installation related to `bcrypt` then [refer
