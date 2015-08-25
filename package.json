@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "bootstrap": "^3.x.x",
-    "font-awesome": "^4.x.x",
+    "font-awesome": "^4.1.0",
     "grunt": "^0.4.x",
     "grunt-cli": "^0.1.13",
     "grunt-concurrent": "^1.x.x",

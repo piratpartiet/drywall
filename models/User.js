@@ -41,16 +41,13 @@ module.exports = function(sequelize, DataTypes) {
         },
         classMethods: {
             encryptPassword: function(password, done) {
-                console.log("BCrypt start");
                 var bcrypt = require('bcrypt');
                 bcrypt.genSalt(10, function(err, salt) {
-                    console.log("Salt generated");
                     if (err) {
                         return done(err);
                     }
 
                     bcrypt.hash(password, salt, function(err, hash) {
-                        console.log("BCrypt hash");
                         done(err, hash);
                     });
                 });
