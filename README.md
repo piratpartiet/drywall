@@ -2,7 +2,7 @@
 
 A website and user system starter. Implemented with Express and Backbone.
 
-# This fork uses sequelize to connect to RDBMSes instead of using Mongoose to connect to Mongo
+This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
 
 [![Dependency Status](https://david-dm.org/jedireza/drywall.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall)
 [![devDependency Status](https://david-dm.org/jedireza/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall#info=devDependencies)
@@ -11,7 +11,8 @@ A website and user system starter. Implemented with Express and Backbone.
 ## Technology
 
 Server side, Drywall is built with the [Express](http://expressjs.com/)
-framework. We're using [MongoDB](http://www.mongodb.org/) as a data store.
+framework. We're using [Sequelize](http://sequelizejs.com) to connect to 
+an RDBMS for a data store.
 
 The front-end is built with [Backbone](http://backbonejs.org/).
 We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
@@ -24,7 +25,7 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 | Passport      | Underscore.js  |             |
 | Async         | Font-Awesome   |             |
 | EmailJS       | Moment.js      |             |
-
+| Postgres      |								 |             | 
 
 ## Live demo
 
@@ -62,17 +63,13 @@ $ npm install
 First you need to setup your config file.
 
 ```bash
-$ mv ./config.example.js ./config.js #set mongodb and email credentials
+$ mv ./config.example.js ./config.js #set database and email credentials
 ```
 
-Next, you need a few records in the database to start using the user system.
+Next, you need a few records in the database to start using the user system. 
+The code below should serve as pseudocode for adding a default admin user
+to the database, as opposed to exact instructions.
 
-Run these commands on mongo via the terminal. __Obviously you should use your
-email address.__
-
-```js
-use drywall; // or your mongo db name if different
-```
 
 ```js
 db.admingroups.insert({ _id: 'root', name: 'Root' });
