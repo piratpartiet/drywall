@@ -17,7 +17,7 @@ var expect = chai.expect;
 var app = require('../app.js');
 
 describe("GET", function() {
-    it('responds with an index page in HTML', function() {
+    it('responds with the drywall admin index HTML', function() {
     	try {
 	        request(app)
 	            .get('/')
