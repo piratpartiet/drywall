@@ -11,7 +11,7 @@ This fork uses sequelize to connect to Relational Database Management Systems in
 ## Technology
 
 Server side, Drywall is built with the [Express](http://expressjs.com/)
-framework. We're using [Sequelize](http://sequelizejs.com) to connect to 
+framework. We're using [Sequelize](http://sequelizejs.com) to connect to
 an RDBMS for a data store.
 
 The front-end is built with [Backbone](http://backbonejs.org/).
@@ -25,7 +25,7 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 | Passport      | Underscore.js  |             |
 | Async         | Font-Awesome   |             |
 | EmailJS       | Moment.js      |             |
-| Postgres      |								 |             | 
+| Postgres      |								 |             |
 
 ## Live demo
 
@@ -40,8 +40,8 @@ order to keep the app ready to use at all times.
 
 ## Requirements
 
-You need [Node.js](http://nodejs.org/download/) and a Relational Database 
-Management System such as [Postgres](http://www.postgresql.org/download) 
+You need [Node.js](http://nodejs.org/download/) and a Relational Database
+Management System such as [Postgres](http://www.postgresql.org/download)
 installed and running.
 
 We use [`bcrypt`](https://github.com/ncb000gt/node.bcrypt.js) for hashing
@@ -53,7 +53,7 @@ page](https://github.com/jedireza/drywall/wiki/bcrypt-Installation-Trouble).
 ## Installation
 
 ```bash
-$ git clone git@github.com:jedireza/drywall.git && cd ./drywall
+$ git clone git@github.com:trystant/drywall.git && cd ./drywall
 $ npm install
 ```
 
@@ -66,7 +66,7 @@ First you need to setup your config file.
 $ mv ./config.example.js ./config.js #set database and email credentials
 ```
 
-Next, you need a few records in the database to start using the user system. 
+Next, you need a few records in the database to start using the user system.
 The code below should serve as pseudocode for adding a default admin user
 to the database, as opposed to exact instructions.
 
@@ -114,6 +114,13 @@ Now just use the reset password feature to set a password.
 
 Login. Customize. Enjoy.
 
+
+## Testing
+
+The test suite uses [mochajs](https://mochajs.org) and [supertest]
+(https://github.com/visionmedia/supertest) to execute end to end
+testing. The suite can be executed using the command `npm test`
+from the top level of the project.
 
 ## Philosophy
 
