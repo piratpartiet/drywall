@@ -3,7 +3,8 @@
   "version": "0.16.1",
   "private": true,
   "scripts": {
-    "start": "grunt"
+    "start": "grunt",
+    "test": "NODE_ENV=test mocha specs"
   },
   "dependencies": {
     "async": "^0.9.x",
