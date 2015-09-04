@@ -9,7 +9,6 @@ var config = require(__dirname + '/../config/config.json')[env];
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var db = {};
 
-console.log('Drywall aaa');
 
 fs
     .readdirSync(__dirname)
