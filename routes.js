@@ -21,10 +21,10 @@ function ensureAdmin(req, res, next) {
 }
 
 function ensureAccount(req, res, next) {
-  if (req.user.canPlayRoleOf('account')) {
+  if (req.user.canPlayRoleOf('konto')) {
     if (req.app.config.requireAccountVerification) {
       if (req.user.roles.account.isVerified !== 'yes' && !/^\/account\/verification\//.test(req.url)) {
-        return res.redirect('/account/verification/');
+        return res.redirect('/konto/verifiser/');
       }
     }
     return next();
@@ -35,48 +35,48 @@ function ensureAccount(req, res, next) {
 exports = module.exports = function(app, passport) {
   //front end
   app.get('/', require('./views/index').init);
-  app.get('/about/', require('./views/about/index').init);
-  app.get('/contact/', require('./views/contact/index').init);
-  app.post('/contact/', require('./views/contact/index').sendMessage);
+  app.get('/om/', require('./views/about/index').init);
+  app.get('/kontakt/', require('./views/contact/index').init);
+  app.post('/kontakt/', require('./views/contact/index').sendMessage);
 
   //sign up
-  app.get('/signup/', require('./views/signup/index').init);
-  app.post('/signup/', require('./views/signup/index').signup);
+  app.get('/registrering/', require('./views/signup/index').init);
+  app.post('/registrering/', require('./views/signup/index').signup);
 
   //social sign up
-  app.post('/signup/social/', require('./views/signup/index').signupSocial);
-  app.get('/signup/twitter/', passport.authenticate('twitter', { callbackURL: '/signup/twitter/callback/' }));
-  app.get('/signup/twitter/callback/', require('./views/signup/index').signupTwitter);
-  app.get('/signup/github/', passport.authenticate('github', { callbackURL: '/signup/github/callback/', scope: ['user:email'] }));
-  app.get('/signup/github/callback/', require('./views/signup/index').signupGitHub);
-  app.get('/signup/facebook/', passport.authenticate('facebook', { callbackURL: '/signup/facebook/callback/', scope: ['email'] }));
-  app.get('/signup/facebook/callback/', require('./views/signup/index').signupFacebook);
-  app.get('/signup/google/', passport.authenticate('google', { callbackURL: '/signup/google/callback/', scope: ['profile email'] }));
-  app.get('/signup/google/callback/', require('./views/signup/index').signupGoogle);
-  app.get('/signup/tumblr/', passport.authenticate('tumblr', { callbackURL: '/signup/tumblr/callback/' }));
-  app.get('/signup/tumblr/callback/', require('./views/signup/index').signupTumblr);
+  app.post('/registrering/social/', require('./views/signup/index').signupSocial);
+  app.get('/registrering/twitter/', passport.authenticate('twitter', { callbackURL: '/signup/twitter/callback/' }));
+  app.get('/registrering/twitter/callback/', require('./views/signup/index').signupTwitter);
+  app.get('/registrering/github/', passport.authenticate('github', { callbackURL: '/signup/github/callback/', scope: ['user:email'] }));
+  app.get('/registrering/github/callback/', require('./views/signup/index').signupGitHub);
+  app.get('/registrering/facebook/', passport.authenticate('facebook', { callbackURL: '/signup/facebook/callback/', scope: ['email'] }));
+  app.get('/registrering/facebook/callback/', require('./views/signup/index').signupFacebook);
+  app.get('/registrering/google/', passport.authenticate('google', { callbackURL: '/signup/google/callback/', scope: ['profile email'] }));
+  app.get('/registrering/google/callback/', require('./views/signup/index').signupGoogle);
+  app.get('/registrering/tumblr/', passport.authenticate('tumblr', { callbackURL: '/signup/tumblr/callback/' }));
+  app.get('/registrering/tumblr/callback/', require('./views/signup/index').signupTumblr);
 
   //login/out
-  app.get('/login/', require('./views/login/index').init);
-  app.post('/login/', require('./views/login/index').login);
-  app.get('/login/forgot/', require('./views/login/forgot/index').init);
-  app.post('/login/forgot/', require('./views/login/forgot/index').send);
-  app.get('/login/reset/', require('./views/login/reset/index').init);
-  app.get('/login/reset/:email/:token/', require('./views/login/reset/index').init);
-  app.put('/login/reset/:email/:token/', require('./views/login/reset/index').set);
-  app.get('/logout/', require('./views/logout/index').init);
+  app.get('/logg-inn/', require('./views/login/index').init);
+  app.post('/logg-inn/', require('./views/login/index').login);
+  app.get('/logg-inn/forgot/', require('./views/login/forgot/index').init);
+  app.post('/logg-inn/forgot/', require('./views/login/forgot/index').send);
+  app.get('/logg-inn/reset/', require('./views/login/reset/index').init);
+  app.get('/logg-inn/reset/:email/:token/', require('./views/login/reset/index').init);
+  app.put('/logg-inn/reset/:email/:token/', require('./views/login/reset/index').set);
+  app.get('/logg-ut/', require('./views/logout/index').init);
 
   //social login
-  app.get('/login/twitter/', passport.authenticate('twitter', { callbackURL: '/login/twitter/callback/' }));
-  app.get('/login/twitter/callback/', require('./views/login/index').loginTwitter);
-  app.get('/login/github/', passport.authenticate('github', { callbackURL: '/login/github/callback/' }));
-  app.get('/login/github/callback/', require('./views/login/index').loginGitHub);
-  app.get('/login/facebook/', passport.authenticate('facebook', { callbackURL: '/login/facebook/callback/' }));
-  app.get('/login/facebook/callback/', require('./views/login/index').loginFacebook);
-  app.get('/login/google/', passport.authenticate('google', { callbackURL: '/login/google/callback/', scope: ['profile email'] }));
-  app.get('/login/google/callback/', require('./views/login/index').loginGoogle);
-  app.get('/login/tumblr/', passport.authenticate('tumblr', { callbackURL: '/login/tumblr/callback/', scope: ['profile email'] }));
-  app.get('/login/tumblr/callback/', require('./views/login/index').loginTumblr);
+  app.get('/logg-inn/twitter/', passport.authenticate('twitter', { callbackURL: '/login/twitter/callback/' }));
+  app.get('/logg-inn/twitter/callback/', require('./views/login/index').loginTwitter);
+  app.get('/logg-inn/github/', passport.authenticate('github', { callbackURL: '/login/github/callback/' }));
+  app.get('/logg-inn/github/callback/', require('./views/login/index').loginGitHub);
+  app.get('/logg-inn/facebook/', passport.authenticate('facebook', { callbackURL: '/login/facebook/callback/' }));
+  app.get('/logg-inn/facebook/callback/', require('./views/login/index').loginFacebook);
+  app.get('/logg-inn/google/', passport.authenticate('google', { callbackURL: '/login/google/callback/', scope: ['profile email'] }));
+  app.get('/logg-inn/google/callback/', require('./views/login/index').loginGoogle);
+  app.get('/logg-inn/tumblr/', passport.authenticate('tumblr', { callbackURL: '/login/tumblr/callback/', scope: ['profile email'] }));
+  app.get('/logg-inn/tumblr/callback/', require('./views/login/index').loginTumblr);
 
   //admin
   app.all('/admin*', ensureAuthenticated);
@@ -143,37 +143,37 @@ exports = module.exports = function(app, passport) {
   app.get('/admin/search/', require('./views/admin/search/index').find);
 
   //account
-  app.all('/account*', ensureAuthenticated);
-  app.all('/account*', ensureAccount);
-  app.get('/account/', require('./views/account/index').init);
+  app.all('/konto*', ensureAuthenticated);
+  app.all('/konto*', ensureAccount);
+  app.get('/konto/', require('./views/account/index').init);
 
   //account > verification
-  app.get('/account/verification/', require('./views/account/verification/index').init);
-  app.post('/account/verification/', require('./views/account/verification/index').resendVerification);
-  app.get('/account/verification/:token/', require('./views/account/verification/index').verify);
+  app.get('/konto/verifiser/', require('./views/account/verification/index').init);
+  app.post('/konto/verifiser/', require('./views/account/verification/index').resendVerification);
+  app.get('/konto/verifiser/:token/', require('./views/account/verification/index').verify);
 
   //account > settings
-  app.get('/account/settings/', require('./views/account/settings/index').init);
-  app.put('/account/settings/', require('./views/account/settings/index').update);
-  app.put('/account/settings/identity/', require('./views/account/settings/index').identity);
-  app.put('/account/settings/password/', require('./views/account/settings/index').password);
+  app.get('/konto/innstillinger/', require('./views/account/settings/index').init);
+  app.put('/konto/innstillinger/', require('./views/account/settings/index').update);
+  app.put('/konto/innstillinger/identity/', require('./views/account/settings/index').identity);
+  app.put('/konto/innstillinger/password/', require('./views/account/settings/index').password);
 
   //account > settings > social
-  app.get('/account/settings/twitter/', passport.authenticate('twitter', { callbackURL: '/account/settings/twitter/callback/' }));
-  app.get('/account/settings/twitter/callback/', require('./views/account/settings/index').connectTwitter);
-  app.get('/account/settings/twitter/disconnect/', require('./views/account/settings/index').disconnectTwitter);
-  app.get('/account/settings/github/', passport.authenticate('github', { callbackURL: '/account/settings/github/callback/' }));
-  app.get('/account/settings/github/callback/', require('./views/account/settings/index').connectGitHub);
-  app.get('/account/settings/github/disconnect/', require('./views/account/settings/index').disconnectGitHub);
-  app.get('/account/settings/facebook/', passport.authenticate('facebook', { callbackURL: '/account/settings/facebook/callback/' }));
-  app.get('/account/settings/facebook/callback/', require('./views/account/settings/index').connectFacebook);
-  app.get('/account/settings/facebook/disconnect/', require('./views/account/settings/index').disconnectFacebook);
-  app.get('/account/settings/google/', passport.authenticate('google', { callbackURL: '/account/settings/google/callback/', scope: ['profile email'] }));
-  app.get('/account/settings/google/callback/', require('./views/account/settings/index').connectGoogle);
-  app.get('/account/settings/google/disconnect/', require('./views/account/settings/index').disconnectGoogle);
-  app.get('/account/settings/tumblr/', passport.authenticate('tumblr', { callbackURL: '/account/settings/tumblr/callback/' }));
-  app.get('/account/settings/tumblr/callback/', require('./views/account/settings/index').connectTumblr);
-  app.get('/account/settings/tumblr/disconnect/', require('./views/account/settings/index').disconnectTumblr);
+  app.get('/konto/innstillinger/twitter/', passport.authenticate('twitter', { callbackURL: '/account/settings/twitter/callback/' }));
+  app.get('/konto/innstillinger/twitter/callback/', require('./views/account/settings/index').connectTwitter);
+  app.get('/konto/innstillinger/twitter/disconnect/', require('./views/account/settings/index').disconnectTwitter);
+  app.get('/konto/innstillinger/github/', passport.authenticate('github', { callbackURL: '/account/settings/github/callback/' }));
+  app.get('/konto/innstillinger/github/callback/', require('./views/account/settings/index').connectGitHub);
+  app.get('/konto/innstillinger/github/disconnect/', require('./views/account/settings/index').disconnectGitHub);
+  app.get('/konto/innstillinger/facebook/', passport.authenticate('facebook', { callbackURL: '/account/settings/facebook/callback/' }));
+  app.get('/konto/innstillinger/facebook/callback/', require('./views/account/settings/index').connectFacebook);
+  app.get('/konto/innstillinger/facebook/disconnect/', require('./views/account/settings/index').disconnectFacebook);
+  app.get('/konto/innstillinger/google/', passport.authenticate('google', { callbackURL: '/account/settings/google/callback/', scope: ['profile email'] }));
+  app.get('/konto/innstillinger/google/callback/', require('./views/account/settings/index').connectGoogle);
+  app.get('/konto/innstillinger/google/disconnect/', require('./views/account/settings/index').disconnectGoogle);
+  app.get('/konto/innstillinger/tumblr/', passport.authenticate('tumblr', { callbackURL: '/account/settings/tumblr/callback/' }));
+  app.get('/konto/innstillinger/tumblr/callback/', require('./views/account/settings/index').connectTumblr);
+  app.get('/konto/innstillinger/tumblr/disconnect/', require('./views/account/settings/index').disconnectTumblr);
 
   //route not found
   app.all('*', require('./views/http/index').http404);

@@ -27,23 +27,23 @@ block body
                 a(href='/login/') Logg inn her
         div.btn-group.btn-group-justified
           if oauthTwitter
-            a.btn.btn-info(href='/signup/twitter/')
+            a.btn.btn-info(href='/registrering/twitter/')
               i.fa.fa-twitter.fa-lg
               |  Twitter
           if oauthGitHub
-            a.btn.btn-info(href='/signup/github/')
+            a.btn.btn-info(href='/registrering/github/')
               i.fa.fa-github.fa-lg
               |  GitHub
           if oauthFacebook
-            a.btn.btn-info(href='/signup/facebook/')
+            a.btn.btn-info(href='/registrering/facebook/')
               i.fa.fa-facebook-square.fa-lg
               |  Facebook
           if oauthGoogle
-            a.btn.btn-info(href='/signup/google/')
+            a.btn.btn-info(href='/registrering/google/')
               i.fa.fa-google-plus-square.fa-lg
               |  Google
           if oauthTumblr
-            a.btn.btn-info(href='/signup/tumblr/')
+            a.btn.btn-info(href='/registrering/tumblr/')
               i.fa.fa-tumblr-square.fa-lg
               |  Tumblr
     div.col-sm-6.marketing
@@ -61,16 +61,16 @@ block body
           |<%- err %>
         |<% }); %>
       div.form-group(class!='<%- errfor.username ? "has-error" : "" %>')
-        label Pick a Username:
+        label Brukernavn:
         input.form-control(type='text', name='username', value!='<%= username %>')
         span.help-block <%- errfor.username %>
       div.form-group(class!='<%- errfor.email ? "has-error" : "" %>')
-        label Enter Your Email:
+        label E-postadresse:
         input.form-control(type='text', name='email', value!='<%= email %>')
         span.help-block <%- errfor.email %>
       div.form-group(class!='<%- errfor.password ? "has-error" : "" %>')
-        label Create a Password:
+        label Passord:
         input.form-control(type='password', name='password', value!='<%= password %>')
         span.help-block <%- errfor.password %>
       div.form-group
-        button.btn.btn-primary.btn-signup(type='button') Create My Account
+        button.btn.btn-primary.btn-signup(type='button') Bli medlem

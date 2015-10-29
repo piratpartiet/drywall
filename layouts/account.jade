@@ -10,7 +10,7 @@ html
     div.navbar.navbar-default.navbar-fixed-top
       div.container
         div.navbar-header
-          a.navbar-brand(href='/account/')
+          a.navbar-brand(href='/konto/')
             img.navbar-logo(src='/media/logo-symbol-64x64.png')
             span.navbar-brand-label #{projectName}
           button.navbar-toggle.collapsed(data-toggle='collapse', data-target='.my-navbar-collapse')
@@ -19,12 +19,12 @@ html
             span.icon-bar
         div.navbar-collapse.my-navbar-collapse.collapse
           ul.nav.navbar-nav
-            li: a(href='/account/') My Account
-            li: a(href='/account/settings/') Settings
+            li: a(href='/konto/') Min konto
+            li: a(href='/konto/settings/') Innstillinger
           ul.nav.navbar-nav.pull-right
-            li: a(href='/logout/')
+            li: a(href='/logg-ut/')
               i.fa.fa-user
-              |  Sign Out
+              |  Logg ut
 
     div.page
       div.container
@@ -37,7 +37,7 @@ html
             |&#169; #{copyrightYear} #{copyrightName}
           ul.links
             li: a(href='/') Home
-            li: a(href='/logout/') Sign Out
+            li: a(href='/logg-ut/') Logg ut
           div.clearfix
 
     div.ajax-spinner
