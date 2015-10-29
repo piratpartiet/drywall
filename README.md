@@ -25,7 +25,7 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 | Passport      | Underscore.js  |             |
 | Async         | Font-Awesome   |             |
 | EmailJS       | Moment.js      |             |
-| Postgres      |								 |             |
+| Postgres      |				 |             |
 
 ## Live demo
 
@@ -63,7 +63,8 @@ $ npm install
 First you need to setup your config file.
 
 ```bash
-$ mv ./config.example.js ./config.js #set database and email credentials
+$ cp ./config.example.js ./config.js #set email credentials
+$ cp ./config/config.json.tmpl ./config/config.json #set database credentials
 ```
 
 Next, you need a few records in the database to start using the user system.
