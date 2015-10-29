@@ -60,28 +60,48 @@ $ npm install
 
 ## Setup
 
-First you need to setup your config file.
+First you need to setup your config files. The main parts of the application
+are configured in the `config.js` file in the root directory. Create it by
+copying `config.js.tmpl` as such:
 
 ```bash
-$ cp ./config.example.js ./config.js #set email credentials
-$ cp ./config/config.json.tmpl ./config/config.json #set database credentials
+$ cp ./config.js.tmpl ./config.js
 ```
 
-Next, you need a few records in the database to start using the user system.
-The code below should serve as pseudocode for adding a default admin user
-to the database, as opposed to exact instructions.
+The database is configured in `config/config.json`. Create it by copying the
+`config/config.tmpl.json` file as such:
 
-
-```js
-db.admingroups.insert({ _id: 'root', name: 'Root' });
-db.admins.insert({ name: {first: 'Root', last: 'Admin', full: 'Root Admin'}, groups: ['root'] });
-var rootAdmin = db.admins.findOne();
-db.users.save({ username: 'root', isActive: 'yes', email: 'your@email.addy', roles: {admin: rootAdmin._id} });
-var rootUser = db.users.findOne();
-rootAdmin.user = { id: rootUser._id, name: rootUser.username };
-db.admins.save(rootAdmin);
+```bash
+$ cp ./config/config.json.tmpl ./config/config.json
 ```
 
+Then, change the values of the individual environments (`development`, `test`
+and `production`). To get everything bootstrapped, just focus on `development`
+for now.
+
+```json
+{
+   "development": {
+    "username": "<username>",
+    "password": "<password>",
+    "database": "<database>",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+  }
+}
+```
+
+### PostgreSQL
+
+Next, you need to set up PostgreSQL. Taking for granted that PostgreSQL's binaries
+exist on your `$PATH`, you need to execute the following commands to get everything
+bootstrapped for the `development` environment (as defined in `config/config.json`).
+
+```bash
+createuser <username>
+createdb --owner=<username> <database>
+psql --dbname=<database> --command="CREATE USER <username> WITH PASSWORD '<password>';"
+```
 
 ## Running the app
 
