@@ -22,17 +22,17 @@ exports.signup = function(req, res) {
         if (!req.body.username) {
             workflow.outcome.errfor.username = 'required';
         } else if (!/^[a-zA-Z0-9\-\_]+$/.test(req.body.username)) {
-            workflow.outcome.errfor.username = 'only use letters, numbers, \'-\', \'_\'';
+            workflow.outcome.errfor.username = 'kun bokstaver og tall, \'-\', \'_\'';
         }
 
         if (!req.body.email) {
             workflow.outcome.errfor.email = 'required';
         } else if (!/^[a-zA-Z0-9\-\_\.\+]+@[a-zA-Z0-9\-\_\.]+\.[a-zA-Z0-9\-\_]+$/.test(req.body.email)) {
-            workflow.outcome.errfor.email = 'invalid email format';
+            workflow.outcome.errfor.email = 'ugyldig e-postformat';
         }
 
         if (!req.body.password) {
-            workflow.outcome.errfor.password = 'required';
+            workflow.outcome.errfor.password = 'påkrevd';
         }
 
         if (workflow.hasErrors()) {
@@ -49,7 +49,7 @@ exports.signup = function(req, res) {
             .then(function(user) {
                 console.log('User', user);
                 if (user) {
-                    workflow.outcome.errfor.username = 'username already taken';
+                    workflow.outcome.errfor.username = 'brukernavnet er ikke tilgjengelig';
                     return workflow.emit('response');
                 }
                 workflow.emit('duplicateEmailCheck');
@@ -67,7 +67,7 @@ exports.signup = function(req, res) {
             })
             .then(function(user) {
                 if (user) {
-                    workflow.outcome.errfor.email = 'email already registered';
+                    workflow.outcome.errfor.email = 'e-postadressen er ikke tilgjengelig';
                     return workflow.emit('response');
                 }
 

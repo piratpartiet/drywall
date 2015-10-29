@@ -1,7 +1,7 @@
 extends ../../layouts/default
 
 block head
-  title Sign Up
+  title Bli medlem
 
 block feet
   script(src='/views/signup/social.min.js?#{cacheBreaker}')
@@ -10,7 +10,7 @@ block body
   div.row
     div.col-sm-6
       div.page-header
-        h1 Complete Sign Up
+        h1 Fullfør medlemsskap
       div#signup
 
   script(type='text/template', id='tmpl-signup')
@@ -22,10 +22,10 @@ block body
           |<%- err %>
         |<% }); %>
       div.form-group(class!='<%- errfor.email ? "has-error" : "" %>')
-        label Enter Your Email:
+        label Din e-postadresse:
         input.form-control(type='text', name='email', value!='<%= email %>')
         span.help-block <%- errfor.email %>
       div.form-group
-        button.btn.btn-primary.btn-signup(type='button') Create My Account
+        button.btn.btn-primary.btn-signup(type='button') Opprett min konto
 
   script(type='text/template', id='data-email') !{email}
