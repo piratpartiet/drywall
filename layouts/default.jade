@@ -20,9 +20,9 @@ html
         div.navbar-collapse.my-navbar-collapse.collapse
           ul.nav.navbar-nav
             li: a(href='/') Hjem
-            li: a(href='/om/') Om Piratpartiet
+            li: a(href='/about/') Om Piratpartiet
             li: a(href='/bli-medlem/') Bli medlem
-            li: a(href='/kontakt/') Kontakt
+            li: a(href='/contact/') Kontakt
           ul.nav.navbar-nav.navbar-right
             if user && user.username
               li: a(href='#{user.defaultReturnUrl}')
