@@ -178,7 +178,7 @@ exports.signup = function(req, res) {
 exports.signupTwitter = function(req, res, next) {
     req._passport.instance.authenticate('twitter', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/signup/');
+            return res.redirect('/registrering/');
         }
 
         req.app.db.User.findOne({
@@ -210,7 +210,7 @@ exports.signupTwitter = function(req, res, next) {
 exports.signupGitHub = function(req, res, next) {
     req._passport.instance.authenticate('github', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/signup/');
+            return res.redirect('/registrering/');
         }
 
         req.app.db.User.findOne({
@@ -241,10 +241,10 @@ exports.signupGitHub = function(req, res, next) {
 
 exports.signupFacebook = function(req, res, next) {
     req._passport.instance.authenticate('facebook', {
-        callbackURL: '/signup/facebook/callback/'
+        callbackURL: '/registrering/facebook/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/signup/');
+            return res.redirect('/registrering/');
         }
 
         req.app.db.User.findOne({
@@ -274,10 +274,10 @@ exports.signupFacebook = function(req, res, next) {
 
 exports.signupGoogle = function(req, res, next) {
     req._passport.instance.authenticate('google', {
-        callbackURL: '/signup/google/callback/'
+        callbackURL: '/registrering/google/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/signup/');
+            return res.redirect('/registrering/');
         }
 
         req.app.db.User.findOne({
@@ -307,10 +307,10 @@ exports.signupGoogle = function(req, res, next) {
 
 exports.signupTumblr = function(req, res, next) {
     req._passport.instance.authenticate('tumblr', {
-        callbackURL: '/signup/tumblr/callback/'
+        callbackURL: '/registrering/tumblr/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/signup/');
+            return res.redirect('/registrering/');
         }
 
         if (!info.profile.hasOwnProperty('id')) {
