@@ -6,7 +6,7 @@
   app = app || {};
 
   app.Signup = Backbone.Model.extend({
-    url: '/signup/',
+    url: '/registrering/',
     defaults: {
       errors: [],
       errfor: {},

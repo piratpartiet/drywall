@@ -10,7 +10,7 @@ function ensureAuthenticated(req, res, next) {
       req.session.returnUrl = req.originalUrl;
   }
 
-  res.redirect('/login/');
+  res.redirect('/logg-inn/');
 }
 
 function ensureAdmin(req, res, next) {
