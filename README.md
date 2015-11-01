@@ -127,10 +127,10 @@ $ npm start
 
 Now just use the reset password feature to set a password.
 
- - Go to `http://localhost:3000/login/forgot/`
+ - Go to `http://localhost:3000/logg-inn/forgot/`
  - Submit your email address and wait a second.
  - Go check your email and get the reset link.
- - `http://localhost:3000/login/reset/:email/:token/`
+ - `http://localhost:3000/logg-inn/reset/:email/:token/`
  - Set a new password.
 
 Login. Customize. Enjoy.

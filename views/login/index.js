@@ -130,7 +130,7 @@ exports.login = function(req, res) {
 exports.loginTwitter = function(req, res, next) {
     req._passport.instance.authenticate('twitter', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/login/');
+            return res.redirect('/logg-inn/');
         }
 
         req.app.db.models.User.findOne({
@@ -165,7 +165,7 @@ exports.loginTwitter = function(req, res, next) {
 exports.loginGitHub = function(req, res, next) {
     req._passport.instance.authenticate('github', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/login/');
+            return res.redirect('/logg-inn/');
         }
 
         req.app.db.models.User.findOne({
@@ -199,10 +199,10 @@ exports.loginGitHub = function(req, res, next) {
 
 exports.loginFacebook = function(req, res, next) {
     req._passport.instance.authenticate('facebook', {
-        callbackURL: '/login/facebook/callback/'
+        callbackURL: '/logg-inn/facebook/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/login/');
+            return res.redirect('/logg-inn/');
         }
 
         req.app.db.models.User.findOne({
@@ -236,10 +236,10 @@ exports.loginFacebook = function(req, res, next) {
 
 exports.loginGoogle = function(req, res, next) {
     req._passport.instance.authenticate('google', {
-        callbackURL: '/login/google/callback/'
+        callbackURL: '/logg-inn/google/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/login/');
+            return res.redirect('/logg-inn/');
         }
 
         req.app.db.models.User.findOne({
@@ -273,10 +273,10 @@ exports.loginGoogle = function(req, res, next) {
 
 exports.loginTumblr = function(req, res, next) {
     req._passport.instance.authenticate('tumblr', {
-        callbackURL: '/login/tumblr/callback/'
+        callbackURL: '/logg-inn/tumblr/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/login/');
+            return res.redirect('/logg-inn/');
         }
 
         if (!info.profile.hasOwnProperty('id')) {

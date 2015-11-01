@@ -6,7 +6,7 @@
   app = app || {};
 
   app.Login = Backbone.Model.extend({
-    url: '/login/',
+    url: '/logg-inn/',
     defaults: {
       errors: [],
       errfor: {},
@@ -50,7 +50,7 @@
       },{
         success: function(model, response) {
           if (response.success) {
-            location.href = '/login/';
+            location.href = '/logg-inn/';
           }
           else {
             model.set(response);

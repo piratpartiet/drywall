@@ -136,7 +136,7 @@ exports.signup = function(req, res) {
             locals: {
                 username: req.body.username,
                 email: req.body.email,
-                loginURL: req.protocol + '://' + req.headers.host + '/login/',
+                loginURL: req.protocol + '://' + req.headers.host + '/logg-inn/',
                 projectName: req.app.config.projectName
             },
             success: function(message) {
@@ -467,7 +467,7 @@ exports.signupSocial = function(req, res) {
             locals: {
                 username: workflow.user.username,
                 email: req.body.email,
-                loginURL: req.protocol + '://' + req.headers.host + '/login/',
+                loginURL: req.protocol + '://' + req.headers.host + '/logg-inn/',
                 projectName: req.app.config.projectName
             },
             success: function(message) {

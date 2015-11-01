@@ -67,7 +67,7 @@ exports.send = function(req, res, next){
       htmlPath: 'login/forgot/email-html',
       locals: {
         username: user.username,
-        resetLink: req.protocol +'://'+ req.headers.host +'/login/reset/'+ user.email +'/'+ token +'/',
+        resetLink: req.protocol +'://'+ req.headers.host +'/logg-inn/reset/'+ user.email +'/'+ token +'/',
         projectName: req.app.config.projectName
       },
       success: function(message) {
