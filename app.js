@@ -12,10 +12,17 @@ var config = require('./config'),
     passport = require('passport'),
     models = require('./models/index'),
     helmet = require('helmet'),
+    rollbar = require("rollbar"),
     csrf = require('csurf');
 
 //create express app
 var app = express();
+
+// Rollbar initialization
+rollbar.init("ba471954344648d490ea209ff586ae43");
+
+// record a generic message and send to rollbar
+rollbar.reportMessage("Rollbar started: " + Date.now());
 
 //keep reference to config
 app.config = config;
@@ -35,6 +42,19 @@ app.set('view engine', 'jade');
 app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('serve-static')(path.join(__dirname, 'public')));
+
+// Use the rollbar error handler to send exceptions to your rollbar account
+app.use(rollbar.errorHandler('ba471954344648d490ea209ff586ae43'));
+
+var options = {
+  // Call process.exit(1) when an uncaught exception occurs but after reporting all
+  // pending errors to Rollbar.
+  //
+  // Default: false
+  exitOnUncaughtException: true
+};
+rollbar.handleUncaughtExceptions("ba471954344648d490ea209ff586ae43", options);
+
 app.use(require('method-override')());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
