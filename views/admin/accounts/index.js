@@ -49,7 +49,7 @@ exports.find = function(req, res, next) {
             res.send(outcome.results);
         } else {
             outcome.results.filters = req.query;
-            res.render('admin/accounts/index', {
+            res.render('admin/kontos/index', {
                 data: {
                     results: escape(JSON.stringify(outcome.results)),
                     statuses: outcome.statuses
@@ -96,7 +96,7 @@ exports.read = function(req, res, next) {
         if (req.xhr) {
             res.send(outcome.record);
         } else {
-            res.render('admin/accounts/details', {
+            res.render('admin/kontos/details', {
                 data: {
                     record: escape(JSON.stringify(outcome.record)),
                     statuses: outcome.statuses

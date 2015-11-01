@@ -33,7 +33,7 @@
       }
 
       _.each(response.accounts, function(account) {
-        outcome.push({name: account.name.full, url: '/admin/accounts/'+ account._id +'/'});
+        outcome.push({name: account.name.full, url: '/admin/konti/'+ account._id +'/'});
       });
 
       if (response.administrators.length) {

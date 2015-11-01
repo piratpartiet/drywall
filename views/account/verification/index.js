@@ -8,7 +8,7 @@ var sendVerificationEmail = function(req, res, options) {
     textPath: 'account/verification/email-text',
     htmlPath: 'account/verification/email-html',
     locals: {
-      verifyURL: req.protocol +'://'+ req.headers.host +'/account/verification/' + options.verificationToken + '/',
+      verifyURL: req.protocol +'://'+ req.headers.host +'/konto/verifisering/' + options.verificationToken + '/',
       projectName: req.app.config.projectName
     },
     success: function() {

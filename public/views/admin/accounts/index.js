@@ -21,13 +21,13 @@
       userCreated: {}
     },
     url: function() {
-      return '/admin/accounts/'+ (this.isNew() ? '' : this.id +'/');
+      return '/admin/konti/'+ (this.isNew() ? '' : this.id +'/');
     }
   });
 
   app.RecordCollection = Backbone.Collection.extend({
     model: app.Record,
-    url: '/admin/accounts/',
+    url: '/admin/konti/',
     parse: function(results) {
       app.pagingView.model.set({
         pages: results.pages,

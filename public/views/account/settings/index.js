@@ -7,12 +7,12 @@
 
   app.Account = Backbone.Model.extend({
     idAttribute: 'id',
-    url: '/account/settings/'
+    url: '/konto/settings/'
   });
 
   app.User = Backbone.Model.extend({
     idAttribute: 'id',
-    url: '/account/settings/'
+    url: '/konto/settings/'
   });
 
   app.Details = Backbone.Model.extend({
@@ -28,7 +28,7 @@
       phone: '',
       zip: ''
     },
-    url: '/account/settings/',
+    url: '/konto/settings/',
     parse: function(response) {
       if (response.account) {
         app.mainView.account.set(response.account);
@@ -48,7 +48,7 @@
       username: '',
       email: ''
     },
-    url: '/account/settings/identity/',
+    url: '/konto/settings/identity/',
     parse: function(response) {
       if (response.user) {
         app.mainView.user.set(response.user);
@@ -68,7 +68,7 @@
       newPassword: '',
       confirm: ''
     },
-    url: '/account/settings/password/',
+    url: '/konto/settings/password/',
     parse: function(response) {
       if (response.user) {
         app.mainView.user.set(response.user);

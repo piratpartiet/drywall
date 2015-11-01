@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultReturnUrl: function() {
                 var returnUrl = '/';
                 if (this.canPlayRoleOf('account')) {
-                    returnUrl = '/account/';
+                    returnUrl = '/konto/';
                 }
 
                 if (this.canPlayRoleOf('admin')) {

@@ -80,7 +80,7 @@ exports.login = function(req, res) {
 
             if (results.ip >= req.app.config.loginAttempts.forIp ||
                 results.ipUser >= req.app.config.loginAttempts.forIpAndUser) {
-                workflow.outcome.errors.push('You\'ve reached the maximum number of login attempts. Please try again later.');
+                workflow.outcome.errors.push('Du har nådd grensen for antall påloggingsforsøk. Vennligst forsøk igjen senere.');
                 return workflow.emit('response');
             } else {
                 workflow.emit('attemptLogin');
@@ -106,7 +106,7 @@ exports.login = function(req, res) {
                 };
                 req.app.db.LoginAttempt.create(fieldsToSet)
                     .then(function(doc) {
-                        workflow.outcome.errors.push('Username and password combination not found or your account is inactive.');
+                        workflow.outcome.errors.push('Brukernavn eller passord stemmer ikke, eventuelt er kontoen er stengt.');
                         return workflow.emit('response');
                     })
                     .catch(function(err) {
