@@ -12,6 +12,7 @@
     "bcrypt": "^0.8.x",
     "body-parser": "^1.x.x",
     "compression": "^1.x.x",
+    "connect-pg-simple": "^3.0.2",
     "connect-redis": "^2.3.0",
     "cookie-parser": "^1.x.x",
     "csurf": "^1.x.x",
