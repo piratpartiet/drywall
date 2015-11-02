@@ -46,6 +46,7 @@ app.use(session({
   saveUninitialized: true,
   secret: config.cryptoKey,
   store: sequelizeStore,
+  name: 'piratpartiet.sid',
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
 }));
 app.use(passport.initialize());
