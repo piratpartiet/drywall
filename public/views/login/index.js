@@ -50,7 +50,8 @@
       },{
         success: function(model, response) {
           if (response.success) {
-            location.href = '/login/';
+            console.log(model, response);
+            // location.href = '/login/';
           }
           else {
             model.set(response);

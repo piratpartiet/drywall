@@ -25,9 +25,13 @@ exports.init = function(req, res) {
 };
 
 exports.login = function(req, res) {
+    console.log('Login');
+
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
+        console.log('Workflow.Login:Validate');
+
         if (!req.body.username) {
             workflow.outcome.errfor.username = 'required';
         }
@@ -44,6 +48,8 @@ exports.login = function(req, res) {
     });
 
     workflow.on('abuseFilter', function() {
+        console.log('Workflow.Login:AbuseFilter');
+
         var getIpCount = function(done) {
             var conditions = {
                 ip: req.ip
@@ -94,12 +100,18 @@ exports.login = function(req, res) {
     });
 
     workflow.on('attemptLogin', function() {
+        console.log('Workflow.Login:AttemptLogin');
+
         req._passport.instance.authenticate('local', function(err, user, info) {
+            console.log('Passport.Authenticate');
+
             if (err) {
                 return workflow.emit('exception', err);
             }
 
             if (!user) {
+                console.log('Passport.Authenticate:User not found');
+
                 var fieldsToSet = {
                     ip: req.ip,
                     user: req.body.username
@@ -110,13 +122,19 @@ exports.login = function(req, res) {
                         return workflow.emit('response');
                     })
                     .catch(function(err) {
+                        console.log('Exception', err);
                         return workflow.emit('exception', err);
                     });
             } else {
+                console.log('Passport.Authenticate:User found', user.dataValues);
+
                 req.login(user, function(err) {
                     if (err) {
+                        console.log('Passport.Authenticate:Exception', err);
                         return workflow.emit('exception', err);
                     }
+
+                    console.log('Passport.Authenticate:Logging in', user.dataValues.email);
 
                     workflow.emit('response');
                 });

@@ -1,6 +1,6 @@
 'use strict';
 
-exports.init = function(req, res){
+exports.init = function(req, res) {
   if (req.isAuthenticated()) {
     res.redirect(req.user.defaultReturnUrl());
   }
