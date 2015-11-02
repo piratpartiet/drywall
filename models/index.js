@@ -26,9 +26,7 @@ Object.keys(db).forEach(function(modelName) {
     }
 });
 
-var options = {
-    force: false
-}
+var options = { force: config.force }
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
