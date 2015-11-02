@@ -12,7 +12,7 @@
     "bcrypt": "^0.8.x",
     "body-parser": "^1.x.x",
     "compression": "^1.x.x",
-    "connect-pg-simple": "^3.0.2",
+    "connect-session-sequelize": "^2.3.1",
     "cookie-parser": "^1.x.x",
     "csurf": "^1.x.x",
     "emailjs": "^0.3.x",

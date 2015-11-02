@@ -6,13 +6,16 @@ var config = require('./config'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
-    pgSession = require('connect-pg-simple')(session),
     http = require('http'),
     path = require('path'),
     passport = require('passport'),
     models = require('./models/index'),
     helmet = require('helmet'),
-    csrf = require('csurf');
+    csrf = require('csurf'),
+    SequelizeStore = require('connect-session-sequelize')(session.Store),
+    sequelizeStore = new SequelizeStore({ db: models.sequelize });
+
+sequelizeStore.sync({ force: config.force });
 
 //create express app
 var app = express();
@@ -22,7 +25,6 @@ app.config = config;
 
 //setup the web server
 app.server = http.createServer(app);
-
 app.db = models;
 
 //settings
@@ -43,9 +45,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: config.cryptoKey,
-  store: new pgSession(),
+  store: sequelizeStore,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
-  conString: 'pg://' + config.username + ':' + config.password + '@' + config.host + '/' + config.database
 }));
 app.use(passport.initialize());
 app.use(passport.session());
