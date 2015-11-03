@@ -61,9 +61,11 @@ exports.signup = function(req, res) {
     });
 
     workflow.on('duplicateEmailCheck', function() {
-        console.log('Duplicate email');
+        var email = req.body.email;
+        console.log('Worflow.DuplicateEmailCheck:', email);
+
         req.app.db.User.findOne({
-                email: req.body.email.toLowerCase()
+                email: email.toLowerCase()
             })
             .then(function(user) {
                 if (user) {
@@ -74,7 +76,7 @@ exports.signup = function(req, res) {
                 workflow.emit('createUser');
             })
             .catch(function(err) {
-                console.log('Err dupicate email', err);
+                console.log('Workflow.DuplicateEmailCheck:Error', err);
                 return workflow.emit('exception', err);
             });
     });
