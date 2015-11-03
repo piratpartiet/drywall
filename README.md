@@ -53,7 +53,7 @@ page](https://github.com/jedireza/drywall/wiki/bcrypt-Installation-Trouble).
 ## Installation
 
 ```bash
-$ git clone git@github.com:trystant/drywall.git && cd ./drywall
+$ git clone git@github.com:piratpartiet/drywall.git && cd ./drywall
 $ npm install
 ```
 
@@ -87,13 +87,29 @@ for now.
     "database": "<database>",
     "host": "127.0.0.1",
     "dialect": "postgres",
+    "force" : false
   }
 }
 ```
 
-### PostgreSQL
+* `username`: The username with access to the database.
+* `password`: The password associated with the above username.
+* `database`: The name of the database for the Drywall application.
+* `host`: The name or IP address of the host of the database service.
+* `dialect`: The [dialect](http://sequelize.readthedocs.org/en/1.7.0/docs/usage/#dialects)
+   of the database.
+* `force`: Set to `true` to have the database reset on application launch,
+   otherwise set this to `false`. It's a bad idea to set this to `true`
+   in production; only set it to `true` if you need to completely wipe
+   the database.
 
-Next, you need to set up PostgreSQL. Taking for granted that PostgreSQL's binaries
+### Database
+
+We have made an opiniated decision about which database dialect to use. We will
+therefore focus on the setup of PostgreSQL, but the steps required for other
+databases would be similar.
+
+So, you need to set up PostgreSQL. Taking for granted that PostgreSQL's binaries
 exist on your `$PATH`, you need to execute the following commands to get everything
 bootstrapped for the `development` environment (as defined in `config/config.json`).
 
