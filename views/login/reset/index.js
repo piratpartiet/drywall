@@ -34,10 +34,12 @@ exports.set = function(req, res){
 
   workflow.on('findUser', function() {
     var conditions = {
-      email: req.params.email,
-      resetPasswordExpires: { $gt: Date.now() }
+        where : {
+          email: req.params.email,
+          resetPasswordExpires: { $gt: Date.now() }
+        }
     };
-    req.app.db.models.User.findOne({ where: conditions }, function(err, user) {
+    req.app.db.models.User.findOne(conditions, function(err, user) {
       if (err) {
         return workflow.emit('exception', err);
       }

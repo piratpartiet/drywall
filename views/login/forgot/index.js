@@ -40,7 +40,7 @@ exports.send = function(req, res, next){
   });
 
   workflow.on('patchUser', function(token, hash) {
-    var conditions = { email: req.body.email.toLowerCase() };
+    var conditions = { where : { email: req.body.email.toLowerCase() } };
     var fieldsToSet = {
       resetPasswordToken: hash,
       resetPasswordExpires: Date.now() + 10000000

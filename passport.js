@@ -11,15 +11,18 @@ exports = module.exports = function(app, passport) {
     passport.use(new LocalStrategy(
         function(username, password, done) {
             var conditions = {
-                isActive: 'yes'
+                where : {
+                    isActive: 'yes'
+                }
             };
+
             if (username.indexOf('@') === -1) {
-                conditions.username = username;
+                conditions.where.username = username;
             } else {
-                conditions.email = username.toLowerCase();
+                conditions.where.email = username.toLowerCase();
             }
 
-            app.db.User.findOne({ where: { conditions }}).then(function(user) {
+            app.db.User.findOne(conditions).then(function(user) {
                     if (!user) {
                         return done(null, false, {
                             message: 'Unknown user'
