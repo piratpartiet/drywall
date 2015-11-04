@@ -43,13 +43,15 @@ exports.signup = function(req, res) {
     });
 
     workflow.on('duplicateUsernameCheck', function() {
+        var username = req.body.username;
+        console.log('Workflow.DuplicateUserNameCheck:', username);
+
         req.app.db.User.findOne({
-                username: req.body.username
+                username: username
             })
             .then(function(user) {
-                console.log('Workflow.DuplicateUserNameCheck:', user);
-
                 if (user) {
+                    console.log('Workflow.DuplicateUserNameCheck:', user.dataValues);
                     workflow.outcome.errfor.username = 'username already taken';
                     return workflow.emit('response');
                 }
