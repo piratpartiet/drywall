@@ -46,9 +46,8 @@ exports.signup = function(req, res) {
         var username = req.body.username;
         console.log('Workflow.DuplicateUserNameCheck:', username);
 
-        req.app.db.User.findOne({
-                username: username
-            })
+        req.app.db.User
+            .findOne({ where: { username: username }})
             .then(function(user) {
                 if (user) {
                     console.log('Workflow.DuplicateUserNameCheck:', user.dataValues);
@@ -68,9 +67,8 @@ exports.signup = function(req, res) {
         var email = req.body.email;
         console.log('Worflow.DuplicateEmailCheck:', email);
 
-        req.app.db.User.findOne({
-                email: email.toLowerCase()
-            })
+        req.app.db.User
+            .findOne({ where: { email: email.toLowerCase() }})
             .then(function(user) {
                 if (user) {
                     workflow.outcome.errfor.email = 'email already registered';
@@ -192,9 +190,9 @@ exports.signupTwitter = function(req, res, next) {
             return res.redirect('/signup/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'twitter.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -224,9 +222,9 @@ exports.signupGitHub = function(req, res, next) {
             return res.redirect('/signup/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'github.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -258,9 +256,9 @@ exports.signupFacebook = function(req, res, next) {
             return res.redirect('/signup/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'facebook.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -291,9 +289,9 @@ exports.signupGoogle = function(req, res, next) {
             return res.redirect('/signup/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'google.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -328,9 +326,9 @@ exports.signupTumblr = function(req, res, next) {
             info.profile.id = info.profile.username;
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'tumblr.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -376,9 +374,9 @@ exports.signupSocial = function(req, res) {
             workflow.username = workflow.username.replace(/[^a-zA-Z0-9\-\_]/g, '');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             username: workflow.username
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -394,9 +392,9 @@ exports.signupSocial = function(req, res) {
     });
 
     workflow.on('duplicateEmailCheck', function() {
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             email: req.body.email.toLowerCase()
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }

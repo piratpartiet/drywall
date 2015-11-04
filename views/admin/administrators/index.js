@@ -271,7 +271,7 @@ exports.linkUser = function(req, res, next){
   });
 
   workflow.on('verifyUser', function(callback) {
-    req.app.db.models.User.findOne({ username: req.body.newUsername }, 'username').exec(function(err, user) {
+    req.app.db.models.User.findOne({ where: { username: req.body.newUsername }}, 'username').exec(function(err, user) {
       if (err) {
         return workflow.emit('exception', err);
       }
@@ -291,7 +291,7 @@ exports.linkUser = function(req, res, next){
   });
 
   workflow.on('duplicateLinkCheck', function(callback) {
-    req.app.db.models.Admin.findOne({ 'user.id': workflow.user._id, _id: { $ne: req.params.id } }).exec(function(err, admin) {
+    req.app.db.models.Admin.findOne({ where: { 'user.id': workflow.user._id, _id: { $ne: req.params.id }}}).exec(function(err, admin) {
       if (err) {
         return workflow.emit('exception', err);
       }

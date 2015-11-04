@@ -151,9 +151,9 @@ exports.loginTwitter = function(req, res, next) {
             return res.redirect('/login/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'twitter.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -186,9 +186,9 @@ exports.loginGitHub = function(req, res, next) {
             return res.redirect('/login/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'github.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -223,9 +223,9 @@ exports.loginFacebook = function(req, res, next) {
             return res.redirect('/login/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'facebook.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -260,9 +260,9 @@ exports.loginGoogle = function(req, res, next) {
             return res.redirect('/login/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'google.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -301,9 +301,9 @@ exports.loginTumblr = function(req, res, next) {
             info.profile.id = info.profile.username;
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'tumblr.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }

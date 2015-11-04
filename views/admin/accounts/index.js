@@ -65,9 +65,9 @@ exports.read = function(req, res, next) {
     var outcome = {};
 
     var getStatusOptions = function(callback) {
-        req.app.db.models.Status.find({
+        req.app.db.models.Status.find({ where: {
             pivot: 'Account'
-        }, 'name').sort('name').exec(function(err, statuses) {
+        }}, 'name').sort('name').exec(function(err, statuses) {
             if (err) {
                 return callback(err, null);
             }
@@ -225,9 +225,9 @@ exports.linkUser = function(req, res, next) {
     });
 
     workflow.on('verifyUser', function(callback) {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             username: req.body.newUsername
-        }).exec(function(err, user) {
+        }}).exec(function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -246,12 +246,12 @@ exports.linkUser = function(req, res, next) {
     });
 
     workflow.on('duplicateLinkCheck', function(callback) {
-        req.app.db.models.Account.findOne({
+        req.app.db.models.Account.findOne({ where: {
             'user.id': workflow.user._id,
             _id: {
                 $ne: req.params.id
             }
-        }).exec(function(err, account) {
+        }}).exec(function(err, account) {
             if (err) {
                 return workflow.emit('exception', err);
             }

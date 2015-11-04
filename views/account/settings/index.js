@@ -4,9 +4,8 @@ var renderSettings = function(req, res, next, oauthMessage) {
     var outcome = {};
 
     var getAccountData = function(callback) {
-        req.app.db.Account.findOne({
-                'UserId': req.user.id
-            })
+        req.app.db.Account
+            .findOne({ where: { 'UserId': req.user.id }})
             .then(function(account) {
                 if (account) {
                     outcome.account = account;
@@ -69,12 +68,12 @@ exports.connectTwitter = function(req, res, next) {
             return res.redirect('/account/settings/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'twitter.id': info.profile.id,
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -102,12 +101,12 @@ exports.connectGitHub = function(req, res, next) {
             return res.redirect('/account/settings/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'github.id': info.profile.id,
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -137,12 +136,12 @@ exports.connectFacebook = function(req, res, next) {
             return res.redirect('/account/settings/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'facebook.id': info.profile.id,
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -172,12 +171,12 @@ exports.connectGoogle = function(req, res, next) {
             return res.redirect('/account/settings/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'google.id': info.profile.id,
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -211,12 +210,12 @@ exports.connectTumblr = function(req, res, next) {
             info.profile.id = info.profile.username;
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'tumblr.id': info.profile.id,
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -340,9 +339,8 @@ exports.update = function(req, res, next) {
             zip: req.body.zip
         };
 
-        req.app.db.Account.findOne({
-                'UserId': req.user.id
-            })
+        req.app.db.Account
+            .findOne({ where: { 'UserId': req.user.id }})
             .then(function(account) {
                 account.updateAttributes(fieldsToSet)
                     .then(function(account) {
@@ -382,12 +380,12 @@ exports.identity = function(req, res, next) {
     });
 
     workflow.on('duplicateUsernameCheck', function() {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             username: req.body.username,
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -402,12 +400,12 @@ exports.identity = function(req, res, next) {
     });
 
     workflow.on('duplicateEmailCheck', function() {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             email: req.body.email.toLowerCase(),
             _id: {
                 $ne: req.user.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
