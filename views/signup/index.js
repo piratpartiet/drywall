@@ -47,15 +47,17 @@ exports.signup = function(req, res) {
                 username: req.body.username
             })
             .then(function(user) {
-                console.log('User', user);
+                console.log('Workflow.DuplicateUserNameCheck:', user);
+
                 if (user) {
                     workflow.outcome.errfor.username = 'username already taken';
                     return workflow.emit('response');
                 }
+
                 workflow.emit('duplicateEmailCheck');
             })
             .catch(function(err) {
-                console.log(err);
+                console.log('Workflow.DuplicateUserNameCheck:', err);
                 return workflow.emit('exception', err);
             });
     });
@@ -76,14 +78,14 @@ exports.signup = function(req, res) {
                 workflow.emit('createUser');
             })
             .catch(function(err) {
-                console.log('Workflow.DuplicateEmailCheck:Error', err);
+                console.log('Workflow.DuplicateEmailCheck:', err);
                 return workflow.emit('exception', err);
             });
     });
 
 
     workflow.on('createUser', function() {
-        console.log('Create User');
+        console.log('Workflow.CreateUser');
         req.app.db.User.encryptPassword(req.body.password, function(err, hash) {
             if (err) {
                 return workflow.emit('exception', err);
@@ -110,7 +112,8 @@ exports.signup = function(req, res) {
 
 
     workflow.on('createAccount', function() {
-        console.log('Create account');
+        console.log('Workflow.CreateAccount');
+
         var fieldsToSet = {
             isVerified: req.app.config.requireAccountVerification ? 'no' : 'yes',
             'name.full': workflow.user.username,
@@ -128,7 +131,8 @@ exports.signup = function(req, res) {
     });
 
     workflow.on('sendWelcomeEmail', function() {
-        console.log('Send welcome email');
+        console.log('Workflow.SendWelcomeEmail');
+
         req.app.utility.sendmail(req, res, {
             from: req.app.config.smtp.from.name + ' <' + req.app.config.smtp.from.address + '>',
             to: req.body.email,
@@ -145,16 +149,18 @@ exports.signup = function(req, res) {
                 workflow.emit('logUserIn');
             },
             error: function(err) {
-                console.log('Error Sending Welcome Email: ' + err);
+                console.log('Workflow.SendWelcomeEmail:', err);
                 workflow.emit('logUserIn');
             }
         });
     });
 
     workflow.on('logUserIn', function() {
-        console.log('Log user in');
+        console.log('Workflow.LogUserIn');
+
         req._passport.instance.authenticate('local', function(err, user, info) {
             if (err) {
+                console.log('Passport.Authenticate:', err);
                 return workflow.emit('exception', err);
             }
 
@@ -164,6 +170,7 @@ exports.signup = function(req, res) {
             } else {
                 req.login(user, function(err) {
                     if (err) {
+                        console.log('Request.Login:', err);
                         return workflow.emit('exception', err);
                     }
 
