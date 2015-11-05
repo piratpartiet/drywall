@@ -64,8 +64,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-//https://github.com/ethanl/connect-browser-logger
-app.use(require('browser-logger')());
+// https://github.com/ethanl/connect-browser-logger
+// app.use(require('browser-logger')());
 
 //global locals
 app.locals.projectName = app.config.projectName;
