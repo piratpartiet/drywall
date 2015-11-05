@@ -9,6 +9,8 @@ exports = module.exports = function(app, passport) {
         TumblrStrategy = require('passport-tumblr').Strategy;
 
     passport.use(new LocalStrategy(function(username, password, done) {
+        console.log('Passport.LocalStrategy:', username, done);
+
         var conditions = {
             where : {
                 isActive: 'yes'
@@ -22,7 +24,8 @@ exports = module.exports = function(app, passport) {
         }
 
         app.db.User.findOne(conditions).then(function(user) {
-            console.log('Passport.LocalStrategy:FindOne:', conditions, user);
+            var dataValues = user ? user.dataValues : null;
+            console.log('Passport.LocalStrategy:FindOne:', conditions, dataValues);
 
             if (!user) {
                 return done(null, false, {
@@ -129,7 +132,8 @@ exports = module.exports = function(app, passport) {
     }
 
     passport.serializeUser(function(user, done) {
-        console.log('Passport.SerializeUser:', user, done);
+        var dataValues = user ? user.dataValues : null;
+        console.log('Passport.SerializeUser:', dataValues, done);
 
         done(null, user.id);
     });
