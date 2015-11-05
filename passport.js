@@ -8,44 +8,47 @@ exports = module.exports = function(app, passport) {
         GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
         TumblrStrategy = require('passport-tumblr').Strategy;
 
-    passport.use(new LocalStrategy(
-        function(username, password, done) {
-            var conditions = {
-                where : {
-                    isActive: 'yes'
-                }
-            };
+    passport.use(new LocalStrategy(function(username, password, done) {
+        var conditions = {
+            where : {
+                isActive: 'yes'
+            }
+        };
 
-            if (username.indexOf('@') === -1) {
-                conditions.where.username = username;
-            } else {
-                conditions.where.email = username.toLowerCase();
+        if (username.indexOf('@') === -1) {
+            conditions.where.username = username;
+        } else {
+            conditions.where.email = username.toLowerCase();
+        }
+
+        app.db.User.findOne(conditions).then(function(user) {
+            console.log('Passport.LocalStrategy:FindOne:', conditions, user);
+
+            if (!user) {
+                return done(null, false, {
+                    message: 'Unknown user'
+                });
             }
 
-            app.db.User.findOne(conditions).then(function(user) {
-                    if (!user) {
-                        return done(null, false, {
-                            message: 'Unknown user'
-                        });
-                    }
-                    app.db.User.validatePassword(password, user.password, function(err, isValid) {
-                        if (err) {
-                            return done(err);
-                        }
+            app.db.User.validatePassword(password, user.password, function(err, isValid) {
+                console.log('Passport.LocalStrategy:ValidatePassword');
 
-                        if (!isValid) {
-                            return done(null, false, {
-                                message: 'Invalid password'
-                            });
-                        }
-                        return done(null, user);
-                    });
-                })
-                .catch(function(err) {
+                if (err) {
                     return done(err);
-                });
-        }
-    ));
+                }
+
+                if (!isValid) {
+                    return done(null, false, {
+                        message: 'Invalid password'
+                    });
+                }
+                return done(null, user);
+            });
+        })
+        .catch(function(err) {
+            return done(err);
+        });
+    }));
 
     if (app.config.oauth.twitter.key) {
         passport.use(new TwitterStrategy({
@@ -126,10 +129,14 @@ exports = module.exports = function(app, passport) {
     }
 
     passport.serializeUser(function(user, done) {
+        console.log('Passport.SerializeUser:', user, done);
+
         done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
+        console.log('Passport.DeserializeUser:', id, done);
+
         app.db.User
             .findOne({ where: { id: id }})
             .then(function(user) {
@@ -140,6 +147,5 @@ exports = module.exports = function(app, passport) {
                 done(err);
             });
     });
-
 };
 
