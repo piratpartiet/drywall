@@ -53,10 +53,10 @@ exports.db = {
     'database': 'drywall-development',
     'host': '127.0.0.1',
     'dialect': 'postgres',
-    '_comment_': ['Comment out the 'logging' line below to get SQL etc',
-                  'console logging.  See also the 'Options' section of',
-                  'http://docs.sequelizejs.com/en/1.7.0/docs/usage/.'],
-    'logging': false,
+    // Logging to console.log. See the 'Options' section of
+    // http://docs.sequelizejs.com/en/1.7.0/docs/usage/ for
+    // more information.
+    'logging': console.log,
     'force' : false
   },
   'test': {
