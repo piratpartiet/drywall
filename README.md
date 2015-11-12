@@ -73,14 +73,18 @@ three environments defined: `development`, `test` and `production`. To get
 everything bootstrapped, just focus on `development` for now:
 
 ```javascript
-{
-   'development': {
-    'username': '<username>',
-    'password': '<password>',
-    'database': '<database>',
-    'host': '127.0.0.1',
-    'dialect': 'postgres',
-    'force' : false
+exports.db = {
+  development: {
+    username: '<username>',
+    password: '<password>',
+    database: '<database>',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    // Logging to console.log. See the 'Options' section of
+    // http://docs.sequelizejs.com/en/1.7.0/docs/usage/ for
+    // more information.
+    logging: console.log,
+    force: false
   }
 }
 ```
