@@ -60,34 +60,27 @@ $ npm install
 
 ## Setup
 
-First you need to setup your config files. The main parts of the application
-are configured in the `config.js` file in the root directory. Create it by
-copying `config.js.tmpl` as such:
+First you need to setup your config file. Create it by copying `config.js.tmpl`
+as such:
 
 ```bash
 $ cp ./config.js.tmpl ./config.js
 ```
 
-The database is configured in `config/config.json`. Create it by copying the
-`config/config.tmpl.json` file as such:
+Replace all values with ones that fit your application. Pay extra attention to
+the `db` configuration, which control how your database is set up. It has
+three environments defined: `development`, `test` and `production`. To get
+everything bootstrapped, just focus on `development` for now:
 
-```bash
-$ cp ./config/config.json.tmpl ./config/config.json
-```
-
-Then, change the values of the individual environments (`development`, `test`
-and `production`). To get everything bootstrapped, just focus on `development`
-for now.
-
-```json
+```javascript
 {
-   "development": {
-    "username": "<username>",
-    "password": "<password>",
-    "database": "<database>",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
-    "force" : false
+   'development': {
+    'username': '<username>',
+    'password': '<password>',
+    'database': '<database>',
+    'host': '127.0.0.1',
+    'dialect': 'postgres',
+    'force' : false
   }
 }
 ```
@@ -109,15 +102,18 @@ We have made an opiniated decision about which database dialect to use. We will
 therefore focus on the setup of PostgreSQL, but the steps required for other
 databases would be similar.
 
-So, you need to set up PostgreSQL. Taking for granted that PostgreSQL's binaries
-exist on your `$PATH`, you need to execute the following commands to get everything
-bootstrapped for the `development` environment (as defined in `config/config.json`).
+Taking for granted that PostgreSQL's binaries exist on your `$PATH`, you need to
+execute the following commands to get everything bootstrapped for the
+`development` environment (as defined in `config/config.json`).
 
 ```bash
 createuser <username>
 createdb --owner=<username> <database>
 psql --dbname=<database> --command="CREATE USER <username> WITH PASSWORD '<password>';"
 ```
+
+To set up the database for other environments, just repeat the steps above
+for each one.
 
 ## Running the app
 

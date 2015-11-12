@@ -2,6 +2,8 @@
 
 //dependencies
 var config = require('./config'),
+    env = process.env.NODE_ENV || 'development',
+    dbConfig = config.db[env],
     express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
@@ -15,7 +17,7 @@ var config = require('./config'),
     SequelizeStore = require('connect-session-sequelize')(session.Store),
     sequelizeStore = new SequelizeStore({ db: models.sequelize });
 
-sequelizeStore.sync({ force: config.force });
+sequelizeStore.sync({ force: dbConfig.force });
 
 //create express app
 var app = express();
