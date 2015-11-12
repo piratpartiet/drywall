@@ -105,44 +105,44 @@ exports.login = function(req, res) {
     });
 
     workflow.on('attemptLogin', function() {
-        console.log('Workflow.Login:AttemptLogin');
+        console.log('login.workflow.attemptLogin');
 
         req._passport.instance.authenticate('local', function(err, user, info) {
-            console.log('Passport.Authenticate');
+            console.log('login.workflow.attemptLogin.passport.authenticate');
 
             if (err) {
                 return workflow.emit('exception', err);
             }
 
-            if (!user) {
-                console.log('Passport.Authenticate:User not found');
+            if (user) {
+              console.log('login.workflow.attemptLogin.passport.authenticate: User found:', user.dataValues);
 
-                var fieldsToSet = {
-                    ip: req.ip,
-                    user: req.body.username
-                };
-                req.app.db.LoginAttempt.create(fieldsToSet)
-                    .then(function(doc) {
-                        workflow.outcome.errors.push('Username and password combination not found or your account is inactive.');
-                        return workflow.emit('response');
-                    })
-                    .catch(function(err) {
-                        console.log('Exception', err);
-                        return workflow.emit('exception', err);
-                    });
+              req.login(user, function(err) {
+                  if (err) {
+                      console.log('login.workflow.attemptLogin.passport.authenticate:', err);
+                      return workflow.emit('exception', err);
+                  }
+
+                  console.log('login.workflow.attemptLogin.passport.authenticate: Logging in:', user.dataValues.email);
+
+                  return workflow.emit('response');
+              });
             } else {
-                console.log('Passport.Authenticate:User found', user.dataValues);
+              console.log('login.workflow.attemptLogin.passport.authenticate: User not found');
 
-                req.login(user, function(err) {
-                    if (err) {
-                        console.log('Passport.Authenticate:Exception', err);
-                        return workflow.emit('exception', err);
-                    }
-
-                    console.log('Passport.Authenticate:Logging in', user.dataValues.email);
-
-                    workflow.emit('response');
-                });
+              var fieldsToSet = {
+                  ip: req.ip,
+                  user: req.body.username
+              };
+              req.app.db.LoginAttempt.create(fieldsToSet)
+                  .then(function(doc) {
+                      workflow.outcome.errors.push('Username and password combination not found or your account is inactive.');
+                      return workflow.emit('response');
+                  })
+                  .catch(function(err) {
+                      console.log('Exception', err);
+                      return workflow.emit('exception', err);
+                  });
             }
         })(req, res);
     });
