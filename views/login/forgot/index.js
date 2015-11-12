@@ -29,7 +29,8 @@ exports.send = function(req, res, next){
       }
 
       var token = buf.toString('hex');
-      req.app.db.models.User.encryptPassword(token, function(err, hash) {
+
+      req.app.db.User.encryptPassword(token, function(err, hash) {
         if (err) {
           return next(err);
         }
@@ -40,21 +41,24 @@ exports.send = function(req, res, next){
   });
 
   workflow.on('patchUser', function(token, hash) {
-    var conditions = { where : { email: req.body.email.toLowerCase() } };
-    var fieldsToSet = {
-      resetPasswordToken: hash,
-      resetPasswordExpires: Date.now() + 10000000
-    };
-    req.app.db.models.User.findOneAndUpdate(conditions, fieldsToSet, function(err, user) {
-      if (err) {
-        return workflow.emit('exception', err);
-      }
+    var email = req.body.email.toLowerCase();
 
-      if (!user) {
-        return workflow.emit('response');
-      }
+    console.log('Workflow.PatchUser:', token, hash, email);
 
-      workflow.emit('sendEmail', token, user);
+    req.app.db.User
+      .findOne({ where : { email: email } })
+      .then(function(user) {
+        if (user) {
+          user.resetPasswordToken = hash;
+          user.resetPasswordExpires = Date.now() + 10000000;
+          user.save().then(function() {
+            workflow.emit('sendEmail', token, user);
+          });
+        }
+
+      return workflow.emit('response');
+    }, function(err) {
+      return workflow.emit('exception', err);
     });
   });
 
