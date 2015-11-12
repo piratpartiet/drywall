@@ -7,9 +7,9 @@ function ensureAuthenticated(req, res, next) {
   res.set('X-Auth-Required', 'true');
 
   if (req.session) {
-      console.error('No Session');
-      console.log('No Session!')
       req.session.returnUrl = req.originalUrl;
+  } else {
+    console.log('routes.ensureAuthenticated: No session!')
   }
 
   res.redirect('/login/');
