@@ -76,16 +76,14 @@ exports.set = function(req, res) {
         return workflow.emit('exception', err);
       }
 
-      req.app.db.User.findById(user._id).then(function(user) {
-        if (user) {
-          user.password = hash;
-          user.resetPasswordToken = '';
-          user.save().then(function() {
+      user.password = hash;
+      user.resetPasswordToken = '';
 
-          });
-        }
-      }, function(err) {
-        return workflow.emit('exception', err);
+      user.save().then(function() {
+        console.log('login.reset.workflow.patchUser.save: Success!');
+      }).catch(function(err) {
+        console.log('login.reset.workflow.patchUser.save: Fail!');
+        workflow.emit('exception', err);
       });
 
       workflow.emit('response');
