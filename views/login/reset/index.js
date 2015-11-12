@@ -1,6 +1,6 @@
 'use strict';
 
-exports.init = function(req, res){
+exports.init = function(req, res) {
   if (req.isAuthenticated()) {
     res.redirect(req.user.defaultReturnUrl());
   }
@@ -9,7 +9,7 @@ exports.init = function(req, res){
   }
 };
 
-exports.set = function(req, res){
+exports.set = function(req, res) {
   var workflow = req.app.utility.workflow(req, res);
 
   workflow.on('validate', function() {
@@ -33,23 +33,25 @@ exports.set = function(req, res){
   });
 
   workflow.on('findUser', function() {
+    var expires = new Date();
+    var email = req.params.email;
+
+    console.log('workflow.findUser:', email, expires);
+
     var conditions = {
         where : {
-          email: req.params.email,
-          resetPasswordExpires: { $gt: Date.now() }
+          email: email,
+          resetPasswordExpires: { gt: expires }
         }
     };
-    req.app.db.models.User.findOne(conditions, function(err, user) {
-      if (err) {
-        return workflow.emit('exception', err);
-      }
 
+    req.app.db.User.findOne(conditions).then(function(user) {
       if (!user) {
         workflow.outcome.errors.push('Invalid request.');
         return workflow.emit('response');
       }
 
-      req.app.db.models.User.validatePassword(req.params.token, user.resetPasswordToken, function(err, isValid) {
+      req.app.db.User.validatePassword(req.params.token, user.resetPasswordToken, function(err, isValid) {
         if (err) {
           return workflow.emit('exception', err);
         }
@@ -61,23 +63,32 @@ exports.set = function(req, res){
 
         workflow.emit('patchUser', user);
       });
+    }, function (err) {
+        return workflow.emit('exception', err);
     });
   });
 
   workflow.on('patchUser', function(user) {
-    req.app.db.models.User.encryptPassword(req.body.password, function(err, hash) {
+    console.log('workflow.patchUser:', user.dataValues.email);
+
+    req.app.db.User.encryptPassword(req.body.password, function(err, hash) {
       if (err) {
         return workflow.emit('exception', err);
       }
 
-      var fieldsToSet = { password: hash, resetPasswordToken: '' };
-      req.app.db.models.User.findByIdAndUpdate(user._id, fieldsToSet, function(err, user) {
-        if (err) {
-          return workflow.emit('exception', err);
-        }
+      req.app.db.User.findById(user._id).then(function(user) {
+        if (user) {
+          user.password = hash;
+          user.resetPasswordToken = '';
+          user.save().then(function() {
 
-        workflow.emit('response');
+          });
+        }
+      }, function(err) {
+        return workflow.emit('exception', err);
       });
+
+      workflow.emit('response');
     });
   });
 
