@@ -36,7 +36,7 @@ exports.set = function(req, res) {
     var expires = new Date();
     var email = req.params.email;
 
-    console.log('workflow.findUser:', email, expires);
+    console.log('login.reset.workflow.findUser:', email, expires);
 
     var conditions = {
         where : {
@@ -53,23 +53,26 @@ exports.set = function(req, res) {
 
       req.app.db.User.validatePassword(req.params.token, user.resetPasswordToken, function(err, isValid) {
         if (err) {
+          console.error('login.reset.workflow.findUser.validatePassword:', err);
           return workflow.emit('exception', err);
         }
 
         if (!isValid) {
+          console.error('login.reset.workflow.findUser.validatePassword: Invalid token');
           workflow.outcome.errors.push('Invalid request.');
           return workflow.emit('response');
         }
 
         workflow.emit('patchUser', user);
       });
-    }, function (err) {
-        return workflow.emit('exception', err);
+    }).catch(function (err) {
+      console.error('login.reset.workflow.findUser.findOne:', email, err);
+      return workflow.emit('exception', err);
     });
   });
 
   workflow.on('patchUser', function(user) {
-    console.log('workflow.patchUser:', user.dataValues.email);
+    console.log('login.reset.workflow.patchUser:', user.dataValues.email);
 
     req.app.db.User.encryptPassword(req.body.password, function(err, hash) {
       if (err) {
