@@ -74,15 +74,12 @@ exports.send = function(req, res, next){
         resetLink: req.protocol +'://'+ req.headers.host +'/login/reset/'+ user.email +'/'+ token +'/',
         projectName: req.app.config.projectName
       },
-      success: function(message) {
-        workflow.emit('response');
-      },
+      success: function(message) {},
       error: function(err) {
         workflow.outcome.errors.push('Error Sending: '+ err);
-        workflow.emit('response');
       }
     });
   });
 
-  workflow.emit('validate');
+  workflow.emit('response');
 };
