@@ -51,7 +51,7 @@
         success: function(model, response) {
           if (response.success) {
             console.log(model, response);
-            // location.href = '/login/';
+            location.href = '/account/';
           }
           else {
             model.set(response);
