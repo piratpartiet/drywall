@@ -4,7 +4,7 @@ var renderSettings = function(req, res, next, oauthMessage) {
     var outcome = {};
 
     var getAccountData = function(callback) {
-        req.app.db.Account
+        req.app.db.account
             .findOne({ where: { 'UserId': req.user.id }})
             .then(function(account) {
                 if (account) {
@@ -21,7 +21,7 @@ var renderSettings = function(req, res, next, oauthMessage) {
     };
 
     var getUserData = function(callback) {
-        req.app.db.User.findById(req.user.id)
+        req.app.db.user.findById(req.user.id)
             .then(function(user) {
                 outcome.user = user;
                 return callback(null, 'done');
@@ -339,7 +339,7 @@ exports.update = function(req, res, next) {
             zip: req.body.zip
         };
 
-        req.app.db.Account
+        req.app.db.account
             .findOne({ where: { 'UserId': req.user.id }})
             .then(function(account) {
                 account.updateAttributes(fieldsToSet)

@@ -17,7 +17,7 @@ exports.find = function(req, res, next) {
     }
 
     // ignore filters, pivot, etc
-    req.app.db.Status.findAll().then(function(results) {
+    req.app.db.status.findAll().then(function(results) {
             if (req.xhr) {
                 res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
                 results.filters = req.query;

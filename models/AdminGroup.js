@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('AdminGroup', {
+    return sequelize.define('admin_group', {
         name: {
             type: DataTypes.STRING
         },

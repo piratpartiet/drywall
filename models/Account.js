@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Account', {
+    return sequelize.define('account', {
         isVerified: {
             type: DataTypes.STRING
         },

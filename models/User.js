@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('User', {
+    return sequelize.define('user', {
         username: {
             type: DataTypes.STRING,
             unique: true,

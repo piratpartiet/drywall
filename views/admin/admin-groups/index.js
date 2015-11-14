@@ -11,7 +11,7 @@ exports.find = function(req, res, next){
     filters.name = new RegExp('^.*?'+ req.query.name +'.*$', 'i');
   }
 
-  req.app.db.AdminGroup.findAll()
+  req.app.db.admin_group.findAll()
       .then(function(results) {
           if (req.xhr) {
               res.header('Cache-Control', 'no-cache, no-store, must-revalidate');

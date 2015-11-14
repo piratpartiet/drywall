@@ -15,7 +15,7 @@ exports.find = function(req, res, next) {
         filters.name = new RegExp('^.*?' + req.query.name + '.*$', 'i');
     }
     // TODO: add filtering, offset, limit , etc
-    req.app.db.Category.findAll().then(function(results) {
+    req.app.db.category.findAll().then(function(results) {
             if (req.xhr) {
                 res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
                 results.filters = req.query;

@@ -4,7 +4,7 @@ exports.find = function(req, res, next) {
     var outcome = {};
 
     var getStatusOptions = function(callback) {
-        req.app.db.Status.findAll().then(function(statuses) {
+        req.app.db.status.findAll().then(function(statuses) {
                 outcome.statuses = statuses;
                 return callback(null, 'done');
             })
@@ -29,7 +29,7 @@ exports.find = function(req, res, next) {
             filters['status.id'] = req.query.status;
         }
 
-        req.app.db.Account.findAll().then(function(results) {
+        req.app.db.account.findAll().then(function(results) {
                 outcome.results = results;
                 return callback(null, 'done');
             })

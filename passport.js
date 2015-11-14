@@ -23,7 +23,7 @@ exports = module.exports = function(app, passport) {
             conditions.where.email = username.toLowerCase();
         }
 
-        app.db.User.findOne(conditions).then(function(user) {
+        app.db.user.findOne(conditions).then(function(user) {
             var dataValues = user ? user.dataValues : null;
             console.log('Passport.LocalStrategy:FindOne:', conditions, dataValues);
 
@@ -33,7 +33,7 @@ exports = module.exports = function(app, passport) {
                 });
             }
 
-            app.db.User.validatePassword(password, user.password, function(err, isValid) {
+            app.db.user.validatePassword(password, user.password, function(err, isValid) {
                 console.log('Passport.LocalStrategy:ValidatePassword');
 
                 if (err) {
@@ -141,7 +141,7 @@ exports = module.exports = function(app, passport) {
     passport.deserializeUser(function(id, done) {
         console.log('Passport.DeserializeUser:', id, done);
 
-        app.db.User
+        app.db.user
             .findOne({ where: { id: id }})
             .then(function(user) {
                 done(null, user);
