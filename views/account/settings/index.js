@@ -21,7 +21,7 @@ var renderSettings = function(req, res, next, oauthMessage) {
     };
 
     var getUserData = function(callback) {
-        req.app.db.user.findById(req.user.id)
+        req.app.db.login.findById(req.user.id)
             .then(function(user) {
                 outcome.user = user;
                 return callback(null, 'done');

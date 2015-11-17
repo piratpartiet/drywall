@@ -31,10 +31,10 @@ var options = { force: dbConfig.force }
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.user.sync(options).then(function() {
+db.login.sync(options).then(function() {
 
-    db.message.belongsTo(db.user);
-    db.account.belongsTo(db.user);
+    db.message.belongsTo(db.login);
+    db.account.belongsTo(db.login);
 
     db.account.sync(options);
     db.message.sync(options);

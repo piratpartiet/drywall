@@ -30,7 +30,7 @@ exports.send = function(req, res, next){
 
       var token = buf.toString('hex');
 
-      req.app.db.user.encryptPassword(token, function(err, hash) {
+      req.app.db.login.encryptPassword(token, function(err, hash) {
         if (err) {
           return next(err);
         }
@@ -45,7 +45,7 @@ exports.send = function(req, res, next){
 
     console.log('Workflow.PatchUser:', token, hash, email);
 
-    req.app.db.user
+    req.app.db.login
       .findOne({ where : { email: email } })
       .then(function(user) {
         if (user) {

@@ -45,13 +45,13 @@ exports.set = function(req, res) {
         }
     };
 
-    req.app.db.user.findOne(conditions).then(function(user) {
+    req.app.db.login.findOne(conditions).then(function(user) {
       if (!user) {
         workflow.outcome.errors.push('Invalid request.');
         return workflow.emit('response');
       }
 
-      req.app.db.user.validatePassword(req.params.token, user.resetPasswordToken, function(err, isValid) {
+      req.app.db.login.validatePassword(req.params.token, user.resetPasswordToken, function(err, isValid) {
         if (err) {
           console.error('login.reset.workflow.findUser.validatePassword:', err);
           return workflow.emit('exception', err);
@@ -74,7 +74,7 @@ exports.set = function(req, res) {
   workflow.on('patchUser', function(user) {
     console.log('login.reset.workflow.patchUser:', user.dataValues.email);
 
-    req.app.db.user.encryptPassword(req.body.password, function(err, hash) {
+    req.app.db.login.encryptPassword(req.body.password, function(err, hash) {
       if (err) {
         return workflow.emit('exception', err);
       }
