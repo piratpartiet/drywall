@@ -1,10 +1,5 @@
-/* Specs for the index.js route, the main route of the application.
- * This app is currently using supertest, a module for express
- * "unit" testing. I put "unit" in quotes because at this point,
- * supertest walks and quacks like an integration test than a unit
- * test. That being said, having integration automated tests serves
- * us better than having no automated tests at all.
- *
+/*
+ * Specs for the index.js route, the main route of the application.
  */
 var request = require('supertest'),
     express = require('express'),
@@ -14,7 +9,7 @@ var request = require('supertest'),
     expect = chai.expect,
     server = require('../app.js');
 
-describe('GET /', function() {
+describe('/', function() {
   // Create a fresh server instance prior to each test
   beforeEach(function() {
     this.app = server.setup(express());
