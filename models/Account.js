@@ -14,15 +14,36 @@ module.exports = function(sequelize, DataTypes) {
         last_name: {
             type: DataTypes.STRING
         },
-        : {
+        email: {
             type: DataTypes.STRING
         },
-        phone: {
+        address: {
             type: DataTypes.STRING
         },
         zip: {
-            type: DataTypes.STRING
+            type: DataTypes.INT
         }
+        phone: {
+            type: DataTypes.STRING
+        },
+	year_birth: {
+	    type: DataTypes.INT
+	},
+	date_birth: {
+	    type: DataTypes.STRING
+	},
+	electable: {
+	    type: DataTypes.INT
+	},
+	mailable: {
+	    type: DataTypes.INT
+	},
+	member_since: {
+	    type: DataTypes.TIMESTAMP
+	},
+	last_paid_subscription: {
+	    type: DataTypes.DATE
+	}
     }, {
         freezeTableName: true
     });
