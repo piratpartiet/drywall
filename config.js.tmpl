@@ -1,6 +1,6 @@
 'use strict';
 
-exports.port = process.env.PORT || 3000;
+exports.port = process.env.PORT || (process.env.NODE_ENV == 'test' ? 3001 : 3000);
 exports.companyName = 'Acme, Inc.';
 exports.projectName = 'Drywall';
 exports.systemEmail = 'your@email.addy';
@@ -62,10 +62,17 @@ exports.db = {
   test: {
     username: '<username>',
     password: '<password>',
-    database: '<database>',
+    // We recommend using another database for the tests,
+    // since it can then be reset (forced) on every run
+    // of the tests
+    database: '<test-database>',
     host: '127.0.0.1',
     dialect: 'postgres',
-    force: false
+    // Just turn logging on if a test fails and you believe
+    // it's related to the database.
+    logging: false,
+    // Reset the test database on every run of the tests.
+    force: true
   },
   production: {
     username: '<username>',
