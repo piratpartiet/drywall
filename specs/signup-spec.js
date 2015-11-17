@@ -16,16 +16,22 @@ describe('/signup/', function() {
     this.request = request(app);
   });
 
+  var cookie = null;
+  var csrfToken = null;
+
   it('responds with the signup form', function(done) {
     this.request
       .get('/signup/')
       .set('Accept', 'text/html')
       .expect(200)
+      .expect('Set-Cookie')
       .end(function(err, res) {
+        cookie = res.headers['set-cookie'];
+        csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
         expect(res.text).to.contain('Sign Up');
         done();
       });
-    });
+  });
 
   it('is possible sign up', function(done) {
     this.request
@@ -34,11 +40,12 @@ describe('/signup/', function() {
         email: 'chuck-norris@example.com',
         password: 'ChuckNorrisWasHere!'
       })
-      .set('Accept', 'text/html')
+      .set('Accept', 'application/json')
+      .set('Cookie', cookie)
+      .set('X-Csrf-Token', csrfToken)
       .expect(200)
       .end(function(err, res) {
-        // expect(res.address).to.match(/\/account\/$/);
-        expect(res.text).to.contain('My Account');
+        expect(res.text).to.contain('"success":true');
         done();
       });
   });
