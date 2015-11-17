@@ -27,7 +27,7 @@ exports.find = function(req, res, next) {
         };
     }
 
-    req.app.db.login.findAll()
+    req.app.db.user.findAll()
         .then(function(results) {
             if (req.xhr) {
                 res.header("Cache-Control", "no-cache, no-store, must-revalidate");
