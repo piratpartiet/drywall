@@ -35,7 +35,8 @@ describe('/signup/', function() {
 
   it('is possible sign up', function(done) {
     this.request
-      .post('/signup/', {
+      .post('/signup/')
+      .send({
         username : 'chuck-norris',
         email: 'chuck-norris@example.com',
         password: 'ChuckNorrisWasHere!'
