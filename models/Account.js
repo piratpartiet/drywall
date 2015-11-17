@@ -5,10 +5,16 @@ module.exports = function(sequelize, DataTypes) {
         isVerified: {
             type: DataTypes.STRING
         },
-        name: {
-            type: DataTypes.JSON
+        member_number: {
+            type: DataTypes.INT
         },
-        company: {
+        first_name: {
+            type: DataTypes.STRING
+        },
+        last_name: {
+            type: DataTypes.STRING
+        },
+        : {
             type: DataTypes.STRING
         },
         phone: {
