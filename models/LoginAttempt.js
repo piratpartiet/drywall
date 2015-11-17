@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         time: {
-            type: DataTypes.TIMESTAMP,
+            type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         }
     }, {

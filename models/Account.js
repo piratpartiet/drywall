@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         member_number: {
-            type: DataTypes.INT
+            type: DataTypes.INTEGER
         },
         first_name: {
             type: DataTypes.STRING
@@ -21,25 +21,25 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         zip: {
-            type: DataTypes.INT
-        }
+            type: DataTypes.INTEGER
+        },
         phone: {
             type: DataTypes.STRING
         },
 	year_birth: {
-	    type: DataTypes.INT
+	    type: DataTypes.INTEGER
 	},
 	date_birth: {
 	    type: DataTypes.STRING
 	},
 	electable: {
-	    type: DataTypes.INT
+	    type: DataTypes.INTEGER
 	},
 	mailable: {
-	    type: DataTypes.INT
+	    type: DataTypes.INTEGER
 	},
 	member_since: {
-	    type: DataTypes.TIMESTAMP
+	    type: DataTypes.DATE
 	},
 	last_paid_subscription: {
 	    type: DataTypes.DATE
