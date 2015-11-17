@@ -34,6 +34,8 @@ describe('/signup/', function() {
   });
 
   it('is possible sign up', function(done) {
+    this.timeout = 5000;
+    
     this.request
       .post('/signup/')
       .send({
