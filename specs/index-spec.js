@@ -8,7 +8,7 @@
  */
 var request = require('supertest'),
     express = require('express'),
-    db = require('./../models', {logging:console.log}),
+    db = require('./../models'),
     chai = require('chai'),
     chaiAsPromised = require('chai-as-promised'),
     expect = chai.expect,
