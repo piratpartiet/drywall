@@ -16,3 +16,9 @@ addons:
     - g++-4.8
 before_script:
   - cp config.js.tmpl config.js
+  - sed -i -e 's/<username>/drywall/g' config.js
+  - sed -i -e 's/<password>/k3yb0ardc4t/g' config.js
+  - sed -i -e 's/<test-database>/drywall/g' config.js
+  - createuser drywall
+  - createdb --owner=drywall drywall
+  - psql --dbname=drywall --command="CREATE USER drywall WITH PASSWORD 'k3yb0ardc4t';"
