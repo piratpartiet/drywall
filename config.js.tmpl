@@ -1,6 +1,11 @@
 'use strict';
 
 exports.port = process.env.PORT || (process.env.NODE_ENV == 'test' ? 3001 : 3000);
+exports.logging = {
+  // Set this to true if you want extensive logging.
+  debug: false,
+  error: true
+};
 exports.companyName = 'Acme, Inc.';
 exports.projectName = 'Drywall';
 exports.systemEmail = 'your@email.addy';
@@ -53,10 +58,10 @@ exports.db = {
     database: '<database>',
     host: '127.0.0.1',
     dialect: 'postgres',
-    // Logging to console.log. See the 'Options' section of
+    // Logging to app.utility.debug(log. See the 'Options' section of
     // http://docs.sequelizejs.com/en/1.7.0/docs/usage/ for
     // more information.
-    logging: console.log,
+    logging: app.utility.debug(log,
     force: false
   },
   test: {

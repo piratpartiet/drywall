@@ -36,7 +36,7 @@ exports.set = function(req, res) {
     var expires = new Date();
     var email = req.params.email;
 
-    console.log('login.reset.workflow.findUser:', email, expires);
+    req.app.utility.debug('login.reset.workflow.findUser:', email, expires);
 
     var conditions = {
         where : {
@@ -53,12 +53,12 @@ exports.set = function(req, res) {
 
       req.app.db.User.validatePassword(req.params.token, user.resetPasswordToken, function(err, isValid) {
         if (err) {
-          console.error('login.reset.workflow.findUser.validatePassword:', err);
+          req.app.utility.error('login.reset.workflow.findUser.validatePassword:', err);
           return workflow.emit('exception', err);
         }
 
         if (!isValid) {
-          console.error('login.reset.workflow.findUser.validatePassword: Invalid token');
+          req.app.utility.error('login.reset.workflow.findUser.validatePassword: Invalid token');
           workflow.outcome.errors.push('Invalid request.');
           return workflow.emit('response');
         }
@@ -66,13 +66,13 @@ exports.set = function(req, res) {
         workflow.emit('patchUser', user);
       });
     }).catch(function (err) {
-      console.error('login.reset.workflow.findUser.findOne:', email, err);
+      req.app.utility.error('login.reset.workflow.findUser.findOne:', email, err);
       return workflow.emit('exception', err);
     });
   });
 
   workflow.on('patchUser', function(user) {
-    console.log('login.reset.workflow.patchUser:', user.dataValues.email);
+    req.app.utility.debug('login.reset.workflow.patchUser:', user.dataValues.email);
 
     req.app.db.User.encryptPassword(req.body.password, function(err, hash) {
       if (err) {
@@ -83,9 +83,9 @@ exports.set = function(req, res) {
       user.resetPasswordToken = '';
 
       user.save().then(function() {
-        console.log('login.reset.workflow.patchUser.save: Success!');
+        req.app.utility.debug('login.reset.workflow.patchUser.save: Success!');
       }).catch(function(err) {
-        console.log('login.reset.workflow.patchUser.save: Fail!');
+        req.app.utility.debug('login.reset.workflow.patchUser.save: Fail!');
         workflow.emit('exception', err);
       });
 

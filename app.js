@@ -18,8 +18,6 @@ var config = require('./config'),
     sequelizeStore = new SequelizeStore({ db: models.sequelize });
 
 exports.setup = function(app) {
-  sequelizeStore.sync({ force: dbConfig.force });
-
   //keep reference to config
   app.config = config;
 
@@ -84,10 +82,27 @@ exports.setup = function(app) {
 
   //setup utilities
   app.utility = {
-      sendmail: require('./util/sendmail'),
-      slugify: require('./util/slugify'),
-      workflow: require('./util/workflow')
+    sendmail: require('./util/sendmail'),
+    slugify: require('./util/slugify'),
+    workflow: require('./util/workflow'),
+    debug: function() {
+      if (!config.logging.debug) {
+        return;
+      }
+
+      console.debug.apply(this, arguments);
+    },
+    error: function() {
+      if (!config.logging.error) {
+        return;
+      }
+
+      console.error.apply(this, arguments);
+    }
   };
+
+  dbConfig.logging = dbConfig.logging ? app.utility.debug : false;
+  sequelizeStore.sync(dbConfig);
 
   return app;
 };
@@ -98,5 +113,5 @@ exports.app = this.setup(express());
 // listen up
 exports.app.server.listen(exports.app.config.port, function() {
   //and... we're live
-  console.log('Server is running on port ' + config.port);
+  exports.app.utility.debug('Server is running on port ' + config.port);
 });

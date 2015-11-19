@@ -10,7 +10,7 @@ var renderSettings = function(req, res, next, oauthMessage) {
                 if (account) {
                     outcome.account = account;
                 } else {
-                    console.log('Account is null');
+                    req.app.utility.debug('Account is null');
                     throw new Error('Account is null');
                 }
                 callback(null, 'done');

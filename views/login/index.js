@@ -25,12 +25,12 @@ exports.init = function(req, res) {
 };
 
 exports.login = function(req, res) {
-    console.log('Login');
+    req.app.utility.debug('Login');
 
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
-        console.log('Workflow.Login:Validate');
+        req.app.utility.debug('Workflow.Login:Validate');
 
         if (!req.body.username) {
             workflow.outcome.errfor.username = 'required';
@@ -48,7 +48,7 @@ exports.login = function(req, res) {
     });
 
     workflow.on('abuseFilter', function() {
-        console.log('Workflow.Login:AbuseFilter');
+        req.app.utility.debug('Workflow.Login:AbuseFilter');
 
         var getIpCount = function(done) {
             var conditions = {
@@ -59,7 +59,7 @@ exports.login = function(req, res) {
 
             req.app.db.LoginAttempt.count(conditions)
                 .then(function(count) {
-                    console.log('Count ', count);
+                    req.app.utility.debug('Count ', count);
                     done(null, count);
                 })
                 .catch(function(err) {
@@ -76,7 +76,7 @@ exports.login = function(req, res) {
             };
             req.app.db.LoginAttempt.count(conditions)
                 .then(function(count) {
-                    console.log('Count ', count);
+                    req.app.utility.debug('Count ', count);
                     done(null, count);
                 })
                 .catch(function(err) {
@@ -105,30 +105,30 @@ exports.login = function(req, res) {
     });
 
     workflow.on('attemptLogin', function() {
-        console.log('login.workflow.attemptLogin');
+        req.app.utility.debug('login.workflow.attemptLogin');
 
         req._passport.instance.authenticate('local', function(err, user, info) {
-            console.log('login.workflow.attemptLogin.passport.authenticate');
+            req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate');
 
             if (err) {
                 return workflow.emit('exception', err);
             }
 
             if (user) {
-              console.log('login.workflow.attemptLogin.passport.authenticate: User found:', user.dataValues);
+              req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate: User found:', user.dataValues);
 
               req.login(user, function(err) {
                   if (err) {
-                      console.log('login.workflow.attemptLogin.passport.authenticate:', err);
+                      req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate:', err);
                       return workflow.emit('exception', err);
                   }
 
-                  console.log('login.workflow.attemptLogin.passport.authenticate: Logging in:', user.dataValues.email);
+                  req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate: Logging in:', user.dataValues.email);
 
                   return workflow.emit('response');
               });
             } else {
-              console.log('login.workflow.attemptLogin.passport.authenticate: User not found');
+              req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate: User not found');
 
               var fieldsToSet = {
                   ip: req.ip,
@@ -140,7 +140,7 @@ exports.login = function(req, res) {
                       return workflow.emit('response');
                   })
                   .catch(function(err) {
-                      console.log('Exception', err);
+                      req.app.utility.debug('Exception', err);
                       return workflow.emit('exception', err);
                   });
             }
