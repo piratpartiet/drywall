@@ -23,3 +23,5 @@ before_script:
   - psql --command="drop role if exists drywall;"
   - psql --command="create user drywall with password 'k3yb0ardc4t';"
   - createdb --owner=drywall drywall
+notifications:
+  irc: "irc.piratpartiet.no#pirtech.no"
