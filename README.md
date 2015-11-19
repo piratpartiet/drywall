@@ -111,9 +111,8 @@ execute the following commands to get everything bootstrapped for the
 `development` environment (as defined in `config/config.json`).
 
 ```bash
-createuser <username>
+psql --command="create user <username> with password '<password>';"
 createdb --owner=<username> <database>
-psql --dbname=<database> --command="CREATE USER <username> WITH PASSWORD '<password>';"
 ```
 
 To set up the database for other environments, just repeat the steps above
