@@ -14,9 +14,6 @@ module.exports = function(sequelize, DataTypes) {
         last_name: {
             type: DataTypes.STRING
         },
-        email: {
-            type: DataTypes.STRING
-        },
         address: {
             type: DataTypes.STRING
         },
@@ -30,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
 	    type: DataTypes.INTEGER
 	},
 	date_birth: {
-	    type: DataTypes.STRING
+	    type: DataTypes.DATEONLY
 	},
 	electable: {
 	    type: DataTypes.INTEGER
