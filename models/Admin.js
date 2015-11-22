@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('admin', {
+    return sequelize.define('Admin', {
         name: {
             type: DataTypes.JSON
         },

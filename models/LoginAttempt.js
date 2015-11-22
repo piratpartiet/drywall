@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('login_attempt', {
+    return sequelize.define('LoginAttempt', {
         ip: {
             type: DataTypes.STRING
         },

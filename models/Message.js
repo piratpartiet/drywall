@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('message', {
+    return sequelize.define('Message', {
         name: {
             type: DataTypes.STRING,
             allowNull: true,

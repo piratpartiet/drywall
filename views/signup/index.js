@@ -119,7 +119,7 @@ exports.signup = function(req, res) {
             'name.full': workflow.user.username,
         };
 
-        req.app.db.account.create(fieldsToSet)
+        req.app.db.Account.create(fieldsToSet)
             .then(function(account) {
                 return account.setUser(workflow.user);
             }).then(function(account) {
@@ -449,7 +449,7 @@ exports.signupSocial = function(req, res) {
                 nameParts[1] || ''
             ]
         };
-        req.app.db.account.create(fieldsToSet, function(err, account) {
+        req.app.db.Account.create(fieldsToSet, function(err, account) {
             if (err) {
                 return workflow.emit('exception', err);
             }

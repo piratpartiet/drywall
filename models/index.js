@@ -33,21 +33,20 @@ db.Sequelize = Sequelize;
 
 db.User.sync(options).then(function() {
 
-    db.message.belongsTo(db.User);
-    db.account.belongsTo(db.User);
+    db.Message.belongsTo(db.User);
+    db.Account.belongsTo(db.User);
 
-    db.account.sync(options);
-    db.message.sync(options);
+    db.Account.sync(options);
+    db.Message.sync(options);
 
-    db.admin.sync(options);
-    db.admin_group.sync(options);
-    db.category.sync(options);
-    db.login_attempt.sync(options);
-    db.note.sync(options);
-    db.status.sync(options);
-    db.status_log.sync(options);
+    db.Admin.sync(options);
+    db.AdminGroup.sync(options);
+    db.Category.sync(options);
+    db.LoginAttempt.sync(options);
+    db.Note.sync(options);
+    db.Status.sync(options);
+    db.StatusLog.sync(options);
 
 });
 
 module.exports = db;
-

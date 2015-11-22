@@ -57,7 +57,7 @@ exports.login = function(req, res) {
                 }
             };
 
-            req.app.db.login_attempt.count(conditions)
+            req.app.db.LoginAttempt.count(conditions)
                 .then(function(count) {
                     console.log('Count ', count);
                     done(null, count);
@@ -74,7 +74,7 @@ exports.login = function(req, res) {
                     user: req.body.username
                 }
             };
-            req.app.db.login_attempt.count(conditions)
+            req.app.db.LoginAttempt.count(conditions)
                 .then(function(count) {
                     console.log('Count ', count);
                     done(null, count);
@@ -134,7 +134,7 @@ exports.login = function(req, res) {
                   ip: req.ip,
                   user: req.body.username
               };
-              req.app.db.login_attempt.create(fieldsToSet)
+              req.app.db.LoginAttempt.create(fieldsToSet)
                   .then(function(doc) {
                       workflow.outcome.errors.push('Username and password combination not found or your account is inactive.');
                       return workflow.emit('response');
