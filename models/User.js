@@ -21,7 +21,10 @@ module.exports = function(sequelize, DataTypes) {
         google: DataTypes.JSON,
         tumblr: DataTypes.JSON
     }, {
-        freezeTableName: true,
+        freezeTableName: false,
+        underscored: true,
+        timestamps: true,
+        table_name: 'login_user'
         instanceMethods: {
             canPlayRoleOf: function(role) {
                 return true;

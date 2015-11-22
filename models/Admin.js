@@ -7,7 +7,9 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.JSON
         },
     }, {
-        freezeTableName: true,
+        freezeTableName: false,
+        underscored: true,
+        timestamps: true,
         instanceMethods: {
             hasPermissionTo: function(something) {
                 //check group permissions

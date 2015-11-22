@@ -13,7 +13,9 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.NOW
         }
     }, {
-        freezeTableName: true
+        freezeTableName: false,
+        underscored: true,
+        timestamps: true
     });
 };
 

@@ -9,7 +9,9 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING
         }
     }, {
-        freezeTableName: true
+        freezeTableName: false,
+        underscored: true,
+        timestamps: true
     });
 };
 

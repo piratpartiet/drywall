@@ -45,7 +45,9 @@ module.exports = function(sequelize, DataTypes) {
 	    type: DataTypes.DATE
 	}
     }, {
-        freezeTableName: true
+        freezeTableName: false,
+        underscored: true,
+        timestamps: true
     });
 };
 
