@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: false,
         underscored: true,
         timestamps: true,
-        table_name: 'login_user'
+        table_name: 'login_user',
         instanceMethods: {
             canPlayRoleOf: function(role) {
                 return true;
