@@ -35,6 +35,7 @@ db.User.sync(options).then(function() {
 
     db.Message.belongsTo(db.User);
     db.Member.belongsTo(db.User);
+    db.Payment.belongsTo(db.User);
 
     db.Member.sync(options);
     db.Message.sync(options);
