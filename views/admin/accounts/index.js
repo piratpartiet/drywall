@@ -29,7 +29,7 @@ exports.find = function(req, res, next) {
             filters['status.id'] = req.query.status;
         }
 
-        req.app.db.Account.findAll().then(function(results) {
+        req.app.db.Member.findAll().then(function(results) {
                 outcome.results = results;
                 return callback(null, 'done');
             })

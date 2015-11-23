@@ -34,9 +34,9 @@ db.Sequelize = Sequelize;
 db.User.sync(options).then(function() {
 
     db.Message.belongsTo(db.User);
-    db.Account.belongsTo(db.User);
+    db.Member.belongsTo(db.User);
 
-    db.Account.sync(options);
+    db.Member.sync(options);
     db.Message.sync(options);
 
     db.Admin.sync(options);

@@ -4,7 +4,7 @@ var renderSettings = function(req, res, next, oauthMessage) {
     var outcome = {};
 
     var getAccountData = function(callback) {
-        req.app.db.Account
+        req.app.db.Member
             .findOne({ where: { 'UserId': req.user.id }})
             .then(function(account) {
                 if (account) {
@@ -339,7 +339,7 @@ exports.update = function(req, res, next) {
             zip: req.body.zip
         };
 
-        req.app.db.Account
+        req.app.db.Member
             .findOne({ where: { 'UserId': req.user.id }})
             .then(function(account) {
                 account.updateAttributes(fieldsToSet)
