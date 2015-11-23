@@ -16,7 +16,10 @@ module.exports = function(sequelize, DataTypes) {
         },
         currency: DataTypes.STRING,
         purpose: DataTypes.INTEGER,
-        receipient_address: DataTypes.STRING,
+        receipientAddress: {
+            DataTypes.STRING,
+            field: 'receipient_address'
+        },
         txid: DataTypes.STRING 
     }, {
         freezeTableName: false,
