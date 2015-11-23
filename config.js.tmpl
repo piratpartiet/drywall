@@ -58,10 +58,8 @@ exports.db = {
     database: '<database>',
     host: '127.0.0.1',
     dialect: 'postgres',
-    // Logging to app.utility.debug(log. See the 'Options' section of
-    // http://docs.sequelizejs.com/en/1.7.0/docs/usage/ for
-    // more information.
-    logging: app.utility.debug(log,
+    // Logging is turned on.
+    logging: true,
     force: false
   },
   test: {
