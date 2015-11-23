@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
         currency: DataTypes.STRING,
         purpose: DataTypes.INTEGER,
         receipientAddress: {
-            DataTypes.STRING,
+            type: DataTypes.STRING,
             field: 'receipient_address'
         },
         txid: DataTypes.STRING 
