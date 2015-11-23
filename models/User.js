@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
         resetPasswordExpires: {
 	    type: DataTypes.DATE,
 	    field: 'reset_password_expires'
-	}
+	},
         twitter: DataTypes.JSON,
         github: DataTypes.JSON,
         facebook: DataTypes.JSON,
