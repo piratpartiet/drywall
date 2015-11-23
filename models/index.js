@@ -39,6 +39,7 @@ db.User.sync(options).then(function() {
 
     db.Member.sync(options);
     db.Message.sync(options);
+    db.Payment.sync(options);
 
     db.Admin.sync(options);
     db.AdminGroup.sync(options);
