@@ -12,7 +12,8 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         freezeTableName: false,
         underscored: true,
-        timestamps: true
+        timestamps: true,
+        tableName: 'message'
     });
 };
 

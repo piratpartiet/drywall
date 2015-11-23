@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: false,
         underscored: true,
         timestamps: true,
+        tableName: 'admin',
         instanceMethods: {
             hasPermissionTo: function(something) {
                 //check group permissions
