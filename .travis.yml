@@ -28,4 +28,4 @@ notifications:
     channels:
       - "irc.piratpartiet.no#pirtech.no"
     template:
-      - "%{author} pushed %{commit} to %{repository_name} (%{branch}): %{message} %{commit_subject} %{build_url}"
+      - "%{author} pushed %{commit} to %{repository_name} (%{branch}): %{message} <%{build_url}> - %{commit_subject}"
