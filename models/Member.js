@@ -5,14 +5,17 @@ module.exports = function(sequelize, DataTypes) {
         isVerified: {
             type: DataTypes.STRING
         },
-        member_number: {
-            type: DataTypes.INTEGER
+        memberNumber: {
+            type: DataTypes.INTEGER,
+	    field: 'member_number'
         },
-        first_name: {
-            type: DataTypes.STRING
+        firstName: {
+            type: DataTypes.STRING,
+	    field: 'first_name'
         },
-        last_name: {
-            type: DataTypes.STRING
+        lastName: {
+            type: DataTypes.STRING,
+	    field: 'last_name'
         },
         address: {
             type: DataTypes.STRING
@@ -23,11 +26,13 @@ module.exports = function(sequelize, DataTypes) {
         phone: {
             type: DataTypes.STRING
         },
-	year_birth: {
-	    type: DataTypes.INTEGER
+	yearBirth: {
+	    type: DataTypes.INTEGER,
+	    field: 'year_birth'
 	},
-	date_birth: {
-	    type: DataTypes.DATEONLY
+	dateBirth: {
+	    type: DataTypes.DATEONLY,
+	    field: 'date_birth'
 	},
 	electable: {
 	    type: DataTypes.INTEGER
@@ -35,11 +40,9 @@ module.exports = function(sequelize, DataTypes) {
 	mailable: {
 	    type: DataTypes.INTEGER
 	},
-	member_since: {
-	    type: DataTypes.DATE
-	},
-	last_paid_subscription: {
-	    type: DataTypes.DATE
+	memberSince: {
+	    type: DataTypes.DATE,
+	    field: 'member_since'
 	}
     }, {
         freezeTableName: false,

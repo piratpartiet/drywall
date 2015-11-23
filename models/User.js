@@ -12,9 +12,18 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             unique: true
         },
-        isActive: DataTypes.STRING,
-        resetPasswordToken: DataTypes.STRING,
-        resetPasswordExpires: DataTypes.DATE,
+        isActive: {
+	    type: DataTypes.STRING,
+	    field: 'is_active'
+	},
+        resetPasswordToken: {
+	    type: DataTypes.STRING,
+	    field: 'reset_password_token'
+	},
+        resetPasswordExpires: {
+	    type: DataTypes.DATE,
+	    field: 'reset_password_expires'
+	}
         twitter: DataTypes.JSON,
         github: DataTypes.JSON,
         facebook: DataTypes.JSON,
