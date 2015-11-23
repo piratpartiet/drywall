@@ -31,4 +31,3 @@ notifications:
       - "%{repository_name}#%{build_number} (%{branch}) by %{author}. %{message}: %{commit_subject}"
       - "Compare:       %{compare_url}"
       - "Build details: %{build_url}"
-    skip_join: true
