@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Account', {
+    return sequelize.define('Member', {
         isVerified: {
             type: DataTypes.STRING
         },
@@ -44,7 +44,8 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         freezeTableName: false,
         underscored: true,
-        timestamps: true
+        timestamps: true,
+        tablename: 'member'
     });
 };
 
