@@ -26,6 +26,7 @@ before_script:
 notifications:
   irc:
     channels:
-      - "irc.piratpartiet.no#pirtech.no"
+      - "irc.piratpartiet.no#travis2pirno"
+    channel_key: 'pegleg'
     template:
       - "%{author} pushed %{commit} to %{repository_name} (%{branch}): %{message} <%{build_url}> - %{commit_subject}"
