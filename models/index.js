@@ -36,10 +36,12 @@ db.User.sync(options).then(function() {
     db.Message.belongsTo(db.User);
     db.Member.belongsTo(db.User);
     db.Payment.belongsTo(db.User);
+    db.RoleAssignment.belongsTo(db.User);
 
     db.Member.sync(options);
     db.Message.sync(options);
     db.Payment.sync(options);
+    db.RoleAssignment.sync(options);
 
     db.Admin.sync(options);
     db.AdminGroup.sync(options);
