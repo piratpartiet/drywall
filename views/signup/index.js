@@ -15,7 +15,7 @@ exports.init = function(req, res) {
 };
 
 exports.signup = function(req, res) {
-    console.log(req.body);
+    req.app.utility.debug(req.body);
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
@@ -44,13 +44,13 @@ exports.signup = function(req, res) {
 
     workflow.on('duplicateUsernameCheck', function() {
         var username = req.body.username;
-        console.log('Workflow.DuplicateUserNameCheck:', username);
+        req.app.utility.debug('Workflow.DuplicateUserNameCheck:', username);
 
         req.app.db.User
             .findOne({ where: { username: username }})
             .then(function(user) {
                 if (user) {
-                    console.log('Workflow.DuplicateUserNameCheck:', user.dataValues);
+                    req.app.utility.debug('Workflow.DuplicateUserNameCheck:', user.dataValues);
                     workflow.outcome.errfor.username = 'username already taken';
                     return workflow.emit('response');
                 }
@@ -58,14 +58,14 @@ exports.signup = function(req, res) {
                 workflow.emit('duplicateEmailCheck');
             })
             .catch(function(err) {
-                console.log('Workflow.DuplicateUserNameCheck:', err);
+                req.app.utility.debug('Workflow.DuplicateUserNameCheck:', err);
                 return workflow.emit('exception', err);
             });
     });
 
     workflow.on('duplicateEmailCheck', function() {
         var email = req.body.email;
-        console.log('Worflow.DuplicateEmailCheck:', email);
+        req.app.utility.debug('Worflow.DuplicateEmailCheck:', email);
 
         req.app.db.User
             .findOne({ where: { email: email.toLowerCase() }})
@@ -78,14 +78,14 @@ exports.signup = function(req, res) {
                 workflow.emit('createUser');
             })
             .catch(function(err) {
-                console.log('Workflow.DuplicateEmailCheck:', err);
+                req.app.utility.debug('Workflow.DuplicateEmailCheck:', err);
                 return workflow.emit('exception', err);
             });
     });
 
 
     workflow.on('createUser', function() {
-        console.log('Workflow.CreateUser');
+        req.app.utility.debug('Workflow.CreateUser');
         req.app.db.User.encryptPassword(req.body.password, function(err, hash) {
             if (err) {
                 return workflow.emit('exception', err);
@@ -112,7 +112,7 @@ exports.signup = function(req, res) {
 
 
     workflow.on('createAccount', function() {
-        console.log('Workflow.CreateAccount');
+        req.app.utility.debug('Workflow.CreateAccount');
 
         var fieldsToSet = {
             isVerified: req.app.config.requireAccountVerification ? 'no' : 'yes',
@@ -131,7 +131,7 @@ exports.signup = function(req, res) {
     });
 
     workflow.on('sendWelcomeEmail', function() {
-        console.log('Workflow.SendWelcomeEmail');
+        req.app.utility.debug('Workflow.SendWelcomeEmail');
 
         req.app.utility.sendmail(req, res, {
             from: req.app.config.smtp.from.name + ' <' + req.app.config.smtp.from.address + '>',
@@ -149,18 +149,18 @@ exports.signup = function(req, res) {
                 workflow.emit('logUserIn');
             },
             error: function(err) {
-                console.log('Workflow.SendWelcomeEmail:', err);
+                req.app.utility.debug('Workflow.SendWelcomeEmail:', err);
                 workflow.emit('logUserIn');
             }
         });
     });
 
     workflow.on('logUserIn', function() {
-        console.log('Workflow.LogUserIn');
+        req.app.utility.debug('Workflow.LogUserIn');
 
         req._passport.instance.authenticate('local', function(err, user, info) {
             if (err) {
-                console.log('Passport.Authenticate:', err);
+                req.app.utility.debug('Passport.Authenticate:', err);
                 return workflow.emit('exception', err);
             }
 
@@ -170,7 +170,7 @@ exports.signup = function(req, res) {
             } else {
                 req.login(user, function(err) {
                     if (err) {
-                        console.log('Request.Login:', err);
+                        req.app.utility.debug('Request.Login:', err);
                         return workflow.emit('exception', err);
                     }
 
@@ -483,7 +483,7 @@ exports.signupSocial = function(req, res) {
                 workflow.emit('logUserIn');
             },
             error: function(err) {
-                console.log('Error Sending Welcome Email: ' + err);
+                req.app.utility.debug('Error Sending Welcome Email: ' + err);
                 workflow.emit('logUserIn');
             }
         });

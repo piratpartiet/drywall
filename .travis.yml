@@ -24,4 +24,9 @@ before_script:
   - psql --command="create user drywall with password 'k3yb0ardc4t';"
   - createdb --owner=drywall drywall
 notifications:
-  irc: "irc.piratpartiet.no#pirtech.no"
+  irc:
+    channels:
+      - "irc.piratpartiet.no#travis2pirno"
+    channel_key: 'pegleg'
+    template:
+      - "%{author} pushed %{commit} to %{repository_name} (%{branch}): %{message} <%{build_url}> - %{commit_subject}"

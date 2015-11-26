@@ -20,7 +20,7 @@ exports = module.exports = function(req, res) {
 
   workflow.on('response', function() {
     workflow.outcome.success = !workflow.hasErrors();
-    console.log('Workflow.Response', workflow.outcome);
+    req.app.utility.debug('Workflow.Response', workflow.outcome);
     res.send(workflow.outcome);
   });
 

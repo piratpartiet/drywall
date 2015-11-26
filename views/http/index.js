@@ -16,7 +16,7 @@ exports.http500 = function(err, req, res, next){
   var data = { err: {} };
   if (req.app.get('env') === 'development') {
     data.err = err;
-    console.log(err.stack);
+    req.app.utility.debug(err.stack);
   }
 
   if (req.xhr) {

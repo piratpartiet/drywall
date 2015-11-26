@@ -43,7 +43,7 @@ exports.send = function(req, res, next){
   workflow.on('patchUser', function(token, hash) {
     var email = req.body.email.toLowerCase();
 
-    console.log('Workflow.PatchUser:', token, hash, email);
+    req.app.utility.debug('Workflow.PatchUser:', token, hash, email);
 
     req.app.db.User
       .findOne({ where : { email: email } })

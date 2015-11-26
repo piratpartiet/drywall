@@ -9,7 +9,7 @@ function ensureAuthenticated(req, res, next) {
   if (req.session) {
       req.session.returnUrl = req.originalUrl;
   } else {
-    console.log('routes.ensureAuthenticated: No session!')
+    req.app.utility.error('routes.ensureAuthenticated: No session!')
   }
 
   res.redirect('/login/');
