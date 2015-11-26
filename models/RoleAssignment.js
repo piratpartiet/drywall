@@ -19,20 +19,18 @@ role_title og group_title kunne muligens med fordel være foreign keys inn i and
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('RoleAssignment', {
-        name: {
-            roleTitle: {
-		type: DataTypes.STRING,
-		attribute: 'role_title'
-	    },
-            groupTitle: {
-		type: DataTypes.STRING,
-		attribute: 'group_title'
-	    },
-	    groupType: {
-		type: DataTypes.INTEGER,
-		attribute: 'group_type'
-	    }
-        }
+        roleTitle: {
+	    type: DataTypes.STRING,
+	    attribute: 'role_title'
+	},
+        groupTitle: {
+	    type: DataTypes.STRING,
+	    attribute: 'group_title'
+	},
+	groupType: {
+	    type: DataTypes.INTEGER,
+	    attribute: 'group_type'
+	}
     }, {
         freezeTableName: false,
         underscored: true,
