@@ -2,13 +2,9 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Admin', {
-    /* it has always been like this, but it looks very wrong?!? :p */
     name: {
       type: DataTypes.JSON
-    },
-    name: {
-      type: DataTypes.JSON
-    },
+    }
   }, {
     freezeTableName: false,
     underscored: true,
