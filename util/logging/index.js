@@ -7,7 +7,7 @@ exports = module.exports = function(config) {
         return;
       }
 
-      console.debug.apply(this, arguments);
+      console.log.apply(this, arguments);
     },
     error: function() {
       if (!config.logging.error) {
