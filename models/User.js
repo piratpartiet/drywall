@@ -1,3 +1,6 @@
+var config = require('../config'),
+    logging = require('../util/logging')(config);
+
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
@@ -36,19 +39,26 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'login_user',
     instanceMethods: {
       canPlayRoleOf: function(role) {
-        return true;
+        return this.getRoleAssignments({
+          where : { roleTitle : role }
+        }).catch(function(err) {
+          logging.error('User.canPlayRoleOf:', role, err);
+        }).done(function(roles) {
+          logging.debug('User.canPlayRoleOf:', role, roles);
+          return roles.length > 0;
+        });
       },
       defaultReturnUrl: function() {
-        var returnUrl = '/';
-        if (this.canPlayRoleOf('account')) {
-          returnUrl = '/account/';
-        }
-
         if (this.canPlayRoleOf('admin')) {
-          returnUrl = '/admin/';
+          return '/admin/';
         }
 
-        return returnUrl;
+        // TODO: Should we perhaps not require a role? Being logged in should be enough, no? @asbjornu
+        if (this.canPlayRoleOf('account')) {
+          return '/account/';
+        }
+
+        return '/';
       }
     },
     classMethods: {

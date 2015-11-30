@@ -38,6 +38,7 @@ db.User.sync(dbConfig).then(function() {
   db.Member.belongsTo(db.User);
   db.Payment.belongsTo(db.User);
   db.RoleAssignment.belongsTo(db.User);
+  db.User.hasMany(db.RoleAssignment);
 
   db.Member.sync(dbConfig);
   db.Message.sync(dbConfig);
