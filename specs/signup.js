@@ -20,6 +20,8 @@ describe('/signup/', function() {
   var csrfToken = null;
 
   it('responds with the signup form', function(done) {
+    this.timeout = 3000;
+
     this.request
       .get('/signup/')
       .set('Accept', 'text/html')
@@ -35,7 +37,7 @@ describe('/signup/', function() {
 
   it('is possible sign up', function(done) {
     this.timeout = 5000;
-    
+
     this.request
       .post('/signup/')
       .send({

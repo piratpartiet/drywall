@@ -1,9 +1,11 @@
 'use strict';
 
 //dependencies
-var config = require('./config'),
+var _ = require('underscore'),
+    config = require('./config'),
     env = process.env.NODE_ENV || 'development',
     dbConfig = config.db[env],
+    logging = require('./util/logging')(config),
     express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
@@ -81,26 +83,13 @@ exports.setup = function(app) {
   app.use(require('./views/http/index').http500);
 
   //setup utilities
-  app.utility = {
+  app.utility = _.extend(logging, {
     sendmail: require('./util/sendmail'),
     slugify: require('./util/slugify'),
-    workflow: require('./util/workflow'),
-    debug: function() {
-      if (!config.logging.debug) {
-        return;
-      }
+    workflow: require('./util/workflow')
+  });
 
-      console.debug.apply(this, arguments);
-    },
-    error: function() {
-      if (!config.logging.error) {
-        return;
-      }
-
-      console.error.apply(this, arguments);
-    }
-  };
-
+  // TODO: Figure out a more elegant way to do this. @asbjornu
   dbConfig.logging = dbConfig.logging ? app.utility.debug : false;
   sequelizeStore.sync(dbConfig);
 

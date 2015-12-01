@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 (belongs to users - specified in index.js)
 
 Examples:
@@ -18,25 +18,23 @@ role_title og group_title kunne muligens med fordel være foreign keys inn i and
 */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('RoleAssignment', {
-        roleTitle: {
-	    type: DataTypes.STRING,
-	    attribute: 'role_title'
-	},
-        groupTitle: {
-	    type: DataTypes.STRING,
-	    attribute: 'group_title'
-	},
-	groupType: {
-	    type: DataTypes.INTEGER,
-	    attribute: 'group_type'
-	}
-    }, {
-        freezeTableName: false,
-        underscored: true,
-        timestamps: true,
-        tableName: 'role_assignment'
-    });
+  return sequelize.define('RoleAssignment', {
+    roleTitle: {
+      type: DataTypes.STRING,
+      attribute: 'role_title'
+    },
+    groupTitle: {
+      type: DataTypes.STRING,
+      attribute: 'group_title'
+    },
+    groupType: {
+      type: DataTypes.INTEGER,
+      attribute: 'group_type'
+    }
+  }, {
+    freezeTableName: false,
+    underscored: true,
+    timestamps: true,
+    tableName: 'role_assignment'
+  });
 };
-
-
