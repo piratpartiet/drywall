@@ -53,12 +53,7 @@ module.exports = function(sequelize, DataTypes) {
           return '/admin/';
         }
 
-        // TODO: Should we perhaps not require a role? Being logged in should be enough, no? @asbjornu
-        if (this.canPlayRoleOf('account')) {
-          return '/account/';
-        }
-
-        return '/';
+        return '/account/';
       }
     },
     classMethods: {
