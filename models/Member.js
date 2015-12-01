@@ -3,7 +3,8 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Member', {
     isVerified: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      field: 'is_verified'
     },
     memberNumber: {
       type: DataTypes.INTEGER,
