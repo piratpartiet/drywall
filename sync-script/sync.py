@@ -32,8 +32,7 @@ def inserts_from_old_to_new():
             zip=0
         else:
             zip=int(zip)
-        sql(new_conn, "insert into member (member_number, last_name, address, zip, member_since, user_id) values (%s, %s, %s, %s, %s, %s)", params=[row[1], row[2], row[4], zip, row[10], user_id])
-        ## kommune, fylke ... TODO
+        sql(new_conn, "insert into member (member_number, last_name, address, zip, member_since, municipality, county, user_id) values (%s, %s, %s, %s, %s, %s)", params=[row[1], row[2], row[4], zip, row[10], row[8], row[9], user_id])
         ## insert into payments ... TODO
         cnt+=1
     sql(old_conn, "insert into member_sync (op, started, finished, num_rows) values ('ins_old2new', now(), %s, %s)", params=[datetime.datetime.now(), cnt])
