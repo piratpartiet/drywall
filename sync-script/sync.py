@@ -33,7 +33,14 @@ def inserts_from_old_to_new():
         else:
             zip=int(zip)
         sql(new_conn, "insert into member (member_number, last_name, address, zip, member_since, municipality, county, user_id) values (%s, %s, %s, %s, %s, %s)", params=[row[1], row[2], row[4], zip, row[10], row[8], row[9], user_id])
-        ## insert into payments ... TODO
+
+	## historiske kontingentinnbetalinger
+        if row[14]:
+            sql(new_conn, "insert into payment (payment_date, purpose, user_id) values (%s, 1, %s)", params=['2013-01-01', user_id])
+	if row[15]:
+            sql(new_conn, "insert into payment (payment_date, purpose, user_id) values (%s, 1, %s)", params=['2014-01-01', user_id])
+        if row[16]:
+            sql(new_conn, "insert into payment (payment_date, purpose, user_id) values (%s, 1, %s)", params=['2015-01-01', user_id])
         cnt+=1
     sql(old_conn, "insert into member_sync (op, started, finished, num_rows) values ('ins_old2new', now(), %s, %s)", params=[datetime.datetime.now(), cnt])
     new_conn.commit()
