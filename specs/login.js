@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Specs for /signup
+ * Specs for /login
  */
 var request = require('supertest'),
     express = require('express'),
@@ -9,9 +9,10 @@ var request = require('supertest'),
     chai = require('chai'),
     chaiAsPromised = require('chai-as-promised'),
     expect = chai.expect,
-    server = require('../app.js');
+    server = require('../app.js'),
+    signup = require('./signup');
 
-exports.signup = function() {
+describe('/login/', function() {
   // Create a fresh server instance prior to each test
   beforeEach(function() {
     var app = server.setup(express());
@@ -21,11 +22,11 @@ exports.signup = function() {
   var cookie = null;
   var csrfToken = null;
 
-  it('responds with the signup form', function(done) {
+  it('responds with the login form', function(done) {
     this.timeout = 10000;
 
     this.request
-      .get('/signup/')
+      .get('/login/')
       .set('Accept', 'text/html')
       .expect(200)
       .expect('Set-Cookie')
@@ -37,17 +38,15 @@ exports.signup = function() {
       });
   });
 
-  var signup = function(done) {
+  it('is possible log in', function(done) {
     this.timeout = 10000;
 
-    var data = {
-      username : 'chuck-norris',
-      email: 'chuck-norris@example.com',
-      password: 'ChuckNorrisWasHere!'
-    };
+    console.log('login: Signing up');
+
+    var data = signup.signup().apply(this, arguments);
 
     this.request
-      .post('/signup/')
+      .post('/login/')
       .send(data)
       .set('Accept', 'application/json')
       .set('Cookie', cookie)
@@ -55,15 +54,8 @@ exports.signup = function() {
       .expect(200)
       .end(function(err, res) {
         expect(res.text).to.contain('"success":true');
+        signupDone();
         done();
       });
-
-    return data;
-  };
-
-  it('is possible sign up', signup);
-
-  return signup;
-};
-
-describe('/signup/', exports.signup);
+  });
+});
