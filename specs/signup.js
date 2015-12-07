@@ -1,5 +1,3 @@
-'use strict';
-
 /*
  * Specs for /signup
  */
@@ -11,7 +9,7 @@ var request = require('supertest'),
     expect = chai.expect,
     server = require('../app.js');
 
-exports.signup = function() {
+describe('/signup/', function() {
   // Create a fresh server instance prior to each test
   beforeEach(function() {
     var app = server.setup(express());
@@ -22,7 +20,7 @@ exports.signup = function() {
   var csrfToken = null;
 
   it('responds with the signup form', function(done) {
-    this.timeout = 10000;
+    this.timeout = 3000;
 
     this.request
       .get('/signup/')
@@ -37,18 +35,16 @@ exports.signup = function() {
       });
   });
 
-  var signup = function(done) {
-    this.timeout = 10000;
-
-    var data = {
-      username : 'chuck-norris',
-      email: 'chuck-norris@example.com',
-      password: 'ChuckNorrisWasHere!'
-    };
+  it('is possible sign up', function(done) {
+    this.timeout = 5000;
 
     this.request
       .post('/signup/')
-      .send(data)
+      .send({
+        username : 'chuck-norris',
+        email: 'chuck-norris@example.com',
+        password: 'ChuckNorrisWasHere!'
+      })
       .set('Accept', 'application/json')
       .set('Cookie', cookie)
       .set('X-Csrf-Token', csrfToken)
@@ -57,13 +53,5 @@ exports.signup = function() {
         expect(res.text).to.contain('"success":true');
         done();
       });
-
-    return data;
-  };
-
-  it('is possible sign up', signup);
-
-  return signup;
-};
-
-describe('/signup/', exports.signup);
+  });
+});
