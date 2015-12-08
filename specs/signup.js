@@ -28,16 +28,16 @@ describe('/signup/', function() {
       .get('/signup/')
       .set('Accept', 'text/html')
       .expect(200)
-      .expect('Set-Cookie')
       .end(function(err, res) {
         if (err) {
           throw err;
         }
 
         expect(res.headers).to.include.key('set-cookie');
+        expect(res.text).to.contain('Sign Up');
+        
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
-        expect(res.text).to.contain('Sign Up');
         done();
       });
   });
