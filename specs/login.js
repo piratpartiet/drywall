@@ -10,7 +10,6 @@ var request = require('supertest'),
     chaiAsPromised = require('chai-as-promised'),
     expect = chai.expect,
     server = require('../app.js'),
-    models = require('../models'),
     uuid = require('uuid'),
     printf = require('printf');
 
@@ -47,13 +46,13 @@ describe('/login/', function() {
     var password = 'ChuckNorrisWasHere!';
     var request = this.request;
 
-    models.User.encryptPassword(password, function(err, hash) {
+    db.User.encryptPassword(password, function(err, hash) {
       if (err) {
         console.error(err);
         return;
       }
 
-      models.User.create({
+      db.User.create({
         isActive: 'yes',
         username: username,
         email: printf('%s@example.com', username),

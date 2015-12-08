@@ -5,9 +5,7 @@
  */
 var request = require('supertest'),
     express = require('express'),
-    db = require('./../models'),
     chai = require('chai'),
-    chaiAsPromised = require('chai-as-promised'),
     expect = chai.expect,
     server = require('../app.js'),
     uuid = require('uuid'),
