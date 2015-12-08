@@ -93,11 +93,17 @@
       this.render();
     },
     syncUp: function() {
+      var name = app.mainView.account.get('name') || {
+        first: '',
+        middle: '',
+        last: ''
+      };
+
       this.model.set({
         id: app.mainView.account.id,
-        first: app.mainView.account.get('name').first,
-        middle: app.mainView.account.get('name').middle,
-        last: app.mainView.account.get('name').last,
+        first: name.first,
+        middle: name.middle,
+        last: name.last,
         company: app.mainView.account.get('company'),
         phone: app.mainView.account.get('phone'),
         zip: app.mainView.account.get('zip')
