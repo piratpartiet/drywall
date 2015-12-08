@@ -13,7 +13,6 @@ var request = require('supertest'),
     uuid = require('uuid'),
     printf = require('printf');
 
-
 describe('/signup/', function() {
   // Create a fresh server instance prior to each test
   beforeEach(function() {
@@ -25,7 +24,7 @@ describe('/signup/', function() {
   var csrfToken = null;
 
   it('responds with the signup form', function(done) {
-    this.timeout = 3000;
+    this.timeout = 5000;
 
     this.request
       .get('/signup/')
@@ -33,6 +32,7 @@ describe('/signup/', function() {
       .expect(200)
       .expect('Set-Cookie')
       .end(function(err, res) {
+        expect(res.headers).to.include.key('set-cookie');
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
         expect(res.text).to.contain('Sign Up');

@@ -33,6 +33,7 @@ describe('/login/', function() {
       .expect(200)
       .expect('Set-Cookie')
       .end(function(err, res) {
+        expect(res.headers).to.include.key('set-cookie');
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
         expect(res.text).to.contain('Sign Up');
