@@ -4,13 +4,15 @@
  * Specs for /login
  */
 var request = require('supertest'),
-    express = require('express'),
-    db = require('./../models'),
-    chai = require('chai'),
-    chaiAsPromised = require('chai-as-promised'),
-    expect = chai.expect,
-    server = require('../app.js'),
-    signup = require('./signup');
+  express = require('express'),
+  db = require('./../models'),
+  chai = require('chai'),
+  chaiAsPromised = require('chai-as-promised'),
+  expect = chai.expect,
+  server = require('../app.js'),
+  models = require('../models'),
+  uuid = require('uuid'),
+  printf = require('printf');
 
 describe('/login/', function() {
   // Create a fresh server instance prior to each test
@@ -40,22 +42,38 @@ describe('/login/', function() {
 
   it('is possible log in', function(done) {
     this.timeout = 10000;
+    var username = uuid.v1();
+    var password = 'ChuckNorrisWasHere!';
+    var request = this.request;
 
-    console.log('login: Signing up');
+    models.User.encryptPassword(password, function(err, hash) {
+      if (err) {
+        console.error(err);
+        return;
+      }
 
-    var data = signup.signup().apply(this, arguments);
-
-    this.request
-      .post('/login/')
-      .send(data)
-      .set('Accept', 'application/json')
-      .set('Cookie', cookie)
-      .set('X-Csrf-Token', csrfToken)
-      .expect(200)
-      .end(function(err, res) {
-        expect(res.text).to.contain('"success":true');
-        signupDone();
-        done();
-      });
+      models.User.create({
+        isActive: 'yes',
+        username: username,
+        email: printf('%s@example.com', username),
+        password: hash
+      }).then(function() {
+        request
+          .post('/login/')
+          .send({
+            username: username,
+            password: password
+          })
+          .set('Accept', 'application/json')
+          .set('Cookie', cookie)
+          .set('X-Csrf-Token', csrfToken)
+          .expect(200)
+          .end(function(err, res) {
+            var result = JSON.parse(res.text);
+            expect(result.success).to.be.true;
+            done();
+          });
+      }).catch(console.error);
+    });
   });
 });
