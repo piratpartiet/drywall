@@ -35,6 +35,8 @@ describe('/account/', function() {
           throw err;
         }
 
+        expect(res.headers).to.include.key('location');
+        expect(res.headers['location']).to.equal('/login/');
         expect(res.text).to.contain('/login/');
         done();
       });
