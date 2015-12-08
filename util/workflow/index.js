@@ -14,12 +14,13 @@ exports = module.exports = function(req, res) {
   };
 
   workflow.on('exception', function(err) {
-    workflow.outcome.errors.push('Exception: '+ err);
+    workflow.outcome.errors.push('Exception: ' + err);
     return workflow.emit('response');
   });
 
   workflow.on('response', function() {
     workflow.outcome.success = !workflow.hasErrors();
+    req.app.utility.debug('Workflow.Response', workflow.outcome);
     res.send(workflow.outcome);
   });
 

@@ -2,12 +2,17 @@
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
+    req.app.utility.debug('routes.ensureAuthenticated: Authenticated');
     return next();
   }
+
+  req.app.utility.debug('routes.ensureAuthenticated: Not authenticated');
   res.set('X-Auth-Required', 'true');
 
   if (req.session) {
-      req.session.returnUrl = req.originalUrl;
+    req.session.returnUrl = req.originalUrl;
+  } else {
+    req.app.utility.error('routes.ensureAuthenticated: No session!')
   }
 
   res.redirect('/logg-inn/');
@@ -21,15 +26,13 @@ function ensureAdmin(req, res, next) {
 }
 
 function ensureAccount(req, res, next) {
-  if (req.user.canPlayRoleOf('account')) {
-    if (req.app.config.requireAccountVerification) {
-      if (req.user.roles.account.isVerified !== 'yes' && !/^\/konto\/verifisering\//.test(req.url)) {
-        return res.redirect('/konto/verifisering/');
-      }
+  if (req.app.config.requireAccountVerification) {
+    if (req.user.roles.account.isVerified !== 'yes' && !/^\/account\/verification\//.test(req.url)) {
+      return res.redirect('/account/verification/');
     }
-    return next();
   }
-  res.redirect('/');
+
+  return next();
 }
 
 exports = module.exports = function(app, passport) {

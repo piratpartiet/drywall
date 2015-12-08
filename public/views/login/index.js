@@ -50,7 +50,8 @@
       },{
         success: function(model, response) {
           if (response.success) {
-            location.href = '/logg-inn/';
+            console.log(model, response);
+            location.href = '/account/';
           }
           else {
             model.set(response);

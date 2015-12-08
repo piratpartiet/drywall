@@ -1,17 +1,22 @@
 'use strict';
 
-exports.init = function(req, res, next){
+exports.init = function(req, res, next) {
   var sigma = {};
   var collections = ['User', 'Account', 'Admin', 'AdminGroup', 'Category', 'Status'];
   var queries = [];
 
   collections.forEach(function(el, i, arr) {
     queries.push(function(done) {
-      req.app.db[el].count({}).then(function(count) {
+      var e = req.app.db[el];
+      if (!e) {
+        return done(null);
+      }
+
+      e.count({}).then(function(count) {
         sigma['count'+ el] = count;
         done(null, el);
       })
-      .catch(function(err){
+      .catch(function(err) {
           return done(err, null);
       });
     });

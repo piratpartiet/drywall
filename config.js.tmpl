@@ -1,6 +1,11 @@
 'use strict';
 
-exports.port = process.env.PORT || 3000;
+exports.port = process.env.PORT || (process.env.NODE_ENV == 'test' ? 3001 : 3000);
+exports.logging = {
+  // Set this to true if you want extensive logging.
+  debug: false,
+  error: true
+};
 exports.companyName = 'Acme, Inc.';
 exports.projectName = 'Drywall';
 exports.systemEmail = 'your@email.addy';
@@ -45,3 +50,39 @@ exports.oauth = {
     secret: process.env.TUMBLR_OAUTH_SECRET || ''
   }
 };
+
+exports.db = {
+  development: {
+    username: '<username>',
+    password: '<password>',
+    database: '<database>',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    // Logging is turned on.
+    logging: true,
+    force: false
+  },
+  test: {
+    username: '<username>',
+    password: '<password>',
+    // We recommend using another database for the tests,
+    // since it can then be reset (forced) on every run
+    // of the tests
+    database: '<test-database>',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    // Just turn logging on if a test fails and you believe
+    // it's related to the database.
+    logging: false,
+    // Reset the test database on every run of the tests.
+    force: true
+  },
+  production: {
+    username: '<username>',
+    password: '<password>',
+    database: '<database>',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    force : false
+  }
+}

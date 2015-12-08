@@ -83,9 +83,9 @@ exports.create = function(req, res, next) {
     });
 
     workflow.on('duplicateUsernameCheck', function() {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             username: req.body.username
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -147,12 +147,12 @@ exports.update = function(req, res, next) {
     });
 
     workflow.on('duplicateUsernameCheck', function() {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             username: req.body.username,
             _id: {
                 $ne: req.params.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -167,12 +167,12 @@ exports.update = function(req, res, next) {
     });
 
     workflow.on('duplicateEmailCheck', function() {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             email: req.body.email.toLowerCase(),
             _id: {
                 $ne: req.params.id
             }
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -353,12 +353,12 @@ exports.linkAdmin = function(req, res, next) {
     });
 
     workflow.on('duplicateLinkCheck', function(callback) {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'roles.admin': req.body.newAdminId,
             _id: {
                 $ne: req.params.id
             }
-        }).exec(function(err, user) {
+        }}).exec(function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -524,12 +524,12 @@ exports.linkAccount = function(req, res, next) {
     });
 
     workflow.on('duplicateLinkCheck', function(callback) {
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'roles.account': req.body.newAccountId,
             _id: {
                 $ne: req.params.id
             }
-        }).exec(function(err, user) {
+        }}).exec(function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }

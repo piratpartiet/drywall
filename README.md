@@ -4,9 +4,9 @@ A website and user system starter. Implemented with Express and Backbone.
 
 This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
 
-[![Dependency Status](https://david-dm.org/jedireza/drywall.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall)
-[![devDependency Status](https://david-dm.org/jedireza/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall#info=devDependencies)
-
+[![Dependency Status](https://david-dm.org/piratpartiet/drywall.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall)
+[![devDependency Status](https://david-dm.org/piratpartiet/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall#info=devDependencies)
+[![Build Status](https://travis-ci.org/piratpartiet/drywall.svg?branch=master)](https://travis-ci.org/piratpartiet/drywall)
 
 ## Technology
 
@@ -53,55 +53,70 @@ page](https://github.com/jedireza/drywall/wiki/bcrypt-Installation-Trouble).
 ## Installation
 
 ```bash
-$ git clone git@github.com:trystant/drywall.git && cd ./drywall
+$ git clone git@github.com:piratpartiet/drywall.git && cd ./drywall
 $ npm install
 ```
 
 
 ## Setup
 
-First you need to setup your config files. The main parts of the application
-are configured in the `config.js` file in the root directory. Create it by
-copying `config.js.tmpl` as such:
+First you need to setup your config file. Create it by copying `config.js.tmpl`
+as such:
 
 ```bash
 $ cp ./config.js.tmpl ./config.js
 ```
 
-The database is configured in `config/config.json`. Create it by copying the
-`config/config.tmpl.json` file as such:
+Replace all values with ones that fit your application. Pay extra attention to
+the `db` configuration, which control how your database is set up. It has
+three environments defined: `development`, `test` and `production`. To get
+everything bootstrapped, just focus on `development` for now:
 
-```bash
-$ cp ./config/config.json.tmpl ./config/config.json
-```
-
-Then, change the values of the individual environments (`development`, `test`
-and `production`). To get everything bootstrapped, just focus on `development`
-for now.
-
-```json
-{
-   "development": {
-    "username": "<username>",
-    "password": "<password>",
-    "database": "<database>",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
+```javascript
+exports.db = {
+  development: {
+    username: '<username>',
+    password: '<password>',
+    database: '<database>',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    // Logging to console.log. See the 'Options' section of
+    // http://docs.sequelizejs.com/en/1.7.0/docs/usage/ for
+    // more information.
+    logging: console.log,
+    force: false
   }
 }
 ```
 
-### PostgreSQL
+* `username`: The username with access to the database.
+* `password`: The password associated with the above username.
+* `database`: The name of the database for the Drywall application.
+* `host`: The name or IP address of the host of the database service.
+* `dialect`: The [dialect](http://sequelize.readthedocs.org/en/1.7.0/docs/usage/#dialects)
+   of the database.
+* `force`: Set to `true` to have the database reset on application launch,
+   otherwise set this to `false`. It's a bad idea to set this to `true`
+   in production; only set it to `true` if you need to completely wipe
+   the database.
 
-Next, you need to set up PostgreSQL. Taking for granted that PostgreSQL's binaries
-exist on your `$PATH`, you need to execute the following commands to get everything
-bootstrapped for the `development` environment (as defined in `config/config.json`).
+### Database
+
+We have made an opiniated decision about which database dialect to use. We will
+therefore focus on the setup of PostgreSQL, but the steps required for other
+databases would be similar.
+
+Taking for granted that PostgreSQL's binaries exist on your `$PATH`, you need to
+execute the following commands to get everything bootstrapped for the
+`development` environment (as defined in `config/config.json`).
 
 ```bash
-createuser <username>
+psql --command="create user <username> with password '<password>';"
 createdb --owner=<username> <database>
-psql --dbname=<database> --command="CREATE USER <username> WITH PASSWORD '<password>';"
 ```
+
+To set up the database for other environments, just repeat the steps above
+for each one.
 
 ## Running the app
 

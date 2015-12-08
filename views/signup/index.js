@@ -15,7 +15,7 @@ exports.init = function(req, res) {
 };
 
 exports.signup = function(req, res) {
-    console.log(req.body);
+    req.app.utility.debug(req.body);
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
@@ -43,28 +43,32 @@ exports.signup = function(req, res) {
     });
 
     workflow.on('duplicateUsernameCheck', function() {
-        req.app.db.User.findOne({
-                username: req.body.username
-            })
+        var username = req.body.username;
+        req.app.utility.debug('Workflow.DuplicateUserNameCheck:', username);
+
+        req.app.db.User
+            .findOne({ where: { username: username }})
             .then(function(user) {
-                console.log('User', user);
                 if (user) {
-                    workflow.outcome.errfor.username = 'brukernavnet er ikke tilgjengelig';
+                    req.app.utility.debug('Workflow.DuplicateUserNameCheck:', user.dataValues);
+                    workflow.outcome.errfor.username = 'brukernavnet er opptatt';
                     return workflow.emit('response');
                 }
+
                 workflow.emit('duplicateEmailCheck');
             })
             .catch(function(err) {
-                console.log(err);
+                req.app.utility.debug('Workflow.DuplicateUserNameCheck:', err);
                 return workflow.emit('exception', err);
             });
     });
 
     workflow.on('duplicateEmailCheck', function() {
-        console.log('Duplicate email');
-        req.app.db.User.findOne({
-                email: req.body.email.toLowerCase()
-            })
+        var email = req.body.email;
+        req.app.utility.debug('Worflow.DuplicateEmailCheck:', email);
+
+        req.app.db.User
+            .findOne({ where: { email: email.toLowerCase() }})
             .then(function(user) {
                 if (user) {
                     workflow.outcome.errfor.email = 'e-postadressen er ikke tilgjengelig';
@@ -74,14 +78,14 @@ exports.signup = function(req, res) {
                 workflow.emit('createUser');
             })
             .catch(function(err) {
-                console.log('Err dupicate email', err);
+                req.app.utility.debug('Workflow.DuplicateEmailCheck:', err);
                 return workflow.emit('exception', err);
             });
     });
 
 
     workflow.on('createUser', function() {
-        console.log('Create User');
+        req.app.utility.debug('Workflow.CreateUser');
         req.app.db.User.encryptPassword(req.body.password, function(err, hash) {
             if (err) {
                 return workflow.emit('exception', err);
@@ -108,13 +112,14 @@ exports.signup = function(req, res) {
 
 
     workflow.on('createAccount', function() {
-        console.log('Create account');
+        req.app.utility.debug('Workflow.CreateAccount');
+
         var fieldsToSet = {
             isVerified: req.app.config.requireAccountVerification ? 'no' : 'yes',
             'name.full': workflow.user.username,
         };
 
-        req.app.db.Account.create(fieldsToSet)
+        req.app.db.Member.create(fieldsToSet)
             .then(function(account) {
                 return account.setUser(workflow.user);
             }).then(function(account) {
@@ -126,7 +131,8 @@ exports.signup = function(req, res) {
     });
 
     workflow.on('sendWelcomeEmail', function() {
-        console.log('Send welcome email');
+        req.app.utility.debug('Workflow.SendWelcomeEmail');
+
         req.app.utility.sendmail(req, res, {
             from: req.app.config.smtp.from.name + ' <' + req.app.config.smtp.from.address + '>',
             to: req.body.email,
@@ -143,16 +149,18 @@ exports.signup = function(req, res) {
                 workflow.emit('logUserIn');
             },
             error: function(err) {
-                console.log('Error Sending Welcome Email: ' + err);
+                req.app.utility.debug('Workflow.SendWelcomeEmail:', err);
                 workflow.emit('logUserIn');
             }
         });
     });
 
     workflow.on('logUserIn', function() {
-        console.log('Log user in');
+        req.app.utility.debug('Workflow.LogUserIn');
+
         req._passport.instance.authenticate('local', function(err, user, info) {
             if (err) {
+                req.app.utility.debug('Passport.Authenticate:', err);
                 return workflow.emit('exception', err);
             }
 
@@ -162,6 +170,7 @@ exports.signup = function(req, res) {
             } else {
                 req.login(user, function(err) {
                     if (err) {
+                        req.app.utility.debug('Request.Login:', err);
                         return workflow.emit('exception', err);
                     }
 
@@ -181,9 +190,9 @@ exports.signupTwitter = function(req, res, next) {
             return res.redirect('/registrering/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'twitter.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -213,9 +222,9 @@ exports.signupGitHub = function(req, res, next) {
             return res.redirect('/registrering/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'github.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -247,9 +256,9 @@ exports.signupFacebook = function(req, res, next) {
             return res.redirect('/registrering/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'facebook.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -280,9 +289,9 @@ exports.signupGoogle = function(req, res, next) {
             return res.redirect('/registrering/');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'google.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -317,9 +326,9 @@ exports.signupTumblr = function(req, res, next) {
             info.profile.id = info.profile.username;
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             'tumblr.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -365,9 +374,9 @@ exports.signupSocial = function(req, res) {
             workflow.username = workflow.username.replace(/[^a-zA-Z0-9\-\_]/g, '');
         }
 
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             username: workflow.username
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -383,9 +392,9 @@ exports.signupSocial = function(req, res) {
     });
 
     workflow.on('duplicateEmailCheck', function() {
-        req.app.db.User.findOne({
+        req.app.db.User.findOne({ where: {
             email: req.body.email.toLowerCase()
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -440,7 +449,7 @@ exports.signupSocial = function(req, res) {
                 nameParts[1] || ''
             ]
         };
-        req.app.db.Account.create(fieldsToSet, function(err, account) {
+        req.app.db.Member.create(fieldsToSet, function(err, account) {
             if (err) {
                 return workflow.emit('exception', err);
             }
@@ -474,7 +483,7 @@ exports.signupSocial = function(req, res) {
                 workflow.emit('logUserIn');
             },
             error: function(err) {
-                console.log('Error Sending Welcome Email: ' + err);
+                req.app.utility.debug('Error Sending Welcome Email: ' + err);
                 workflow.emit('logUserIn');
             }
         });

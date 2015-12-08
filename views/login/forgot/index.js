@@ -1,6 +1,6 @@
 'use strict';
 
-exports.init = function(req, res){
+exports.init = function(req, res) {
   if (req.isAuthenticated()) {
     res.redirect(req.user.defaultReturnUrl());
   }
@@ -29,7 +29,8 @@ exports.send = function(req, res, next){
       }
 
       var token = buf.toString('hex');
-      req.app.db.models.User.encryptPassword(token, function(err, hash) {
+
+      req.app.db.User.encryptPassword(token, function(err, hash) {
         if (err) {
           return next(err);
         }
@@ -40,21 +41,24 @@ exports.send = function(req, res, next){
   });
 
   workflow.on('patchUser', function(token, hash) {
-    var conditions = { email: req.body.email.toLowerCase() };
-    var fieldsToSet = {
-      resetPasswordToken: hash,
-      resetPasswordExpires: Date.now() + 10000000
-    };
-    req.app.db.models.User.findOneAndUpdate(conditions, fieldsToSet, function(err, user) {
-      if (err) {
-        return workflow.emit('exception', err);
-      }
+    var email = req.body.email.toLowerCase();
 
-      if (!user) {
-        return workflow.emit('response');
-      }
+    req.app.utility.debug('Workflow.PatchUser:', token, hash, email);
 
-      workflow.emit('sendEmail', token, user);
+    req.app.db.User
+      .findOne({ where : { email: email } })
+      .then(function(user) {
+        if (user) {
+          user.resetPasswordToken = hash;
+          user.resetPasswordExpires = Date.now() + 10000000;
+          user.save().then(function() {
+            workflow.emit('sendEmail', token, user);
+          });
+        }
+
+      return workflow.emit('response');
+    }, function(err) {
+      return workflow.emit('exception', err);
     });
   });
 
@@ -70,15 +74,12 @@ exports.send = function(req, res, next){
         resetLink: req.protocol +'://'+ req.headers.host +'/logg-inn/reset/'+ user.email +'/'+ token +'/',
         projectName: req.app.config.projectName
       },
-      success: function(message) {
-        workflow.emit('response');
-      },
+      success: function(message) {},
       error: function(err) {
         workflow.outcome.errors.push('Error Sending: '+ err);
-        workflow.emit('response');
       }
     });
   });
 
-  workflow.emit('validate');
+  workflow.emit('response');
 };

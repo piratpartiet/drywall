@@ -25,9 +25,13 @@ exports.init = function(req, res) {
 };
 
 exports.login = function(req, res) {
+    req.app.utility.debug('Login');
+
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
+        req.app.utility.debug('Workflow.Login:Validate');
+
         if (!req.body.username) {
             workflow.outcome.errfor.username = 'required';
         }
@@ -44,13 +48,18 @@ exports.login = function(req, res) {
     });
 
     workflow.on('abuseFilter', function() {
+        req.app.utility.debug('Workflow.Login:AbuseFilter');
+
         var getIpCount = function(done) {
             var conditions = {
-                ip: req.ip
+                where : {
+                    ip: req.ip
+                }
             };
+
             req.app.db.LoginAttempt.count(conditions)
                 .then(function(count) {
-                    console.log('Count ', count);
+                    req.app.utility.debug('Count ', count);
                     done(null, count);
                 })
                 .catch(function(err) {
@@ -60,12 +69,14 @@ exports.login = function(req, res) {
 
         var getIpUserCount = function(done) {
             var conditions = {
-                ip: req.ip,
-                user: req.body.username
+                where : {
+                    ip: req.ip,
+                    user: req.body.username
+                }
             };
             req.app.db.LoginAttempt.count(conditions)
                 .then(function(count) {
-                    console.log('Count ', count);
+                    req.app.utility.debug('Count ', count);
                     done(null, count);
                 })
                 .catch(function(err) {
@@ -94,32 +105,43 @@ exports.login = function(req, res) {
     });
 
     workflow.on('attemptLogin', function() {
+        req.app.utility.debug('login.workflow.attemptLogin');
+
         req._passport.instance.authenticate('local', function(err, user, info) {
+            req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate');
+
             if (err) {
                 return workflow.emit('exception', err);
             }
 
-            if (!user) {
-                var fieldsToSet = {
-                    ip: req.ip,
-                    user: req.body.username
-                };
-                req.app.db.LoginAttempt.create(fieldsToSet)
-                    .then(function(doc) {
-                        workflow.outcome.errors.push('Brukernavn eller passord stemmer ikke, eventuelt er kontoen er stengt.');
-                        return workflow.emit('response');
-                    })
-                    .catch(function(err) {
-                        return workflow.emit('exception', err);
-                    });
-            } else {
-                req.login(user, function(err) {
-                    if (err) {
-                        return workflow.emit('exception', err);
-                    }
+            if (user) {
+              req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate: User found:', user.dataValues);
+              req.login(user, function(err) {
+                  if (err) {
+                      req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate:', err);
+                      return workflow.emit('exception', err);
+                  }
 
-                    workflow.emit('response');
-                });
+                  req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate: Logging in:', user.dataValues.email);
+
+                  return workflow.emit('response');
+              });
+            } else {
+              req.app.utility.debug('login.workflow.attemptLogin.passport.authenticate: User not found');
+
+              var fieldsToSet = {
+                  ip: req.ip,
+                  user: req.body.username
+              };
+              req.app.db.LoginAttempt.create(fieldsToSet)
+                  .then(function(doc) {
+                      workflow.outcome.errors.push('Brukernavn/passord stemmer ikke, eller kontoen er stengt');
+                      return workflow.emit('response');
+                  })
+                  .catch(function(err) {
+                      req.app.utility.debug('Exception', err);
+                      return workflow.emit('exception', err);
+                  });
             }
         })(req, res);
     });
@@ -133,9 +155,9 @@ exports.loginTwitter = function(req, res, next) {
             return res.redirect('/logg-inn/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'twitter.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -168,9 +190,9 @@ exports.loginGitHub = function(req, res, next) {
             return res.redirect('/logg-inn/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'github.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -205,9 +227,9 @@ exports.loginFacebook = function(req, res, next) {
             return res.redirect('/logg-inn/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'facebook.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -242,9 +264,9 @@ exports.loginGoogle = function(req, res, next) {
             return res.redirect('/logg-inn/');
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'google.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -283,9 +305,9 @@ exports.loginTumblr = function(req, res, next) {
             info.profile.id = info.profile.username;
         }
 
-        req.app.db.models.User.findOne({
+        req.app.db.models.User.findOne({ where: {
             'tumblr.id': info.profile.id
-        }, function(err, user) {
+        }}, function(err, user) {
             if (err) {
                 return next(err);
             }

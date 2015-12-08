@@ -113,7 +113,7 @@ exports.resendVerification = function(req, res, next){
   });
 
   workflow.on('duplicateEmailCheck', function() {
-    req.app.db.models.User.findOne({ email: req.body.email.toLowerCase(), _id: { $ne: req.user.id } }, function(err, user) {
+    req.app.db.models.User.findOne({ where: { email: req.body.email.toLowerCase(), _id: { $ne: req.user.id }}}, function(err, user) {
       if (err) {
         return workflow.emit('exception', err);
       }

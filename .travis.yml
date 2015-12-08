@@ -1,6 +1,32 @@
 language: node_js
+sudo: false
+env:
+  - CXX=g++-4.8
 node_js:
-  - "0.12"
+  - "4.1"
+  - "4.0"
   - "iojs"
+  - "iojs-v2"
 addons:
   postgresql: 9.4
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+before_script:
+  - cp config.js.tmpl config.js
+  - sed -i -e 's/<username>/drywall/g' config.js
+  - sed -i -e 's/<password>/k3yb0ardc4t/g' config.js
+  - sed -i -e 's/<test-database>/drywall/g' config.js
+  - psql --command="drop database if exists drywall;"
+  - psql --command="drop role if exists drywall;"
+  - psql --command="create user drywall with password 'k3yb0ardc4t';"
+  - createdb --owner=drywall drywall
+notifications:
+  irc:
+    channels:
+      - "irc.piratpartiet.no#travis2pirno"
+    channel_key: 'pegleg'
+    template:
+      - "%{author} pushed %{commit} to %{repository_name} (%{branch}): %{message} <%{build_url}> - %{commit_subject}"
