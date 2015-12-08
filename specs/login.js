@@ -4,15 +4,15 @@
  * Specs for /login
  */
 var request = require('supertest'),
-  express = require('express'),
-  db = require('./../models'),
-  chai = require('chai'),
-  chaiAsPromised = require('chai-as-promised'),
-  expect = chai.expect,
-  server = require('../app.js'),
-  models = require('../models'),
-  uuid = require('uuid'),
-  printf = require('printf');
+    express = require('express'),
+    db = require('./../models'),
+    chai = require('chai'),
+    chaiAsPromised = require('chai-as-promised'),
+    expect = chai.expect,
+    server = require('../app.js'),
+    models = require('../models'),
+    uuid = require('uuid'),
+    printf = require('printf');
 
 describe('/login/', function() {
   // Create a fresh server instance prior to each test
