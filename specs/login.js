@@ -32,6 +32,10 @@ describe('/login/', function() {
       .expect(200)
       .expect('Set-Cookie')
       .end(function(err, res) {
+        if (err) {
+          throw err;
+        }
+
         expect(res.headers).to.include.key('set-cookie');
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
@@ -48,8 +52,7 @@ describe('/login/', function() {
 
     db.User.encryptPassword(password, function(err, hash) {
       if (err) {
-        console.error(err);
-        return;
+        throw err;
       }
 
       db.User.create({
@@ -69,11 +72,17 @@ describe('/login/', function() {
           .set('X-Csrf-Token', csrfToken)
           .expect(200)
           .end(function(err, res) {
+            if (err) {
+              throw err;
+            }
+
             var result = JSON.parse(res.text);
             expect(result.success).to.be.true;
             done();
           });
-      }).catch(console.error);
+      }).catch(function(err) {
+        throw err;
+      });
     });
   });
 });

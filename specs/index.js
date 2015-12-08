@@ -19,6 +19,10 @@ describe('/', function() {
       .set('Accept', 'text/html')
       .expect(200)
       .end(function(err, res) {
+        if (err) {
+          throw err;
+        }
+
         expect(res.text).to.contain('Your Node.js website and user system is running');
         done();
       });
