@@ -5,12 +5,12 @@ var renderSettings = function(req, res, next, oauthMessage) {
 
     var getAccountData = function(callback) {
         req.app.db.Member
-            .findOne({ where: { 'UserId': req.user.id }})
+            .findOne({ where: { 'user_id': req.user.id }})
             .then(function(account) {
                 if (account) {
                     outcome.account = account;
                 } else {
-                    req.app.utility.debug('Account is null');
+                    req.app.utility.error('Account is null');
                     throw new Error('Account is null');
                 }
                 callback(null, 'done');
@@ -340,7 +340,7 @@ exports.update = function(req, res, next) {
         };
 
         req.app.db.Member
-            .findOne({ where: { 'UserId': req.user.id }})
+            .findById({ where: { 'user_id': req.user.id }})
             .then(function(account) {
                 account.updateAttributes(fieldsToSet)
                     .then(function(account) {
