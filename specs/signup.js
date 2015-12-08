@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Specs for /signup
  */
@@ -7,7 +9,10 @@ var request = require('supertest'),
     chai = require('chai'),
     chaiAsPromised = require('chai-as-promised'),
     expect = chai.expect,
-    server = require('../app.js');
+    server = require('../app.js'),
+    uuid = require('uuid'),
+    printf = require('printf');
+
 
 describe('/signup/', function() {
   // Create a fresh server instance prior to each test
@@ -37,12 +42,13 @@ describe('/signup/', function() {
 
   it('is possible sign up', function(done) {
     this.timeout = 5000;
+    var username = uuid.v1();
 
     this.request
       .post('/signup/')
       .send({
-        username : 'chuck-norris',
-        email: 'chuck-norris@example.com',
+        username : username,
+        email: printf('%s@example.com', username),
         password: 'ChuckNorrisWasHere!'
       })
       .set('Accept', 'application/json')
@@ -50,7 +56,8 @@ describe('/signup/', function() {
       .set('X-Csrf-Token', csrfToken)
       .expect(200)
       .end(function(err, res) {
-        expect(res.text).to.contain('"success":true');
+        var result = JSON.parse(res.text);
+        expect(result.success).to.be.true;
         done();
       });
   });
