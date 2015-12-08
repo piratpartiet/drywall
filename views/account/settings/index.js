@@ -1,61 +1,31 @@
 'use strict';
 
 var renderSettings = function(req, res, next, oauthMessage) {
-  var outcome = {};
+  req.app.db.User.findById(req.user.id)
+    .then(function(user) {
+      var member = user.getMember();
 
-  var getAccountData = function(callback) {
-    req.app.db.Member
-      .findOne({ where: { 'user_id': req.user.id } })
-      .then(function(account) {
-        if (account) {
-          outcome.account = account;
-        } else {
-          req.app.utility.error('Account is null');
-          throw new Error('Account is null');
-        }
-        callback(null, 'done');
-      })
-      .catch(function(err) {
-        return callback(err, null);
+      res.render('account/settings/index', {
+        data: {
+          member: escape(JSON.stringify(member)),
+          user: escape(JSON.stringify(user))
+        },
+        oauthMessage: oauthMessage,
+        oauthTwitter: !!req.app.config.oauth.twitter.key,
+        oauthTwitterActive: user.twitter ? !!user.twitter.id : false,
+        oauthGitHub: !!req.app.config.oauth.github.key,
+        oauthGitHubActive: user.github ? !!user.github.id : false,
+        oauthFacebook: !!req.app.config.oauth.facebook.key,
+        oauthFacebookActive: user.facebook ? !!user.facebook.id : false,
+        oauthGoogle: !!req.app.config.oauth.google.key,
+        oauthGoogleActive: user.google ? !!user.google.id : false,
+        oauthTumblr: !!req.app.config.oauth.tumblr.key,
+        oauthTumblrActive: user.tumblr ? !!user.tumblr.id : false
       });
-  };
-
-  var getUserData = function(callback) {
-    req.app.db.User.findById(req.user.id)
-      .then(function(user) {
-        outcome.user = user;
-        return callback(null, 'done');
-      })
-      .catch(function(err) {
-        callback(err, null);
-      });
-  };
-
-  var asyncFinally = function(err, results) {
-    if (err) {
-      return next(err);
-    }
-
-    res.render('account/settings/index', {
-      data: {
-        account: escape(JSON.stringify(outcome.account)),
-        user: escape(JSON.stringify(outcome.user))
-      },
-      oauthMessage: oauthMessage,
-      oauthTwitter: !!req.app.config.oauth.twitter.key,
-      oauthTwitterActive: outcome.user.twitter ? !!outcome.user.twitter.id : false,
-      oauthGitHub: !!req.app.config.oauth.github.key,
-      oauthGitHubActive: outcome.user.github ? !!outcome.user.github.id : false,
-      oauthFacebook: !!req.app.config.oauth.facebook.key,
-      oauthFacebookActive: outcome.user.facebook ? !!outcome.user.facebook.id : false,
-      oauthGoogle: !!req.app.config.oauth.google.key,
-      oauthGoogleActive: outcome.user.google ? !!outcome.user.google.id : false,
-      oauthTumblr: !!req.app.config.oauth.tumblr.key,
-      oauthTumblrActive: outcome.user.tumblr ? !!outcome.user.tumblr.id : false
+    })
+    .catch(function(err) {
+      throw err;
     });
-  };
-
-  require('async').parallel([getAccountData, getUserData], asyncFinally);
 };
 
 exports.init = function(req, res, next) {

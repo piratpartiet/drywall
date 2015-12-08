@@ -15,11 +15,10 @@ var request = require('supertest'),
     login = require('./login');
 
 describe('/account/', function() {
-  var app;
-
   // Create a fresh server instance prior to each test
   beforeEach(function() {
-    app = server.setup(express());
+    var app = server.setup(express());
+    // app.config.logging.debug = true;
     this.request = request(app);
   });
 
@@ -62,5 +61,28 @@ describe('/account/', function() {
           done();
         });
     });
+  });
+
+  describe('/account/settings/', function() {
+    it('responds with settings page when logged in', function(done) {
+      var request = this.request;
+      login.login(request, function(agent) {
+        request = request.get('/account/settings/');
+
+        agent.attachCookies(request);
+
+        request
+          .set('Accept', 'text/html')
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              throw err;
+            }
+
+            expect(res.text).to.include('Account Settings');
+            done();
+          });
+      });
+    })
   });
 });
