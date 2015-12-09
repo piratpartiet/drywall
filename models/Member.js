@@ -24,6 +24,12 @@ module.exports = function(sequelize, DataTypes) {
     zip: {
       type: DataTypes.INTEGER
     },
+    municipality: {
+      type: DataTypes.STRING
+    },
+    county: {
+      type: DataTypes.STRING
+    },
     phone: {
       type: DataTypes.STRING
     },
