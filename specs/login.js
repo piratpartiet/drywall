@@ -84,6 +84,7 @@ describe('/login/', function() {
   // Create a fresh server instance prior to each test
   beforeEach(function() {
     var app = server.setup(express());
+    app.db.store.setMaxListeners(0);
     this.request = request(app);
   });
 

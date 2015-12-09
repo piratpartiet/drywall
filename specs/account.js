@@ -19,6 +19,7 @@ describe('/account/', function() {
   beforeEach(function() {
     var app = server.setup(express());
     // app.config.logging.debug = true;
+    app.db.store.setMaxListeners(0);
     this.request = request(app);
   });
 

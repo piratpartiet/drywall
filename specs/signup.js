@@ -15,6 +15,7 @@ describe('/signup/', function() {
   // Create a fresh server instance prior to each test
   beforeEach(function() {
     var app = server.setup(express());
+    app.db.store.setMaxListeners(0);
     this.request = request(app);
   });
 
@@ -35,7 +36,7 @@ describe('/signup/', function() {
 
         expect(res.headers).to.include.key('set-cookie');
         expect(res.text).to.contain('Sign Up');
-        
+
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
         done();
