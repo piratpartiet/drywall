@@ -6,7 +6,7 @@
   app = app || {};
 
   app.Forgot = Backbone.Model.extend({
-    url: '/logg-inn/forgot/',
+    url: '/login/forgot/',
     defaults: {
       success: false,
       errors: [],

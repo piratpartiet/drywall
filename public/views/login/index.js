@@ -6,7 +6,7 @@
   app = app || {};
 
   app.Login = Backbone.Model.extend({
-    url: '/logg-inn/',
+    url: '/login/',
     defaults: {
       errors: [],
       errfor: {},

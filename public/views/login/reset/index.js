@@ -16,7 +16,7 @@
       confirm: ''
     },
     url: function() {
-      return '/logg-inn/reset/'+ this.get('email') +'/'+ this.id +'/';
+      return '/login/reset/'+ this.get('email') +'/'+ this.id +'/';
     }
   });
 

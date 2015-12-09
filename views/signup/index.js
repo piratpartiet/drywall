@@ -142,7 +142,7 @@ exports.signup = function(req, res) {
             locals: {
                 username: req.body.username,
                 email: req.body.email,
-                loginURL: req.protocol + '://' + req.headers.host + '/logg-inn/',
+                loginURL: req.protocol + '://' + req.headers.host + '/login/',
                 projectName: req.app.config.projectName
             },
             success: function(message) {
@@ -187,7 +187,7 @@ exports.signup = function(req, res) {
 exports.signupTwitter = function(req, res, next) {
     req._passport.instance.authenticate('twitter', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/registrering/');
+            return res.redirect('/signup/');
         }
 
         req.app.db.User.findOne({ where: {
@@ -219,7 +219,7 @@ exports.signupTwitter = function(req, res, next) {
 exports.signupGitHub = function(req, res, next) {
     req._passport.instance.authenticate('github', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/registrering/');
+            return res.redirect('/signup/');
         }
 
         req.app.db.User.findOne({ where: {
@@ -250,10 +250,10 @@ exports.signupGitHub = function(req, res, next) {
 
 exports.signupFacebook = function(req, res, next) {
     req._passport.instance.authenticate('facebook', {
-        callbackURL: '/registrering/facebook/callback/'
+        callbackURL: '/signup/facebook/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/registrering/');
+            return res.redirect('/signup/');
         }
 
         req.app.db.User.findOne({ where: {
@@ -283,10 +283,10 @@ exports.signupFacebook = function(req, res, next) {
 
 exports.signupGoogle = function(req, res, next) {
     req._passport.instance.authenticate('google', {
-        callbackURL: '/registrering/google/callback/'
+        callbackURL: '/signup/google/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/registrering/');
+            return res.redirect('/signup/');
         }
 
         req.app.db.User.findOne({ where: {
@@ -316,10 +316,10 @@ exports.signupGoogle = function(req, res, next) {
 
 exports.signupTumblr = function(req, res, next) {
     req._passport.instance.authenticate('tumblr', {
-        callbackURL: '/registrering/tumblr/callback/'
+        callbackURL: '/signup/tumblr/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/registrering/');
+            return res.redirect('/signup/');
         }
 
         if (!info.profile.hasOwnProperty('id')) {
@@ -476,7 +476,7 @@ exports.signupSocial = function(req, res) {
             locals: {
                 username: workflow.user.username,
                 email: req.body.email,
-                loginURL: req.protocol + '://' + req.headers.host + '/logg-inn/',
+                loginURL: req.protocol + '://' + req.headers.host + '/login/',
                 projectName: req.app.config.projectName
             },
             success: function(message) {

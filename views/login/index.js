@@ -152,7 +152,7 @@ exports.login = function(req, res) {
 exports.loginTwitter = function(req, res, next) {
     req._passport.instance.authenticate('twitter', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/logg-inn/');
+            return res.redirect('/login/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -187,7 +187,7 @@ exports.loginTwitter = function(req, res, next) {
 exports.loginGitHub = function(req, res, next) {
     req._passport.instance.authenticate('github', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/logg-inn/');
+            return res.redirect('/login/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -221,10 +221,10 @@ exports.loginGitHub = function(req, res, next) {
 
 exports.loginFacebook = function(req, res, next) {
     req._passport.instance.authenticate('facebook', {
-        callbackURL: '/logg-inn/facebook/callback/'
+        callbackURL: '/login/facebook/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/logg-inn/');
+            return res.redirect('/login/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -258,10 +258,10 @@ exports.loginFacebook = function(req, res, next) {
 
 exports.loginGoogle = function(req, res, next) {
     req._passport.instance.authenticate('google', {
-        callbackURL: '/logg-inn/google/callback/'
+        callbackURL: '/login/google/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/logg-inn/');
+            return res.redirect('/login/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -295,10 +295,10 @@ exports.loginGoogle = function(req, res, next) {
 
 exports.loginTumblr = function(req, res, next) {
     req._passport.instance.authenticate('tumblr', {
-        callbackURL: '/logg-inn/tumblr/callback/'
+        callbackURL: '/login/tumblr/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/logg-inn/');
+            return res.redirect('/login/');
         }
 
         if (!info.profile.hasOwnProperty('id')) {
