@@ -102,5 +102,5 @@ exports.send = function(req, res, next) {
     });
   });
 
-  workflow.emit('response');
+  workflow.emit('validate');
 };
