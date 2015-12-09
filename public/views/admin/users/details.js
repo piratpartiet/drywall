@@ -203,7 +203,7 @@
       }
     },
     accountOpen: function() {
-      location.href = '/admin/konti/'+ this.model.get('roles').account._id +'/';
+      location.href = '/admin/accounts/'+ this.model.get('roles').account._id +'/';
     },
     accountLink: function() {
       this.model.save({

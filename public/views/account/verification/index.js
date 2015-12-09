@@ -6,7 +6,7 @@
   app = app || {};
 
   app.Verify = Backbone.Model.extend({
-    url: '/konto/verifisering/',
+    url: '/account/verifisering/',
     defaults: {
       success: false,
       errors: [],

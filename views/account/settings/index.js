@@ -65,7 +65,7 @@ exports.init = function(req, res, next) {
 exports.connectTwitter = function(req, res, next) {
     req._passport.instance.authenticate('twitter', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/konto/settings/');
+            return res.redirect('/account/settings/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -88,7 +88,7 @@ exports.connectTwitter = function(req, res, next) {
                         return next(err);
                     }
 
-                    res.redirect('/konto/settings/');
+                    res.redirect('/account/settings/');
                 });
             }
         });
@@ -98,7 +98,7 @@ exports.connectTwitter = function(req, res, next) {
 exports.connectGitHub = function(req, res, next) {
     req._passport.instance.authenticate('github', function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/konto/settings/');
+            return res.redirect('/account/settings/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -121,7 +121,7 @@ exports.connectGitHub = function(req, res, next) {
                         return next(err);
                     }
 
-                    res.redirect('/konto/settings/');
+                    res.redirect('/account/settings/');
                 });
             }
         });
@@ -130,10 +130,10 @@ exports.connectGitHub = function(req, res, next) {
 
 exports.connectFacebook = function(req, res, next) {
     req._passport.instance.authenticate('facebook', {
-        callbackURL: '/konto/settings/facebook/callback/'
+        callbackURL: '/account/settings/facebook/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/konto/settings/');
+            return res.redirect('/account/settings/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -156,7 +156,7 @@ exports.connectFacebook = function(req, res, next) {
                         return next(err);
                     }
 
-                    res.redirect('/konto/settings/');
+                    res.redirect('/account/settings/');
                 });
             }
         });
@@ -165,10 +165,10 @@ exports.connectFacebook = function(req, res, next) {
 
 exports.connectGoogle = function(req, res, next) {
     req._passport.instance.authenticate('google', {
-        callbackURL: '/konto/settings/google/callback/'
+        callbackURL: '/account/settings/google/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/konto/settings/');
+            return res.redirect('/account/settings/');
         }
 
         req.app.db.models.User.findOne({ where: {
@@ -191,7 +191,7 @@ exports.connectGoogle = function(req, res, next) {
                         return next(err);
                     }
 
-                    res.redirect('/konto/settings/');
+                    res.redirect('/account/settings/');
                 });
             }
         });
@@ -200,10 +200,10 @@ exports.connectGoogle = function(req, res, next) {
 
 exports.connectTumblr = function(req, res, next) {
     req._passport.instance.authenticate('tumblr', {
-        callbackURL: '/konto/settings/tumblr/callback/'
+        callbackURL: '/account/settings/tumblr/callback/'
     }, function(err, user, info) {
         if (!info || !info.profile) {
-            return res.redirect('/konto/settings/');
+            return res.redirect('/account/settings/');
         }
 
         if (!info.profile.hasOwnProperty('id')) {
@@ -230,7 +230,7 @@ exports.connectTumblr = function(req, res, next) {
                         return next(err);
                     }
 
-                    res.redirect('/konto/settings/');
+                    res.redirect('/account/settings/');
                 });
             }
         });
@@ -247,7 +247,7 @@ exports.disconnectTwitter = function(req, res, next) {
             return next(err);
         }
 
-        res.redirect('/konto/settings/');
+        res.redirect('/account/settings/');
     });
 };
 
@@ -261,7 +261,7 @@ exports.disconnectGitHub = function(req, res, next) {
             return next(err);
         }
 
-        res.redirect('/konto/settings/');
+        res.redirect('/account/settings/');
     });
 };
 
@@ -275,7 +275,7 @@ exports.disconnectFacebook = function(req, res, next) {
             return next(err);
         }
 
-        res.redirect('/konto/settings/');
+        res.redirect('/account/settings/');
     });
 };
 
@@ -289,7 +289,7 @@ exports.disconnectGoogle = function(req, res, next) {
             return next(err);
         }
 
-        res.redirect('/konto/settings/');
+        res.redirect('/account/settings/');
     });
 };
 
@@ -303,7 +303,7 @@ exports.disconnectTumblr = function(req, res, next) {
             return next(err);
         }
 
-        res.redirect('/konto/settings/');
+        res.redirect('/account/settings/');
     });
 };
 

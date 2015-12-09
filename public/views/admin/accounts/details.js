@@ -8,7 +8,7 @@
   app.Account = Backbone.Model.extend({
     idAttribute: '_id',
     url: function() {
-      return '/admin/konti/'+ this.id +'/';
+      return '/admin/accounts/'+ this.id +'/';
     }
   });
 
@@ -20,7 +20,7 @@
       errfor: {}
     },
     url: function() {
-      return '/admin/konti/'+ app.mainView.model.id +'/';
+      return '/admin/accounts/'+ app.mainView.model.id +'/';
     }
   });
 
@@ -38,7 +38,7 @@
       zip: ''
     },
     url: function() {
-      return '/admin/konti/'+ app.mainView.model.id +'/';
+      return '/admin/accounts/'+ app.mainView.model.id +'/';
     },
     parse: function(response) {
       if (response.account) {
@@ -61,7 +61,7 @@
       newUsername: ''
     },
     url: function() {
-      return '/admin/konti/'+ app.mainView.model.id +'/user/';
+      return '/admin/accounts/'+ app.mainView.model.id +'/user/';
     },
     parse: function(response) {
       if (response.account) {
@@ -82,7 +82,7 @@
       userCreated: {}
     },
     url: function() {
-      return '/admin/konti/'+ app.mainView.model.id +'/notes/'+ (this.isNew() ? '' : this.id +'/');
+      return '/admin/accounts/'+ app.mainView.model.id +'/notes/'+ (this.isNew() ? '' : this.id +'/');
     },
     parse: function(response) {
       if (response.account) {
@@ -107,7 +107,7 @@
       name: '',
     },
     url: function() {
-      return '/admin/konti/'+ app.mainView.model.id +'/status/'+ (this.isNew() ? '' : this.id +'/');
+      return '/admin/accounts/'+ app.mainView.model.id +'/status/'+ (this.isNew() ? '' : this.id +'/');
     },
     parse: function(response) {
       if (response.account) {
@@ -200,7 +200,7 @@
         this.model.destroy({
           success: function(model, response) {
             if (response.success) {
-              location.href = '/admin/konti/';
+              location.href = '/admin/accounts/';
             }
             else {
               app.deleteView.model.set(response);

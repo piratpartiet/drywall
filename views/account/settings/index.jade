@@ -1,4 +1,4 @@
-extends ../../../layouts/konto
+extends ../../../layouts/account
 
 block head
   title Account Settings
@@ -26,47 +26,47 @@ block body
               |#{oauthMessage}
         if oauthTwitter
           if oauthTwitterActive
-            a.btn.btn-block.btn-danger(href='/konto/settings/twitter/disconnect/')
+            a.btn.btn-block.btn-danger(href='/account/settings/twitter/disconnect/')
               i.fa.fa-twitter.fa-lg
               |  Disconnect Twitter
           else
-            a.btn.btn-block.btn-default(href='/konto/settings/twitter/')
+            a.btn.btn-block.btn-default(href='/account/settings/twitter/')
               i.fa.fa-twitter.fa-lg
               |  Connect Twitter
         if oauthGitHub
           if oauthGitHubActive
-            a.btn.btn-block.btn-danger(href='/konto/settings/github/disconnect/')
+            a.btn.btn-block.btn-danger(href='/account/settings/github/disconnect/')
               i.fa.fa-github.fa-lg
               |  Disconnect GitHub
           else
-            a.btn.btn-block.btn-default(href='/konto/settings/github/')
+            a.btn.btn-block.btn-default(href='/account/settings/github/')
               i.fa.fa-github.fa-lg
               |  Connect GitHub
         if oauthFacebook
           if oauthFacebookActive
-            a.btn.btn-block.btn-danger(href='/konto/settings/facebook/disconnect/')
+            a.btn.btn-block.btn-danger(href='/account/settings/facebook/disconnect/')
               i.fa.fa-facebook-square.fa-lg
               |  Disconnect Facebook
           else
-            a.btn.btn-block.btn-default(href='/konto/settings/facebook/')
+            a.btn.btn-block.btn-default(href='/account/settings/facebook/')
               i.fa.fa-facebook-square.fa-lg
               |  Connect Facebook
         if oauthGoogle
           if oauthGoogleActive
-            a.btn.btn-block.btn-danger(href='/konto/settings/google/disconnect/')
+            a.btn.btn-block.btn-danger(href='/account/settings/google/disconnect/')
               i.fa.fa-google-plus-square.fa-lg
               |  Disconnect Google
           else
-            a.btn.btn-block.btn-default(href='/konto/settings/google/')
+            a.btn.btn-block.btn-default(href='/account/settings/google/')
               i.fa.fa-google-plus-square.fa-lg
               |  Connect Google
         if oauthTumblr
           if oauthTumblrActive
-            a.btn.btn-block.btn-danger(href='/konto/settings/tumblr/disconnect/')
+            a.btn.btn-block.btn-danger(href='/account/settings/tumblr/disconnect/')
               i.fa.fa-tumblr-square.fa-lg
               |  Disconnect Tumblr
           else
-            a.btn.btn-block.btn-default(href='/konto/settings/tumblr/')
+            a.btn.btn-block.btn-default(href='/account/settings/tumblr/')
               i.fa.fa-tumblr-square.fa-lg
               |  Connect Tumblr
 

@@ -52,7 +52,7 @@
       },{
         success: function(model, response) {
           if (response.success) {
-            location.href = '/konto/';
+            location.href = '/account/';
           }
           else {
             model.set(response);
