@@ -23,7 +23,7 @@ describe('/', function() {
           throw err;
         }
 
-        expect(res.text).to.contain('Your Node.js website and user system is running');
+        expect(res.text).to.contain('Piratpartiets medlemsdatabase')
         done();
       });
     });
