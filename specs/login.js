@@ -26,7 +26,7 @@ function getLoginForm(request, done) {
       }
 
       expect(res.headers).to.include.key('set-cookie');
-      expect(res.text).to.contain('Sign Up');
+      expect(res.text).to.contain('Bli medlem');
 
       var cookie = res.headers['set-cookie'];
       var csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
@@ -105,7 +105,7 @@ describe('/login/', function() {
         expect(res.headers).to.include.key('set-cookie');
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
-        expect(res.text).to.contain('Sign Up');
+        expect(res.text).to.contain('Bli medlem');
         done();
       });
   });
