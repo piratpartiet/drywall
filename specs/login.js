@@ -131,4 +131,58 @@ describe('/login/', function() {
       done();
     });
   });
+
+  describe('/login/forgot/', function() {
+    var csrfToken;
+
+    it('responds with the forgot password form', function(done) {
+      this.request
+        .get('/login/forgot/')
+        .set('Accept', 'text/html')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            throw err;
+          }
+
+          expect(res.headers).to.include.key('set-cookie');
+          expect(res.text).to.contain('Forgot Your Password?');
+
+          cookie = res.headers['set-cookie'];
+          csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
+
+          agent.saveCookies(res);
+
+          done();
+        });
+    });
+
+    it('is possible to reset password', function(done) {
+      var request = this.request;
+
+      createUser(function(credentials) {
+        request = request.post('/login/forgot/');
+
+        agent.attachCookies(request);
+
+        request
+          .send({ email: credentials.email })
+          .set('Accept', 'application/json')
+          .set('X-Csrf-Token', csrfToken)
+          .expect(200)
+          .end(function(err, res) {
+            if (err) {
+              throw err;
+            }
+
+            console.log(res.text);
+
+            var result = JSON.parse(res.text);
+            expect(result.success).to.be.true;
+            agent.saveCookies(res);
+            done();
+          });
+      });
+    });
+  });
 });
