@@ -175,8 +175,6 @@ describe('/login/', function() {
               throw err;
             }
 
-            console.log(res.text);
-
             var result = JSON.parse(res.text);
             expect(result.success).to.be.true;
             agent.saveCookies(res);
