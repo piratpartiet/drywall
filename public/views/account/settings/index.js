@@ -5,7 +5,7 @@
 
   app = app || {};
 
-  app.Account = Backbone.Model.extend({
+  app.Member = Backbone.Model.extend({
     idAttribute: 'id',
     url: '/account/settings/'
   });
@@ -31,7 +31,7 @@
     url: '/account/settings/',
     parse: function(response) {
       if (response.account) {
-        app.mainView.account.set(response.account);
+        app.mainView.member.set(response.account);
         delete response.account;
       }
 
@@ -88,19 +88,25 @@
     initialize: function() {
       this.model = new app.Details();
       this.syncUp();
-      this.listenTo(app.mainView.account, 'change', this.syncUp);
+      this.listenTo(app.mainView.member, 'change', this.syncUp);
       this.listenTo(this.model, 'sync', this.render);
       this.render();
     },
     syncUp: function() {
+      var name = app.mainView.member.get('name') || {
+        first: '',
+        middle: '',
+        last: ''
+      };
+
       this.model.set({
-        id: app.mainView.account.id,
-        first: app.mainView.account.get('name').first,
-        middle: app.mainView.account.get('name').middle,
-        last: app.mainView.account.get('name').last,
-        company: app.mainView.account.get('company'),
-        phone: app.mainView.account.get('phone'),
-        zip: app.mainView.account.get('zip')
+        id: app.mainView.member.id,
+        first: name.first,
+        middle: name.middle,
+        last: name.last,
+        company: app.mainView.member.get('company'),
+        phone: app.mainView.member.get('phone'),
+        zip: app.mainView.member.get('zip')
       });
     },
     render: function() {
@@ -193,7 +199,7 @@
     el: '.page .container',
     initialize: function() {
       app.mainView = this;
-      this.account = new app.Account( JSON.parse( unescape($('#data-account').html()) ) );
+      this.member = new app.Member( JSON.parse( unescape($('#data-member').html()) ) );
       this.user = new app.User( JSON.parse( unescape($('#data-user').html()) ) );
 
       app.detailsView = new app.DetailsView();

@@ -3,9 +3,7 @@
  */
 var request = require('supertest'),
     express = require('express'),
-    db = require('./../models'),
     chai = require('chai'),
-    chaiAsPromised = require('chai-as-promised'),
     expect = chai.expect,
     server = require('../app.js');
 
@@ -21,6 +19,10 @@ describe('/', function() {
       .set('Accept', 'text/html')
       .expect(200)
       .end(function(err, res) {
+        if (err) {
+          throw err;
+        }
+
         expect(res.text).to.contain('Your Node.js website and user system is running');
         done();
       });

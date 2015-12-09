@@ -32,9 +32,11 @@
     "passport-twitter": "^1.x.x",
     "pg": "^4.4.x",
     "pg-hstore": "^2.3.x",
+    "printf": "^0.2.3",
     "sequelize": "^3.2.x",
     "serve-static": "^1.9.x",
-    "underscore": "^1.x.x"
+    "underscore": "^1.x.x",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "bootstrap": "^3.x.x",
@@ -62,6 +64,7 @@
     "respond.js": "^1.x.x",
     "sequelize-fixtures": "^0.4.7",
     "sinon": "^1.16.1",
+    "superagent": "^1.5.0",
     "supertest": "^1.1.0"
   }
 }

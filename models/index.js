@@ -1,14 +1,14 @@
 'use strict';
 
 var config = require('../config'),
-  env = process.env.NODE_ENV || 'development',
-  dbConfig = config.db[env],
-  logging = require('../util/logging')(config),
-  fs = require('fs'),
-  path = require('path'),
-  Sequelize = require('sequelize'),
-  basename = path.basename(module.filename),
-  db = {};
+    env = process.env.NODE_ENV || 'development',
+    dbConfig = config.db[env],
+    logging = require('../util/logging')(config),
+    fs = require('fs'),
+    path = require('path'),
+    Sequelize = require('sequelize'),
+    basename = path.basename(module.filename),
+    db = {};
 
 // TODO: Figure out a more elegant way to do this. @asbjornu
 dbConfig.logging = dbConfig.logging ? logging.debug : false;
@@ -39,6 +39,7 @@ db.User.sync(dbConfig).then(function() {
   db.Payment.belongsTo(db.User);
   db.RoleAssignment.belongsTo(db.User);
   db.User.hasMany(db.RoleAssignment);
+  db.User.hasOne(db.Member);
 
   db.Member.sync(dbConfig);
   db.Message.sync(dbConfig);
