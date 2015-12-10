@@ -135,7 +135,7 @@ exports.login = function(req, res) {
               };
               req.app.db.LoginAttempt.create(fieldsToSet)
                   .then(function(doc) {
-                      workflow.outcome.errors.push('Brukernavn/passord stemmer ikke, eller accounten er stengt');
+                      workflow.outcome.errors.push('Brukernavn/passord stemmer ikke, eller kontoen er stengt');
                       return workflow.emit('response');
                   })
                   .catch(function(err) {
