@@ -24,7 +24,7 @@ def inserts_new_to_old():
     cnt=0
     for row in new_rows:
         sql(old_conn, "insert into members (mnr,navn,fdato,adresse,postnummer,epost,kommune,fylke,innmeldt) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", params=list(row))
-        sql(old_conn, "update members set postnummer=(select post.poststed from post where post.postnummer=members.postnummer) where created_at=now()") /* will this work? */
+        sql(old_conn, "update members set postnummer=(select post.poststed from post where post.postnummer=members.postnummer) where created_at=now()") ## will this work? 
     sql(old_conn, "insert into member_sync (op, started, finished, num_rows) values ('ins_new2old', now(), %s, %s)", params=[datetime.datetime.now(), len(new_rows)])
     old_conn.commit()
     new_conn.commit()
@@ -45,12 +45,12 @@ def inserts_old_to_new():
             zip=0
         else:
             zip=int(zip)
-        sql(new_conn, "insert into member (member_number, last_name, address, zip, member_since, municipality, county, user_id, created_at) values (%s, %s, %s, %s, %s, %s)", params=[row[1], row[2], row[4], zip, row[10], row[8], row[9], user_id, row[17]])
+        sql(new_conn, "insert into member (member_number, last_name, address, zip, member_since, municipality, county, user_id, created_at) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)", params=[row[1], row[2], row[4], zip, row[10], row[8], row[9], user_id, row[17]])
 
 	## historiske kontingentinnbetalinger
         if row[14]:
             sql(new_conn, "insert into payment (payment_date, purpose, user_id) values (%s, 1, %s)", params=['2013-01-01', user_id])
-	if row[15]:
+        if row[15]:
             sql(new_conn, "insert into payment (payment_date, purpose, user_id) values (%s, 1, %s)", params=['2014-01-01', user_id])
         if row[16]:
             sql(new_conn, "insert into payment (payment_date, purpose, user_id) values (%s, 1, %s)", params=['2015-01-01', user_id])
