@@ -25,7 +25,9 @@ exports.setup = function(app) {
 
   //setup the web server
   app.server = http.createServer(app);
-  app.db = models;
+  app.db = _.extend(models, {
+    store: sequelizeStore
+  });
 
   //settings
   app.disable('x-powered-by');
@@ -80,7 +82,7 @@ exports.setup = function(app) {
   require('./routes')(app, passport);
 
   //custom (friendly) error handler
-  app.use(require('./views/http/index').http500);
+  // app.use(require('./views/http/index').http500);
 
   //setup utilities
   app.utility = _.extend(logging, {
