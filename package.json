@@ -3,7 +3,7 @@
   "version": "0.16.6",
   "private": true,
   "scripts": {
-    "start": "grunt",
+    "start": "pg_ctl -D /usr/local/var/postgres start && grunt",
     "test": "NODE_ENV=test mocha specs",
     "update": "david update"
   },
