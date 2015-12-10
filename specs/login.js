@@ -116,7 +116,7 @@ describe('/login/', function() {
         }
 
         expect(res.headers).to.include.key('set-cookie');
-        expect(res.text).to.contain('Sign Up');
+        expect(res.text).to.contain('Bli medlem');
 
         cookie = res.headers['set-cookie'];
         csrfToken = cookie[1].match(/_csrfToken=([^;]*);/)[1];
