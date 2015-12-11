@@ -91,8 +91,6 @@ describe('/account/', function() {
             // TODO: Don't assume the first cookie will be the CSRF token. Iterate and match all. @asbjornu
             csrfToken = cookie[0].match(/_csrfToken=([^;]*);/)[1];
 
-            console.log(csrfToken);
-
             agent.saveCookies(res);
 
             done();

@@ -308,32 +308,43 @@ exports.update = function(req, res, next) {
   });
 
   workflow.on('patchAccount', function() {
-    var fieldsToSet = {
-      name: {
-        first: req.body.first,
-        middle: req.body.middle,
-        last: req.body.last,
-        full: req.body.first + ' ' + req.body.last
-      },
-      company: req.body.company,
-      phone: req.body.phone,
-      zip: req.body.zip
-    };
-
-    req.app.db.Member
-      .findById({
-        where: {
-          'user_id': req.user.id
+    req.app.db.User
+      .findById(req.user.id)
+      .then(function(user) {
+        if (!user) {
+          req.app.utility.debug('account.settings.update.patchAccount.findById: User not found');
+          workflow.outcome.errors.push('User not found');
+          return workflow.emit('response');
         }
-      })
-      .then(function(account) {
-        account.updateAttributes(fieldsToSet)
-          .then(function(account) {
-            workflow.outcome.account = account;
+
+        user.getMember().then(function(member) {
+          if (!member) {
+            req.app.utility.debug('account.settings.update.patchAccount.user.getMember: Member not found');
+            workflow.outcome.errors.push('Member not found');
             return workflow.emit('response');
+          }
+
+          member.firstName = req.body.first;
+          member.lastName = req.body.last;
+          member.name.full = req.body.first + ' ' + req.body.last;
+          member.company = req.body.company;
+          member.phone = req.body.phone;
+          member.zip = req.body.zip;
+
+          member.save().then(function(member) {
+            workflow.outcome.member = member;
+            return workflow.emit('response');
+          }).catch(function(err) {
+            req.app.utility.error('account.settings.update.patchAccount.user.member.save:', err);
+            return workflow.emit('exception', err);
           });
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.update.patchAccount.user.getMember:', err);
+          return workflow.emit('exception', err);
+        });
       })
       .catch(function(err) {
+        req.app.utility.error('account.settings.update.patchAccount.user:', err);
         return workflow.emit('exception', err);
       });
   });
