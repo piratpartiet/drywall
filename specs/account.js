@@ -124,7 +124,7 @@ describe('/account/', function() {
             }
 
             var result = JSON.parse(res.text);
-            expect(result.success).to.be.true;
+            expect(result.success, res.text).to.be.true;
             done();
           });
     })
