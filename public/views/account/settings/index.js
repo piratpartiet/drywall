@@ -126,6 +126,8 @@
         company: this.$el.find('[name="company"]').val(),
         phone: this.$el.find('[name="phone"]').val(),
         zip: this.$el.find('[name="zip"]').val()
+      }, {
+        type: 'put'
       });
     }
   });
