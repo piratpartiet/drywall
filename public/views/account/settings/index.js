@@ -30,9 +30,9 @@
     },
     url: '/account/settings/',
     parse: function(response) {
-      if (response.account) {
-        app.mainView.member.set(response.account);
-        delete response.account;
+      if (response.member) {
+        app.mainView.member.set(response.member);
+        delete response.member;
       }
 
       return response;
@@ -81,7 +81,7 @@
 
   app.DetailsView = Backbone.View.extend({
     el: '#details',
-    template: _.template( $('#tmpl-details').html() ),
+    template: _.template($('#tmpl-details').html()),
     events: {
       'click .btn-update': 'update'
     },
@@ -110,11 +110,11 @@
       });
     },
     render: function() {
-      this.$el.html(this.template( this.model.attributes ));
+      this.$el.html(this.template(this.model.attributes));
 
       for (var key in this.model.attributes) {
         if (this.model.attributes.hasOwnProperty(key)) {
-          this.$el.find('[name="'+ key +'"]').val(this.model.attributes[key]);
+          this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
         }
       }
     },
@@ -134,7 +134,7 @@
 
   app.IdentityView = Backbone.View.extend({
     el: '#identity',
-    template: _.template( $('#tmpl-identity').html() ),
+    template: _.template($('#tmpl-identity').html()),
     events: {
       'click .btn-update': 'update'
     },
@@ -153,11 +153,11 @@
       });
     },
     render: function() {
-      this.$el.html(this.template( this.model.attributes ));
+      this.$el.html(this.template(this.model.attributes));
 
       for (var key in this.model.attributes) {
         if (this.model.attributes.hasOwnProperty(key)) {
-          this.$el.find('[name="'+ key +'"]').val(this.model.attributes[key]);
+          this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
         }
       }
     },
@@ -171,21 +171,23 @@
 
   app.PasswordView = Backbone.View.extend({
     el: '#password',
-    template: _.template( $('#tmpl-password').html() ),
+    template: _.template($('#tmpl-password').html()),
     events: {
       'click .btn-password': 'password'
     },
     initialize: function() {
-      this.model = new app.Password({ id: app.mainView.user.id });
+      this.model = new app.Password({
+        id: app.mainView.user.id
+      });
       this.listenTo(this.model, 'sync', this.render);
       this.render();
     },
     render: function() {
-      this.$el.html(this.template( this.model.attributes ));
+      this.$el.html(this.template(this.model.attributes));
 
       for (var key in this.model.attributes) {
         if (this.model.attributes.hasOwnProperty(key)) {
-          this.$el.find('[name="'+ key +'"]').val(this.model.attributes[key]);
+          this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
         }
       }
     },
@@ -201,8 +203,8 @@
     el: '.page .container',
     initialize: function() {
       app.mainView = this;
-      this.member = new app.Member( JSON.parse( unescape($('#data-member').html()) ) );
-      this.user = new app.User( JSON.parse( unescape($('#data-user').html()) ) );
+      this.member = new app.Member(JSON.parse(unescape($('#data-member').html())));
+      this.user = new app.User(JSON.parse(unescape($('#data-user').html())));
 
       app.detailsView = new app.DetailsView();
       app.identityView = new app.IdentityView();

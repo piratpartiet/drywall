@@ -1,7 +1,8 @@
 'use strict';
 
 var renderSettings = function(req, res, next, oauthMessage) {
-  req.app.db.User.findById(req.user.id)
+  req.app.db.User
+    .findById(req.user.id)
     .then(function(user) {
       var member = user.getMember();
 
