@@ -326,7 +326,6 @@ exports.update = function(req, res, next) {
 
           member.firstName = req.body.first;
           member.lastName = req.body.last;
-          member.name.full = req.body.first + ' ' + req.body.last;
           member.company = req.body.company;
           member.phone = req.body.phone;
           member.zip = req.body.zip;
