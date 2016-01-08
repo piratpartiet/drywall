@@ -1,0 +1,28 @@
+#!upstart
+description "Piratpartiets Medlemsportal"
+author "Asbjørn et al"
+
+start on startup
+stop on shutdown
+
+env APPNAME="medlem.piratpartiet.no"
+
+script
+    export HOME="/var/www/$APPNAME"
+    echo $$ > /var/run/$APPNAME.pid
+
+/bin/bash <<EOT
+cd /var/www/$APPNAME
+exec sudo -u drywall /usr/local/bin/npm start >> /var/log/$APPNAME.log
+EOT
+
+end script
+
+pre-start script
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/$APPNAME.log
+end script
+
+pre-stop script
+    rm /var/run/$APPNAME.pid
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/$APPNAME.log
+end script
