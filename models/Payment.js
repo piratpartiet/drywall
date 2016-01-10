@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
     paymentConnection: {
       type: DataTypes.STRING,
       field: 'receipient_connection'
-    }
+    },
     txid: DataTypes.STRING,
     payment_status: DataTypes.INTEGER
   }, {
