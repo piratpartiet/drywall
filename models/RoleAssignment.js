@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
     rolePrettyTitle: {
       type: DataTypes.STRING,
       attribute: 'role_pretty_title'
-    }
+    },
     groupTitle: {
       type: DataTypes.STRING,
       attribute: 'group_title'
