@@ -6,21 +6,26 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATEONLY,
       field: 'payment_date'
     },
-    NOKAmount: {
+    AmountBC: {
       type: DataTypes.INTEGER,
-      field: 'nok_amount'
+      field: 'amount_bc'
     },
-    actualAmount: {
+    AmountRC: {
       type: DataTypes.INTEGER,
-      field: 'actual_amount'
+      field: 'amount_rc'
     },
     currency: DataTypes.STRING,
     purpose: DataTypes.INTEGER,
-    receipientAddress: {
+    paymentAddress: {
       type: DataTypes.STRING,
-      field: 'receipient_address'
+      field: 'payment_address'
     },
-    txid: DataTypes.STRING
+    paymentConnection: {
+      type: DataTypes.STRING,
+      field: 'receipient_connection'
+    }
+    txid: DataTypes.STRING,
+    payment_status: DataTypes.INTEGER
   }, {
     freezeTableName: false,
     underscored: true,

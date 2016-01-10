@@ -1,15 +1,17 @@
 'use strict';
 
 /*
+Se også README
+
 (belongs to users - specified in index.js)
 
 Examples:
 
 Piratpartiets admiral:
-{ role_title: 'leder', group_title: 'Sentralstyret', group_type: 0 }
+{ role_title: 'leder', role_pretty_title: 'admiral', group_title: 'Sentralstyret', group_type: 0 }
 
 Styremedlem i Oslo piratparti:
-{ role_title: 'styremedlem', group_title: 'Oslo Piratparti', group_type: 1 }
+{ role_title: 'styremedlem', group_title: 'Oslo', group_type: 30 }
 
 etc.
 
@@ -23,6 +25,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       attribute: 'role_title'
     },
+    rolePrettyTitle: {
+      type: DataTypes.STRING,
+      attribute: 'role_pretty_title'
+    }
     groupTitle: {
       type: DataTypes.STRING,
       attribute: 'group_title'
