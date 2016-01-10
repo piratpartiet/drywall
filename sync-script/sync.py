@@ -16,12 +16,13 @@ def pg_conn(database):
 
 
 ## TODO!  this is not tested!
-def inserts_new_to_old():
+def inserts_from_new_to_old():
     old_conn = pg_conn('memberdb')
     new_conn = pg_conn('drywall')
     last_run = sql(old_conn, "select started from member_sync where is_current and op='ins_new2old'")[0]
-    new_rows = sql(new_conn, "select member_number,first_name||' '||last_name,coalesce(date_birth,date '1900-01-01'+(year_birth-1900)*interval '1 year'),address,zip,email,municipality,county,(select max(payment_date) from payment where user_id=login_user.id and purpose=1) from login_user join member on user_id=login_user.id where exists (select * from payment where user_id=login_user.id and purpose=1 and created_at>%s and payment_date>=%s) and not exists (select * from payment where user_id=login_user.id and payment_date<%s and purpose=1)", [last_run, last_run])
+    new_rows = sql(new_conn, "select member_number,first_name||' '||last_name,coalesce(date_birth,date '1900-01-01'+(year_birth-1900)*interval '1 year'),address,zip,email,municipality,county,(select max(payment_date) from payment where user_id=login_user.id and purpose=1) from login_user join member on user_id=login_user.id where exists (select * from payment where user_id=login_user.id and purpose=1 and created_at>%s and payment_date>=%s) and not exists (select * from payment where user_id=login_user.id and payment_date<%s and purpose=1)", [last_run, last_run, last_run])
     cnt=0
+    return ## TODO!
     for row in new_rows:
         sql(old_conn, "insert into members (mnr,navn,fdato,adresse,postnummer,epost,kommune,fylke,innmeldt) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", params=list(row))
         sql(old_conn, "update members set postnummer=(select post.poststed from post where post.postnummer=members.postnummer) where created_at=now()") ## will this work? 
@@ -29,7 +30,7 @@ def inserts_new_to_old():
     old_conn.commit()
     new_conn.commit()
 
-def inserts_old_to_new():
+def inserts_from_old_to_new():
     old_conn = pg_conn('memberdb')
     new_conn = pg_conn('drywall')
     last_run = sql(old_conn, "select started from member_sync where is_current and op='ins_old2new'")[0]
@@ -61,3 +62,4 @@ def inserts_old_to_new():
 
 
 inserts_from_old_to_new()
+inserts_from_new_to_old()
