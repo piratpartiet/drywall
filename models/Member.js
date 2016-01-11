@@ -50,6 +50,10 @@ module.exports = function(sequelize, DataTypes) {
     memberSince: {
       type: DataTypes.DATE,
       field: 'member_since'
+    },
+    lastMembershipFeePaid: {
+      type: DataTypes.DATE,
+      field: 'last_membership_fee_paid'
     }
   }, {
     freezeTableName: false,
