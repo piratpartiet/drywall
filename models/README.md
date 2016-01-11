@@ -1,3 +1,5 @@
+/*
+
 Dokumentasjon av databasestrukturen
 
 User
@@ -61,13 +63,13 @@ Tabell for innbetalinger.
 * payment_connection - kontonummer pengene har kommet inn på, evt hvilken wallet ved bitcoininnbetaling, hvem som har mottatt kontantene ved kontantinnbetaling, etc.
 * txid - transaksjons-id.
 * payment_status - her bør vi kanskje også ha en ekstra tabell for å holde rede på konstantene.  Mellomrom i nummerserien gir mulighet til å tweake i ettertid, samt legge til statuskoder som er 
-** 0 - betalingen ikke initiert enda; raden er skrevet til databasen, men vi har ikke sendt noe regning e.l. til kunden enda.
-** 10 - kunden har fått regning, evt webkredittkortbetalingsgreie er initiert.
-** 20-30 - pga teknisk feil har vi ingen oversikt over om beløpet er betalt eller ikke.
-** 40-60 - innbetalingen har feilet, f.eks. ikke dekning på kredittkort.  40 = generell/ukjent feil, 41 = feil beløp.
-** 60 - innbetalingen ser ut til å ha kommet igjennom.  Dette inkluderer en 0-conf bitcointransaksjon, samt en vellykket kredittkortbetaling over webgrensesnittet.
-** 70 - innbetalingen bekreftet.  Kredittkorttransaksjonen har kommet med på kontoutskrift, minst én bekreftelse på en bitcointransaksjon.
-** 80 - innbetalingen endelig bekreftet.  En kredittkorttransaksjon ligger såpass mange måneder tilbake i tid at chargeback ikke er aktuelt.  En bitcointransaksjon har minst 6 bekreftelser.
+  * 0 - betalingen ikke initiert enda; raden er skrevet til databasen, men vi har ikke sendt noe regning e.l. til kunden enda.
+  * 10 - kunden har fått regning, evt webkredittkortbetalingsgreie er initiert.
+  * 20-30 - pga teknisk feil har vi ingen oversikt over om beløpet er betalt eller ikke.
+  * 40-60 - innbetalingen har feilet, f.eks. ikke dekning på kredittkort.  40 = generell/ukjent feil, 41 = feil beløp.
+  * 60 - innbetalingen ser ut til å ha kommet igjennom.  Dette inkluderer en 0-conf bitcointransaksjon, samt en vellykket kredittkortbetaling over webgrensesnittet.
+  * 70 - innbetalingen bekreftet.  Kredittkorttransaksjonen har kommet med på kontoutskrift, minst én bekreftelse på en bitcointransaksjon.
+  * 80 - innbetalingen endelig bekreftet.  En kredittkorttransaksjon ligger såpass mange måneder tilbake i tid at chargeback ikke er aktuelt.  En bitcointransaksjon har minst 6 bekreftelser.
 
 Role assignment
 ===============
@@ -76,17 +78,19 @@ Rolletildelinger - for å vises på websider, samt gi admintilganger til systeme
 * role_title - kan bl.a. være 'leder', 'styremedlem', 'kasserer', m.m.  Valgt å være tekstfelt for enkelhet og fleksibilitetens skyld, men det er viktig at vi er konsistente.  Muligens at vi heller burde hatt en int og spekke ut en egen tabell med mulige roller.
 * role_pretty_title - kan være f.eks. "admiral", "kaptein", "førstestyrkvinne", etc.  Tittel som skal være synlig utad.  For maskinell behandling benyttes alltid role_title.
 * group_title - gruppetittel, f.eks. "Sentralstyret", "Oslo", "Sekretariatet", etc.
-** Fylkeslag: Alltid navnet på fylket.
-** Sammenslåtte fylkeslag: fylke+fylke
-** Kommunelag (samt bydelslag i Oslo): Fylke/Kommune.  F.eks. Oslo/Østensjø
-** Regionlag: Fylke/fritekstnavn på regionen, f.eks. "Akershus/Follo" eller "Akershus+Oslo/Groruddalen og Lørenskog".
+  * Fylkeslag: Alltid navnet på fylket.
+  * Sammenslåtte fylkeslag: fylke+fylke
+  * Kommunelag (samt bydelslag i Oslo): Fylke/Kommune.  F.eks. Oslo/Østensjø
+  * Regionlag: Fylke/fritekstnavn på regionen, f.eks. "Akershus/Follo" eller "Akershus+Oslo/Groruddalen og Lørenskog".
 * group_type:
-** 0: sentralstyret
-** 10: grupper/komitéer på sentralt nivå, f.eks "sekretariatet", "tech"
-** 20: regionlag/landsdelslag som dekker mer enn ett fylke, f.eks. "Aust-Agder+Vest-Agder"
-** 30: rene fylkeslag
-** 40: regionlag som går på kryss av fylkesgrenser, f.eks. "Akershus+Oslo/Groruddalen+Lørenskog".
-** 50: sammenslåtte kommunelag, f.eks. "Akershus/Asker+Bærum".
-** 60: kommunelag (samt bydelslag i Oslo)
-** 70: bydelslag i store kommuner utenom Oslo, f.eks. "Troms/Tromsø/Kvaløya"
-** 80: andre grupper/komitéer på lokalt nivå, f.eks. "Oslo/Tech".
+  * 0: sentralstyret
+  * 10: grupper/komitéer på sentralt nivå, f.eks "sekretariatet", "tech"
+  * 20: regionlag/landsdelslag som dekker mer enn ett fylke, f.eks. "Aust-Agder+Vest-Agder"
+  * 30: rene fylkeslag
+  * 40: regionlag som går på kryss av fylkesgrenser, f.eks. "Akershus+Oslo/Groruddalen+Lørenskog".
+  * 50: sammenslåtte kommunelag, f.eks. "Akershus/Asker+Bærum".
+  * 60: kommunelag (samt bydelslag i Oslo)
+  * 70: bydelslag i store kommuner utenom Oslo, f.eks. "Troms/Tromsø/Kvaløya"
+  * 80: andre grupper/komitéer på lokalt nivå, f.eks. "Oslo/Tech".
+
+*/
