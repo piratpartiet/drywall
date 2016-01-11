@@ -17,7 +17,7 @@ var sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.pas
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
-    return (file.indexOf('.') !== 0) && (file !== basename);
+    return (file.indexOf('.') !== 0) && (file !== basename) && file.endsWith('.js');
   })
   .forEach(function(file) {
     var model = sequelize['import'](path.join(__dirname, file));
