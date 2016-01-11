@@ -1,5 +1,3 @@
-/*
-
 Dokumentasjon av databasestrukturen
 
 User
@@ -92,5 +90,3 @@ Rolletildelinger - for å vises på websider, samt gi admintilganger til systeme
   * 60: kommunelag (samt bydelslag i Oslo)
   * 70: bydelslag i store kommuner utenom Oslo, f.eks. "Troms/Tromsø/Kvaløya"
   * 80: andre grupper/komitéer på lokalt nivå, f.eks. "Oslo/Tech".
-
-*/
