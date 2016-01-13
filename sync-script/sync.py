@@ -24,9 +24,6 @@ def inserts_from_new_to_old():
     cnt=0
     return ## TODO!
     for row in new_rows:
-        exists = sql(old_conn, "select * from members where mnr=%s", params=[row[1]])
-        if exists:
-            continue
         sql(old_conn, "insert into members (created_at,mnr,navn,fdato,adresse,postnummer,epost,kommune,fylke,innmeldt) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", params=list(row))
         sql(old_conn, "update members set postnummer=(select post.poststed from post where post.postnummer||''=members.postnummer) where created_at=now()") ## will this work? 
     sql(old_conn, "insert into member_sync (op, started, finished, num_rows) values ('ins_new2old', now(), %s, %s)", params=[datetime.datetime.now(), len(new_rows)])
