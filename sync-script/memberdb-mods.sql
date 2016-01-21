@@ -20,9 +20,6 @@ create table member_sync (
 );
 create unique index member_sync_current on member_sync(op) where is_current;
 
-insert into member_sync (op, started, num_rows) values ('ins_new2old', '1980-01-01', 0)
-insert into member_sync (op, started, num_rows) values ('ins_old2new', '1980-01-01', 0)
-
 
 CREATE or replace FUNCTION member_sync_archive() RETURNS trigger
     LANGUAGE plpgsql
