@@ -1,5 +1,5 @@
 language: node_js
-sudo: false
+sudo: required
 env:
   - CXX=g++-4.8
 node_js:
@@ -15,7 +15,7 @@ addons:
     packages:
     - g++-4.8
 before_install:
-  - pip install codecov
+  - sudo pip install codecov
 before_script:
   - cp config.js.tmpl config.js
   - sed -i -e 's/<username>/drywall/g' config.js
