@@ -14,5 +14,5 @@ npm install -g istanbul
 npm install -g mocha
 npm install -g codeclimate-test-reporter
 istanbul cover test.js 
-codeclimate-test-reporter < lcov.info
+codeclimate-test-reporter < coverage/lcov.info
 
