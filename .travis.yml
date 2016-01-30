@@ -13,4 +13,4 @@ addons:
 env:
   - TRAVIS=travis CXX=g++-4.8
 before_script:
-  - ./bin/setupTestDatabases.sh
+  - chmod +x bin/setupTestDatabases.sh; ./bin/setupTestDatabases.sh 
