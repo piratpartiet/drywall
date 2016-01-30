@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "grunt",
-    "test": "NODE_ENV=test mocha specs"
+    "test": "NODE_ENV=test node test.js"
   },
   "dependencies": {
     "async": "^0.9.x",
@@ -20,6 +20,7 @@
     "express-session": "^1.11.3",
     "helmet": "^0.7.x",
     "jade": "^1.x.x",
+    "lodash": "^4.1.0",
     "method-override": "^2.x.x",
     "morgan": "^1.x.x",
     "passport": "^0.2.x",
@@ -40,6 +41,9 @@
     "bootstrap": "^3.x.x",
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
+    "factory-girl": "^2.2.2",
+    "factory-girl-sequelize": "^1.0.0",
+    "faker": "^3.0.1",
     "font-awesome": "^4.1.0",
     "grunt": "^0.4.x",
     "grunt-cli": "^0.1.13",

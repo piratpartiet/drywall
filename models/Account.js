@@ -1,4 +1,4 @@
-/* jshint indent: 2 */
+/* jshint indent: 4 */
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Account', {
