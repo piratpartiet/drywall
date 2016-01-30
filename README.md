@@ -1,5 +1,6 @@
 # Drywall
 
+[![Code Climate](https://codeclimate.com/github/trystant/drywall/badges/gpa.svg)](https://codeclimate.com/github/trystant/drywall)
 A website and user system starter. Implemented with Express and Backbone.
 
 This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
