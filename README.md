@@ -1,6 +1,6 @@
 # Drywall
 
-[![Code Climate](https://codeclimate.com/github/trystant/drywall/badges/gpa.svg)](https://codeclimate.com/github/trystant/drywall)
+<a href="https://codeclimate.com/github/trystant/drywall"><img src="https://codeclimate.com/github/trystant/drywall/badges/gpa.svg" /></a>
 
 A website and user system starter. Implemented with Express and Backbone.
 
