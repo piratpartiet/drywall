@@ -20,7 +20,6 @@ describe('Models/Account', function () {
 
     describe('account', function () {
         it('should be true', function () {
-            console.log("models.Account = " + models.Account);
             expect(models.Account).to.be.an('object');
         });
     });
