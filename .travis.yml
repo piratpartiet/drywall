@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - "4.2.6"
   - "5.5.0"
+
+env:
+  - DB=pgsql
 addons:
   postgresql: 9.5
   apt:
