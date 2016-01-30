@@ -6,10 +6,6 @@ A website and user system starter. Implemented with Express and Backbone.
 
 This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
 
-[![Dependency Status](https://david-dm.org/jedireza/drywall.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall)
-[![devDependency Status](https://david-dm.org/jedireza/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall#info=devDependencies)
-
-
 ## Technology
 
 Server side, Drywall is built with the [Express](http://expressjs.com/)
