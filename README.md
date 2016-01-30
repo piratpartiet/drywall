@@ -1,7 +1,7 @@
 # Drywall
 
 <a href="https://codeclimate.com/github/trystant/drywall"><img src="https://codeclimate.com/github/trystant/drywall/badges/gpa.svg" /></a>
-
+<a href="https://codeclimate.com/github/trystant/drywall/coverage"><img src="https://codeclimate.com/github/trystant/drywall/badges/coverage.svg" /></a>
 A website and user system starter. Implemented with Express and Backbone.
 
 This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
