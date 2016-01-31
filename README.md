@@ -24,7 +24,7 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 | Passport      | Underscore.js  |             |
 | Async         | Font-Awesome   |             |
 | EmailJS       | Moment.js      |             |
-| Postgres      |								 |             |
+| Postgres      |				 |             |
 
 ## Live demo
 
@@ -116,9 +116,8 @@ Login. Customize. Enjoy.
 
 ## Testing
 
-The test suite uses [mochajs](https://mochajs.org) and [supertest]
-(https://github.com/visionmedia/supertest) to execute end to end
-testing. The suite can be executed using the command `npm test`
+The test suite uses [mochajs](https://mochajs.org) for unit testing.
+The suite can be executed using the command `npm test`
 from the top level of the project.
 
 ## Philosophy
