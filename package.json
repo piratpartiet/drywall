@@ -40,7 +40,7 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
-    "bootstrap": "^3.x.x",
+    "bootstrap": "^3.3.5",
     "browser-logger": "^1.0.0",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
