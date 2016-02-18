@@ -1,5 +1,5 @@
 language: node_js
-sudo: required
+sudo: false
 env:
   - CXX=g++-4.8
 node_js:
@@ -9,13 +9,12 @@ node_js:
   - "iojs-v2"
 addons:
   postgresql: 9.4
+  istanbul:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
-before_install:
-  - sudo pip install codecov
 before_script:
   - cp config.js.tmpl config.js
   - sed -i -e 's/<username>/drywall/g' config.js
@@ -26,7 +25,8 @@ before_script:
   - psql --command="create user drywall with password 'k3yb0ardc4t';"
   - createdb --owner=drywall drywall
 after_success:
-  - codecov
+  - npm test --coverage
+  - ./node_modules/.bin/codecov
 notifications:
   irc:
     channels:
