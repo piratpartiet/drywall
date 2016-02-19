@@ -3,10 +3,9 @@ sudo: false
 env:
   - CXX=g++-4.8
 node_js:
+  - "4.2"
   - "4.1"
   - "4.0"
-  - "iojs"
-  - "iojs-v2"
 addons:
   postgresql: 9.4
   istanbul:
