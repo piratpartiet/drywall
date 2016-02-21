@@ -58,6 +58,7 @@
     "grunt-nodemon": "^0.4.x",
     "grunt-sequelize-fixtures": "^0.1.0",
     "html5shiv": "^3.x.x",
+    "istanbul": "^0.4.2",
     "jquery": "^2.x.x",
     "jquery.cookie": "^1.x.x",
     "mocha": "^2.3.4",
