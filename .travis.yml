@@ -24,7 +24,7 @@ before_script:
   - psql --command="create user drywall with password 'k3yb0ardc4t';"
   - createdb --owner=drywall drywall
 after_success:
-  - npm test --coverage
+  - npm test
   - ./node_modules/.bin/codecov
 notifications:
   irc:
