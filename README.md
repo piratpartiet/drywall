@@ -1,15 +1,20 @@
 # Drywall
 
+[![Join the chat at https://gitter.im/piratpartiet/drywall](https://badges.gitter.im/piratpartiet/drywall.svg)](https://gitter.im/piratpartiet/drywall?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A website and user system starter. Implemented with Express and Backbone.
 
-[![Dependency Status](https://david-dm.org/jedireza/drywall.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall)
-[![devDependency Status](https://david-dm.org/jedireza/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/jedireza/drywall#info=devDependencies)
+This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
 
+[![Dependency Status](https://david-dm.org/piratpartiet/drywall.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall)
+[![devDependency Status](https://david-dm.org/piratpartiet/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall#info=devDependencies)
+[![Build Status](https://travis-ci.org/piratpartiet/drywall.svg?branch=master)](https://travis-ci.org/piratpartiet/drywall)
 
 ## Technology
 
 Server side, Drywall is built with the [Express](http://expressjs.com/)
-framework. We're using [MongoDB](http://www.mongodb.org/) as a data store.
+framework. We're using [Sequelize](http://sequelizejs.com) to connect to
+an RDBMS for a data store.
 
 The front-end is built with [Backbone](http://backbonejs.org/).
 We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
@@ -18,11 +23,11 @@ We're using [Grunt](http://gruntjs.com/) for the asset pipeline.
 | ------------- | -------------- | ----------- |
 | Express       | Bootstrap      | Grunt       |
 | Jade          | Backbone.js    |             |
-| Mongoose      | jQuery         |             |
+| Sequelize     | jQuery         |             |
 | Passport      | Underscore.js  |             |
 | Async         | Font-Awesome   |             |
 | EmailJS       | Moment.js      |             |
-
+| Postgres      |				 |             |
 
 ## Live demo
 
@@ -37,54 +42,83 @@ order to keep the app ready to use at all times.
 
 ## Requirements
 
-You need [Node.js](http://nodejs.org/download/) and
-[MongoDB](http://www.mongodb.org/downloads) installed and running.
+You need [Node.js](http://nodejs.org/download/) and a Relational Database
+Management System such as [Postgres](http://www.postgresql.org/download)
+installed and running.
 
 We use [`bcrypt`](https://github.com/ncb000gt/node.bcrypt.js) for hashing
 secrets. If you have issues during installation related to `bcrypt` then [refer
 to this wiki
 page](https://github.com/jedireza/drywall/wiki/bcrypt-Installation-Trouble).
 
-We use [`emailjs`](https://github.com/eleith/emailjs) for email transport. If
-you have issues sending email [refer to this wiki
-page](https://github.com/jedireza/drywall/wiki/Trouble-sending-email).
-
 
 ## Installation
 
 ```bash
-$ git clone git@github.com:jedireza/drywall.git && cd ./drywall
+$ git clone git@github.com:piratpartiet/drywall.git && cd ./drywall
 $ npm install
 ```
 
 
 ## Setup
 
-First you need to setup your config file.
+First you need to setup your config file. Create it by copying `config.js.tmpl`
+as such:
 
 ```bash
-$ mv ./config.example.js ./config.js #set mongodb and email credentials
+$ cp ./config.js.tmpl ./config.js
 ```
 
-Next, you need a few records in the database to start using the user system.
+Replace all values with ones that fit your application. Pay extra attention to
+the `db` configuration, which control how your database is set up. It has
+three environments defined: `development`, `test` and `production`. To get
+everything bootstrapped, just focus on `development` for now:
 
-Run these commands on mongo via the terminal. __Obviously you should use your
-email address.__
-
-```js
-use drywall; // or your mongo db name if different
+```javascript
+exports.db = {
+  development: {
+    username: '<username>',
+    password: '<password>',
+    database: '<database>',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    // Logging to console.log. See the 'Options' section of
+    // http://docs.sequelizejs.com/en/1.7.0/docs/usage/ for
+    // more information.
+    logging: console.log,
+    force: false
+  }
+}
 ```
 
-```js
-db.admingroups.insert({ _id: 'root', name: 'Root' });
-db.admins.insert({ name: {first: 'Root', last: 'Admin', full: 'Root Admin'}, groups: ['root'] });
-var rootAdmin = db.admins.findOne();
-db.users.save({ username: 'root', isActive: 'yes', email: 'your@email.addy', roles: {admin: rootAdmin._id} });
-var rootUser = db.users.findOne();
-rootAdmin.user = { id: rootUser._id, name: rootUser.username };
-db.admins.save(rootAdmin);
+* `username`: The username with access to the database.
+* `password`: The password associated with the above username.
+* `database`: The name of the database for the Drywall application.
+* `host`: The name or IP address of the host of the database service.
+* `dialect`: The [dialect](http://sequelize.readthedocs.org/en/1.7.0/docs/usage/#dialects)
+   of the database.
+* `force`: Set to `true` to have the database reset on application launch,
+   otherwise set this to `false`. It's a bad idea to set this to `true`
+   in production; only set it to `true` if you need to completely wipe
+   the database.
+
+### Database
+
+We have made an opiniated decision about which database dialect to use. We will
+therefore focus on the setup of PostgreSQL, but the steps required for other
+databases would be similar.
+
+Taking for granted that PostgreSQL's binaries exist on your `$PATH`, you need to
+execute the following commands to get everything bootstrapped for the
+`development` environment (as defined in `config/config.json`).
+
+```bash
+psql --command="create user <username> with password '<password>';"
+createdb --owner=<username> <database>
 ```
 
+To set up the database for other environments, just repeat the steps above
+for each one.
 
 ## Running the app
 
@@ -118,6 +152,13 @@ Now just use the reset password feature to set a password.
 
 Login. Customize. Enjoy.
 
+
+## Testing
+
+The test suite uses [mochajs](https://mochajs.org) and [supertest]
+(https://github.com/visionmedia/supertest) to execute end to end
+testing. The suite can be executed using the command `npm test`
+from the top level of the project.
 
 ## Philosophy
 
