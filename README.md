@@ -4,9 +4,14 @@ A website and user system starter. Implemented with Express and Backbone.
 
 This fork uses sequelize to connect to Relational Database Management Systems instead of using Mongoose to connect to Mongo
 
+## Build Status
+
 [![Dependency Status](https://david-dm.org/piratpartiet/drywall.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall)
 [![devDependency Status](https://david-dm.org/piratpartiet/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall#info=devDependencies)
 [![Build Status](https://travis-ci.org/piratpartiet/drywall.svg?branch=master)](https://travis-ci.org/piratpartiet/drywall)
+
+### Code Coverage
+
 ![codecov.io](https://codecov.io/github/piratpartiet/drywall/branch.svg?branch=codecov)
 
 ## Technology
