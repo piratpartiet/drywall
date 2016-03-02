@@ -1,5 +1,6 @@
 public/vendor/*
 node_modules/*
+coverage/*
 *.min.js
 *.min.js.map
 *.min.css

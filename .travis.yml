@@ -1,21 +1,19 @@
 language: node_js
-sudo: required
+sudo: false
 env:
-  - CXX=g++-4.8
+  - CXX=g++-4.8 NODE_ENV=test
 node_js:
+  - "4.2"
   - "4.1"
   - "4.0"
-  - "iojs"
-  - "iojs-v2"
 addons:
   postgresql: 9.4
+  istanbul:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
-before_install:
-  - sudo pip install codecov
 before_script:
   - cp config.js.tmpl config.js
   - sed -i -e 's/<username>/drywall/g' config.js
@@ -25,8 +23,10 @@ before_script:
   - psql --command="drop role if exists drywall;"
   - psql --command="create user drywall with password 'k3yb0ardc4t';"
   - createdb --owner=drywall drywall
+script:
+  - istanbul cover ./node_modules/mocha/bin/_mocha specs --report lcovonly -- -R spec
 after_success:
-  - codecov
+  - ./node_modules/.bin/codecov
 notifications:
   irc:
     channels:
