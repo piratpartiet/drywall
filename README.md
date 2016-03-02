@@ -188,6 +188,8 @@ from the top level of the project.
 
 ## Questions and contributing
 
+[![Join the chat at https://gitter.im/piratpartiet/drywall](https://badges.gitter.im/piratpartiet/drywall.svg)](https://gitter.im/piratpartiet/drywall?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Any issues or questions (no matter how basic), open an issue. Please take the
 initiative to include basic debugging information like operating system
 and relevant version details such as:
