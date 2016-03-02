@@ -12,7 +12,7 @@ This fork uses sequelize to connect to Relational Database Management Systems in
 
 ### Code Coverage
 
-![codecov.io](https://codecov.io/github/piratpartiet/drywall/branch.svg?branch=codecov)
+![codecov.io](https://codecov.io/github/piratpartiet/drywall/branch.svg?branch=master)
 
 ## Technology
 
