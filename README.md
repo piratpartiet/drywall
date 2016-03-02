@@ -7,7 +7,7 @@ This fork uses sequelize to connect to Relational Database Management Systems in
 [![Dependency Status](https://david-dm.org/piratpartiet/drywall.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall)
 [![devDependency Status](https://david-dm.org/piratpartiet/drywall/dev-status.svg?theme=shields.io)](https://david-dm.org/piratpartiet/drywall#info=devDependencies)
 [![Build Status](https://travis-ci.org/piratpartiet/drywall.svg?branch=master)](https://travis-ci.org/piratpartiet/drywall)
-![codecov.io](https://codecov.io/github/piratpartiet/drywall/branch.svg?branch=master)
+![codecov.io](https://codecov.io/github/piratpartiet/drywall/branch.svg?branch=codecov)
 
 ## Technology
 
