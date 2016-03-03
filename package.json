@@ -1,10 +1,11 @@
 {
-  "name": "Wetwall",
-  "version": "0.16.1",
+  "name": "Drywall",
+  "version": "0.16.6",
   "private": true,
   "scripts": {
     "start": "grunt",
-    "test": "NODE_ENV=test mocha specs"
+    "test": "NODE_ENV=test mocha specs",
+    "update": "david update"
   },
   "dependencies": {
     "async": "^1.5.0",
@@ -44,6 +45,7 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
     "codecov": "^1.0.1",
+    "david": "^6.x.x",
     "font-awesome": "^4.1.0",
     "grunt": "^0.4.x",
     "grunt-cli": "^0.1.13",
