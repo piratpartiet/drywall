@@ -1,41 +1,39 @@
 'use strict';
 
 var renderSettings = function(req, res, next, oauthMessage) {
-  req.app.db.User
-    .findById(req.user.id)
-    .then(function(user) {
-      if (!user) {
-        req.app.utility.debug('account.settings.renderSettings.findById: User not found');
-        throw 'User not found';
-      }
+  req.app.db.User.findById(req.user.id).then(function(user) {
+    if (!user) {
+      req.app.utility.debug('account.settings.renderSettings.findById: User not found');
+      throw 'User not found';
+    }
 
-      user.getMember().then(function(member) {
-        res.render('account/settings/index', {
-          data: {
-            member: escape(JSON.stringify(member)),
-            user: escape(JSON.stringify(user))
-          },
-          oauthMessage: oauthMessage,
-          oauthTwitter: !!req.app.config.oauth.twitter.key,
-          oauthTwitterActive: user.twitter ? !!user.twitter.id : false,
-          oauthGitHub: !!req.app.config.oauth.github.key,
-          oauthGitHubActive: user.github ? !!user.github.id : false,
-          oauthFacebook: !!req.app.config.oauth.facebook.key,
-          oauthFacebookActive: user.facebook ? !!user.facebook.id : false,
-          oauthGoogle: !!req.app.config.oauth.google.key,
-          oauthGoogleActive: user.google ? !!user.google.id : false,
-          oauthTumblr: !!req.app.config.oauth.tumblr.key,
-          oauthTumblrActive: user.tumblr ? !!user.tumblr.id : false
-        });
-      }).catch(function(err) {
-        req.app.utility.error('account.settings.renderSettings.user.getMember:', err);
-        throw err;
+    user.getMember().then(function(member) {
+      res.render('account/settings/index', {
+        data: {
+          member: escape(JSON.stringify(member)),
+          user: escape(JSON.stringify(user))
+        },
+        oauthMessage: oauthMessage,
+        oauthTwitter: !!req.app.config.oauth.twitter.key,
+        oauthTwitterActive: user.twitter ? !!user.twitter.id : false,
+        oauthGitHub: !!req.app.config.oauth.github.key,
+        oauthGitHubActive: user.github ? !!user.github.id : false,
+        oauthFacebook: !!req.app.config.oauth.facebook.key,
+        oauthFacebookActive: user.facebook ? !!user.facebook.id : false,
+        oauthGoogle: !!req.app.config.oauth.google.key,
+        oauthGoogleActive: user.google ? !!user.google.id : false,
+        oauthTumblr: !!req.app.config.oauth.tumblr.key,
+        oauthTumblrActive: user.tumblr ? !!user.tumblr.id : false
       });
-    })
-    .catch(function(err) {
-      req.app.utility.error('account.settings.renderSettings:', err);
+    }).catch(function(err) {
+      req.app.utility.error('account.settings.renderSettings.user.getMember:', err);
       throw err;
     });
+  })
+  .catch(function(err) {
+    req.app.utility.error('account.settings.renderSettings:', err);
+    throw err;
+  });
 };
 
 exports.init = function(req, res, next) {
