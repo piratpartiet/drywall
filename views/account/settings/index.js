@@ -303,12 +303,12 @@ exports.update = function(req, res, next) {
   workflow.on('validate', function() {
     req.app.utility.debug('account.settings.update.validate');
 
-    if (!req.body.first) {
-      workflow.outcome.errfor.first = 'required';
+    if (!req.body.firstName) {
+      workflow.outcome.errfor.firstName = 'required';
     }
 
-    if (!req.body.last) {
-      workflow.outcome.errfor.last = 'required';
+    if (!req.body.lastName) {
+      workflow.outcome.errfor.lastName = 'required';
     }
 
     if (workflow.hasErrors()) {
@@ -336,8 +336,9 @@ exports.update = function(req, res, next) {
           return workflow.emit('response');
         }
 
-        member.firstName = req.body.first;
-        member.lastName = req.body.last;
+        member.firstName = req.body.firstName;
+        member.lastName = req.body.lastName;
+        member.middleName = req.body.middleName;
         member.company = req.body.company;
         member.phone = req.body.phone;
         member.zip = req.body.zip;

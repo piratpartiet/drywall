@@ -21,9 +21,9 @@
       success: false,
       errors: [],
       errfor: {},
-      first: '',
-      middle: '',
-      last: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
       company: '',
       phone: '',
       zip: ''
@@ -93,17 +93,11 @@
       this.render();
     },
     syncUp: function() {
-      var name = app.mainView.member.get('name') || {
-        first: '',
-        middle: '',
-        last: ''
-      };
-
       this.model.set({
         id: app.mainView.member.id,
-        first: name.first,
-        middle: name.middle,
-        last: name.last,
+        firstName: app.mainView.member.get('firstName'),
+        middleName: app.mainView.member.get('middleName'),
+        lastName: app.mainView.member.get('lastName'),
         company: app.mainView.member.get('company'),
         phone: app.mainView.member.get('phone'),
         zip: app.mainView.member.get('zip')
@@ -120,9 +114,9 @@
     },
     update: function() {
       this.model.save({
-        first: this.$el.find('[name="first"]').val(),
-        middle: this.$el.find('[name="middle"]').val(),
-        last: this.$el.find('[name="last"]').val(),
+        firstName: this.$el.find('[name="firstName"]').val(),
+        middleName: this.$el.find('[name="middleName"]').val(),
+        lastName: this.$el.find('[name="lastName"]').val(),
         company: this.$el.find('[name="company"]').val(),
         phone: this.$el.find('[name="phone"]').val(),
         zip: this.$el.find('[name="zip"]').val()

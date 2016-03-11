@@ -105,9 +105,9 @@ describe('/account/', function() {
 
         request
           .send({
-            first: 'Chuck',
-            middle: 'Roundhouse',
-            last: 'Norris',
+            firstName: 'Chuck',
+            middleName: 'Roundhouse',
+            lastName: 'Norris',
             company: 'Kicks and Punches Inc.',
             phone: '555-1234-5678',
             zip: '01234'
