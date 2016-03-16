@@ -95,36 +95,36 @@ describe('/account/', function() {
 
             done();
           });
-        });
       });
+    });
 
-      it('is possible to update details', function(done) {
-        var request = this.request.put('/account/settings/');
+    it('is possible to update details', function(done) {
+      var request = this.request.put('/account/settings/');
 
-        agent.attachCookies(request);
+      agent.attachCookies(request);
 
-        request
-          .send({
-            firstName: 'Chuck',
-            middleName: 'Roundhouse',
-            lastName: 'Norris',
-            company: 'Kicks and Punches Inc.',
-            phone: '555-1234-5678',
-            zip: '01234'
-          })
-          .set('X-Csrf-Token', csrfToken)
-          .set('Accept', 'application/json')
-          .set('Content-Type', 'application/json')
-          .expect(200)
-          .end(function(err, res) {
-            if (err) {
-              throw err;
-            }
+      request
+        .send({
+          firstName: 'Chuck',
+          middleName: 'Roundhouse',
+          lastName: 'Norris',
+          company: 'Kicks and Punches Inc.',
+          phone: '555-1234-5678',
+          zip: '01234'
+        })
+        .set('X-Csrf-Token', csrfToken)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            throw err;
+          }
 
-            var result = JSON.parse(res.text);
-            expect(result.success, res.text).to.be.true;
-            done();
-          });
-    })
+          var result = JSON.parse(res.text);
+          expect(result.success, res.text).to.be.true;
+          done();
+        });
+    });
   });
 });
