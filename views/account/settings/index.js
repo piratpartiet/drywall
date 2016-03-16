@@ -324,26 +324,39 @@ exports.update = function(req, res, next) {
 
     req.user.getMember().then(function(member) {
       if (!member) {
-        req.app.utility.debug('account.settings.update.patchAccount.user.getMember: Member not found');
-        workflow.outcome.errors.push('Member not found');
-        return workflow.emit('response');
+        req.app.utility.debug('account.settings.update.patchAccount.user.getMember: Member not found. Creating.');
+        req.user.createMember({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          middleName: req.body.middleName,
+          company: req.body.company,
+          phone: req.body.phone,
+          zip: req.body.zip
+        }).then(function(member) {
+          req.app.utility.debug('account.settings.update.patchAccount.user.createMember:', member);
+          workflow.outcome.member = member;
+          return workflow.emit('response');
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.update.patchAccount.user.createMember:', err);
+          return workflow.emit('exception', err);
+        });
+      } else {
+        member.firstName = req.body.firstName;
+        member.lastName = req.body.lastName;
+        member.middleName = req.body.middleName;
+        member.company = req.body.company;
+        member.phone = req.body.phone;
+        member.zip = req.body.zip;
+
+        member.save().then(function(member) {
+          req.app.utility.debug('account.settings.update.patchAccount.user.member.save:', member);
+          workflow.outcome.member = member;
+          return workflow.emit('response');
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.update.patchAccount.user.member.save:', err);
+          return workflow.emit('exception', err);
+        });
       }
-
-      member.firstName = req.body.firstName;
-      member.lastName = req.body.lastName;
-      member.middleName = req.body.middleName;
-      member.company = req.body.company;
-      member.phone = req.body.phone;
-      member.zip = req.body.zip;
-
-      member.save().then(function(member) {
-        req.app.utility.debug('account.settings.update.patchAccount.user.member.save:', member);
-        workflow.outcome.member = member;
-        return workflow.emit('response');
-      }).catch(function(err) {
-        req.app.utility.error('account.settings.update.patchAccount.user.member.save:', err);
-        return workflow.emit('exception', err);
-      });
     }).catch(function(err) {
       req.app.utility.error('account.settings.update.patchAccount.user.getMember:', err);
       return workflow.emit('exception', err);
