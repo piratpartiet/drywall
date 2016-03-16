@@ -83,18 +83,18 @@ block body
           button.close(type='button', data-dismiss='alert') &times;
           | Changes have been saved.
         |<% } %>
-      div.form-group(class!='<%- errfor.first ? "has-error" : "" %>')
+      div.form-group(class!='<%- errfor.firstName ? "has-error" : "" %>')
         label First Name:
-        input.form-control(type='text', name='first', value!='<%- first %>')
-        span.help-block <%- errfor.first %>
-      div.form-group(class!='<%- errfor.middle ? "has-error" : "" %>')
+        input.form-control(type='text', name='firstName', value!='<%- firstName %>')
+        span.help-block <%- errfor.firstName %>
+      div.form-group(class!='<%- errfor.middleName ? "has-error" : "" %>')
         label Middle Name:
-        input.form-control(type='text', name='middle', value!='<%- middle %>')
-        span.help-block <%- errfor.middle %>
-      div.form-group(class!='<%- errfor.last ? "has-error" : "" %>')
+        input.form-control(type='text', name='middleName', value!='<%- middleName %>')
+        span.help-block <%- errfor.middleName %>
+      div.form-group(class!='<%- errfor.lastName ? "has-error" : "" %>')
         label Last Name:
-        input.form-control(type='text', name='last', value!='<%- last %>')
-        span.help-block <%- errfor['last'] %>
+        input.form-control(type='text', name='lastName', value!='<%- lastName %>')
+        span.help-block <%- errfor['lastName'] %>
       div.form-group(class!='<%- errfor.company ? "has-error" : "" %>')
         label Company Name:
         input.form-control(type='text', name='company', value!='<%- company %>')

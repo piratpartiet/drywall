@@ -21,18 +21,18 @@
       success: false,
       errors: [],
       errfor: {},
-      first: '',
-      middle: '',
-      last: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
       company: '',
       phone: '',
       zip: ''
     },
     url: '/account/settings/',
     parse: function(response) {
-      if (response.account) {
-        app.mainView.member.set(response.account);
-        delete response.account;
+      if (response.member) {
+        app.mainView.member.set(response.member);
+        delete response.member;
       }
 
       return response;
@@ -81,7 +81,7 @@
 
   app.DetailsView = Backbone.View.extend({
     el: '#details',
-    template: _.template( $('#tmpl-details').html() ),
+    template: _.template($('#tmpl-details').html()),
     events: {
       'click .btn-update': 'update'
     },
@@ -93,46 +93,42 @@
       this.render();
     },
     syncUp: function() {
-      var name = app.mainView.member.get('name') || {
-        first: '',
-        middle: '',
-        last: ''
-      };
-
       this.model.set({
         id: app.mainView.member.id,
-        first: name.first,
-        middle: name.middle,
-        last: name.last,
+        firstName: app.mainView.member.get('firstName'),
+        middleName: app.mainView.member.get('middleName'),
+        lastName: app.mainView.member.get('lastName'),
         company: app.mainView.member.get('company'),
         phone: app.mainView.member.get('phone'),
         zip: app.mainView.member.get('zip')
       });
     },
     render: function() {
-      this.$el.html(this.template( this.model.attributes ));
+      this.$el.html(this.template(this.model.attributes));
 
       for (var key in this.model.attributes) {
         if (this.model.attributes.hasOwnProperty(key)) {
-          this.$el.find('[name="'+ key +'"]').val(this.model.attributes[key]);
+          this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
         }
       }
     },
     update: function() {
       this.model.save({
-        first: this.$el.find('[name="first"]').val(),
-        middle: this.$el.find('[name="middle"]').val(),
-        last: this.$el.find('[name="last"]').val(),
+        firstName: this.$el.find('[name="firstName"]').val(),
+        middleName: this.$el.find('[name="middleName"]').val(),
+        lastName: this.$el.find('[name="lastName"]').val(),
         company: this.$el.find('[name="company"]').val(),
         phone: this.$el.find('[name="phone"]').val(),
         zip: this.$el.find('[name="zip"]').val()
+      }, {
+        type: 'put'
       });
     }
   });
 
   app.IdentityView = Backbone.View.extend({
     el: '#identity',
-    template: _.template( $('#tmpl-identity').html() ),
+    template: _.template($('#tmpl-identity').html()),
     events: {
       'click .btn-update': 'update'
     },
@@ -151,11 +147,11 @@
       });
     },
     render: function() {
-      this.$el.html(this.template( this.model.attributes ));
+      this.$el.html(this.template(this.model.attributes));
 
       for (var key in this.model.attributes) {
         if (this.model.attributes.hasOwnProperty(key)) {
-          this.$el.find('[name="'+ key +'"]').val(this.model.attributes[key]);
+          this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
         }
       }
     },
@@ -169,21 +165,23 @@
 
   app.PasswordView = Backbone.View.extend({
     el: '#password',
-    template: _.template( $('#tmpl-password').html() ),
+    template: _.template($('#tmpl-password').html()),
     events: {
       'click .btn-password': 'password'
     },
     initialize: function() {
-      this.model = new app.Password({ id: app.mainView.user.id });
+      this.model = new app.Password({
+        id: app.mainView.user.id
+      });
       this.listenTo(this.model, 'sync', this.render);
       this.render();
     },
     render: function() {
-      this.$el.html(this.template( this.model.attributes ));
+      this.$el.html(this.template(this.model.attributes));
 
       for (var key in this.model.attributes) {
         if (this.model.attributes.hasOwnProperty(key)) {
-          this.$el.find('[name="'+ key +'"]').val(this.model.attributes[key]);
+          this.$el.find('[name="' + key + '"]').val(this.model.attributes[key]);
         }
       }
     },
@@ -199,8 +197,8 @@
     el: '.page .container',
     initialize: function() {
       app.mainView = this;
-      this.member = new app.Member( JSON.parse( unescape($('#data-member').html()) ) );
-      this.user = new app.User( JSON.parse( unescape($('#data-user').html()) ) );
+      this.member = new app.Member(JSON.parse(unescape($('#data-member').html())));
+      this.user = new app.User(JSON.parse(unescape($('#data-user').html())));
 
       app.detailsView = new app.DetailsView();
       app.identityView = new app.IdentityView();

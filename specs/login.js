@@ -84,7 +84,7 @@ exports.login = function(request, done) {
           }
 
           var result = JSON.parse(res.text);
-          expect(result.success).to.be.true;
+          expect(result.success, res.text).to.be.true;
           agent.saveCookies(res);
           done(agent);
         });
@@ -176,7 +176,7 @@ describe('/login/', function() {
             }
 
             var result = JSON.parse(res.text);
-            expect(result.success).to.be.true;
+            expect(result.success, res.text).to.be.true;
             agent.saveCookies(res);
             done();
           });

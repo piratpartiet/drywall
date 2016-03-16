@@ -1,10 +1,13 @@
 'use strict';
 
 var renderSettings = function(req, res, next, oauthMessage) {
-  req.app.db.User.findById(req.user.id)
-    .then(function(user) {
-      var member = user.getMember();
+  req.app.db.User.findById(req.user.id).then(function(user) {
+    if (!user) {
+      req.app.utility.debug('account.settings.renderSettings.findById: User not found');
+      throw 'User not found';
+    }
 
+    user.getMember().then(function(member) {
       res.render('account/settings/index', {
         data: {
           member: escape(JSON.stringify(member)),
@@ -22,10 +25,15 @@ var renderSettings = function(req, res, next, oauthMessage) {
         oauthTumblr: !!req.app.config.oauth.tumblr.key,
         oauthTumblrActive: user.tumblr ? !!user.tumblr.id : false
       });
-    })
-    .catch(function(err) {
+    }).catch(function(err) {
+      req.app.utility.error('account.settings.renderSettings.user.getMember:', err);
       throw err;
     });
+  })
+  .catch(function(err) {
+    req.app.utility.error('account.settings.renderSettings:', err);
+    throw err;
+  });
 };
 
 exports.init = function(req, res, next) {
@@ -288,18 +296,23 @@ exports.disconnectTumblr = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+  req.app.utility.debug('account.settings.update');
+
   var workflow = req.app.utility.workflow(req, res);
 
   workflow.on('validate', function() {
-    if (!req.body.first) {
-      workflow.outcome.errfor.first = 'required';
+    req.app.utility.debug('account.settings.update.validate');
+
+    if (!req.body.firstName) {
+      workflow.outcome.errfor.firstName = 'required';
     }
 
-    if (!req.body.last) {
-      workflow.outcome.errfor.last = 'required';
+    if (!req.body.lastName) {
+      workflow.outcome.errfor.lastName = 'required';
     }
 
     if (workflow.hasErrors()) {
+      req.app.utility.debug('account.settings.update.validate: hasErrors');
       return workflow.emit('response');
     }
 
@@ -307,37 +320,50 @@ exports.update = function(req, res, next) {
   });
 
   workflow.on('patchAccount', function() {
-    var fieldsToSet = {
-      name: {
-        first: req.body.first,
-        middle: req.body.middle,
-        last: req.body.last,
-        full: req.body.first + ' ' + req.body.last
-      },
-      company: req.body.company,
-      phone: req.body.phone,
-      zip: req.body.zip
-    };
+    req.app.utility.debug('account.settings.update.patchAccount');
 
-    req.app.db.Member
-      .findById({
-        where: {
-          'user_id': req.user.id
-        }
-      })
-      .then(function(account) {
-        account.updateAttributes(fieldsToSet)
-          .then(function(account) {
-            workflow.outcome.account = account;
-            return workflow.emit('response');
-          });
-      })
-      .catch(function(err) {
-        return workflow.emit('exception', err);
-      });
+    req.user.getMember().then(function(member) {
+      if (!member) {
+        req.app.utility.debug('account.settings.update.patchAccount.user.getMember: Member not found. Creating.');
+        req.user.createMember({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          middleName: req.body.middleName,
+          company: req.body.company,
+          phone: req.body.phone,
+          zip: req.body.zip
+        }).then(function(member) {
+          req.app.utility.debug('account.settings.update.patchAccount.user.createMember:', member);
+          workflow.outcome.member = member;
+          return workflow.emit('response');
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.update.patchAccount.user.createMember:', err);
+          return workflow.emit('exception', err);
+        });
+      } else {
+        member.firstName = req.body.firstName;
+        member.lastName = req.body.lastName;
+        member.middleName = req.body.middleName;
+        member.company = req.body.company;
+        member.phone = req.body.phone;
+        member.zip = req.body.zip;
+
+        member.save().then(function(member) {
+          req.app.utility.debug('account.settings.update.patchAccount.user.member.save:', member);
+          workflow.outcome.member = member;
+          return workflow.emit('response');
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.update.patchAccount.user.member.save:', err);
+          return workflow.emit('exception', err);
+        });
+      }
+    }).catch(function(err) {
+      req.app.utility.error('account.settings.update.patchAccount.user.getMember:', err);
+      return workflow.emit('exception', err);
+    });
   });
 
-  workflow.emit('validate');
+  return workflow.emit('validate');
 };
 
 exports.identity = function(req, res, next) {
