@@ -39,9 +39,8 @@ order to keep the app ready to use at all times.
 
 ## Requirements
 
-You need [Node.js](http://nodejs.org/download/) and a Relational Database
-Management System such as [Postgres](http://www.postgresql.org/download)
-installed and running.
+You need [Node.js](http://nodejs.org/download/) and [Postgres](http://www.postgresql.org/download)
+9.3 or higher installed and running.
 
 We use [`bcrypt`](https://github.com/ncb000gt/node.bcrypt.js) for hashing
 secrets. If you have issues during installation related to `bcrypt` then [refer
