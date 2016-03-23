@@ -62,8 +62,13 @@ $ npm install
 First you need to setup your config file.
 
 ```bash
-$ mv ./config.example.js ./config.js #set database and email credentials
+$ mv ./config/config.json.tmpl ./config/config.json # this file contains database credentials
+$ mv ./config.js.tmpl ./config.js # this file contains drywall configuration parameters
 ```
+
+Next, create the desired databases using psql or your favorite database agent.
+drywall-development and drywall-test are the default names in the `config/config.json` file,
+but those can be changed to whatever is desired.
 
 Next, you need a few records in the database to start using the user system.
 The code below should serve as pseudocode for adding a default admin user
