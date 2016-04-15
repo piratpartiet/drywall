@@ -151,5 +151,56 @@ describe('/account/', function() {
           done();
         });
     });
+
+    it('should fail with invalid e-mail format', function(done) {
+      var request = this.request.put('/account/settings/identity');
+
+      agent.attachCookies(request);
+
+      request
+        .send({
+          username: 'NewUserName123',
+          email: 'InvalidEmailFormat'
+        })
+        .set('X-Csrf-Token', csrfToken)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            throw err;
+          }
+
+          var result = JSON.parse(res.text);
+          expect(result.success, res.text).to.be.false;
+          expect(result.errfor.email, res.text).to.equal('invalid email format');
+          done();
+        });
+    });
+
+    it('is possible to change identity', function(done) {
+      var request = this.request.put('/account/settings/identity');
+
+      agent.attachCookies(request);
+
+      request
+        .send({
+          username: 'NewUserName123',
+          email: 'NewEmail123@example.com'
+        })
+        .set('X-Csrf-Token', csrfToken)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            throw err;
+          }
+
+          var result = JSON.parse(res.text);
+          expect(result.success, res.text).to.be.true;
+          done();
+        });
+    });
   });
 });
