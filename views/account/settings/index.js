@@ -316,15 +316,15 @@ exports.update = function(req, res, next) {
       return workflow.emit('response');
     }
 
-    workflow.emit('patchAccount');
+    workflow.emit('patchMember');
   });
 
-  workflow.on('patchAccount', function() {
-    req.app.utility.debug('account.settings.update.patchAccount');
+  workflow.on('patchMember', function() {
+    req.app.utility.debug('account.settings.update.patchMember');
 
     req.user.getMember().then(function(member) {
       if (!member) {
-        req.app.utility.debug('account.settings.update.patchAccount.user.getMember: Member not found. Creating.');
+        req.app.utility.debug('account.settings.update.patchMember.user.getMember: Member not found. Creating.');
         req.user.createMember({
           firstName: req.body.firstName,
           lastName: req.body.lastName,
@@ -333,11 +333,11 @@ exports.update = function(req, res, next) {
           phone: req.body.phone,
           zip: req.body.zip
         }).then(function(member) {
-          req.app.utility.debug('account.settings.update.patchAccount.user.createMember:', member);
+          req.app.utility.debug('account.settings.update.patchMember.user.createMember:', member);
           workflow.outcome.member = member;
           return workflow.emit('response');
         }).catch(function(err) {
-          req.app.utility.error('account.settings.update.patchAccount.user.createMember:', err);
+          req.app.utility.error('account.settings.update.patchMember.user.createMember:', err);
           return workflow.emit('exception', err);
         });
       } else {
@@ -349,16 +349,16 @@ exports.update = function(req, res, next) {
         member.zip = req.body.zip;
 
         member.save().then(function(member) {
-          req.app.utility.debug('account.settings.update.patchAccount.user.member.save:', member);
+          req.app.utility.debug('account.settings.update.patchMember.user.member.save:', member);
           workflow.outcome.member = member;
           return workflow.emit('response');
         }).catch(function(err) {
-          req.app.utility.error('account.settings.update.patchAccount.user.member.save:', err);
+          req.app.utility.error('account.settings.update.patchMember.user.member.save:', err);
           return workflow.emit('exception', err);
         });
       }
     }).catch(function(err) {
-      req.app.utility.error('account.settings.update.patchAccount.user.getMember:', err);
+      req.app.utility.error('account.settings.update.patchMember.user.getMember:', err);
       return workflow.emit('exception', err);
     });
   });
@@ -468,14 +468,14 @@ exports.identity = function(req, res, next) {
           return workflow.emit('exception', err);
         }
 
-        workflow.emit('patchAccount', user);
+        workflow.emit('patchMember', user);
       });
     } else {
-      workflow.emit('patchAccount', user);
+      workflow.emit('patchMember', user);
     }
   });
 
-  workflow.on('patchAccount', function(user) {
+  workflow.on('patchMember', function(user) {
     if (user.roles.account) {
       var fieldsToSet = {
         user: {
