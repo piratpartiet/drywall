@@ -98,7 +98,7 @@ describe('/account/', function() {
       });
     });
 
-    it('is possible to update details', function(done) {
+    it('is possible to update contact info', function(done) {
       var request = this.request.put('/account/settings/');
 
       agent.attachCookies(request);
@@ -111,6 +111,31 @@ describe('/account/', function() {
           company: 'Kicks and Punches Inc.',
           phone: '555-1234-5678',
           zip: '01234'
+        })
+        .set('X-Csrf-Token', csrfToken)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            throw err;
+          }
+
+          var result = JSON.parse(res.text);
+          expect(result.success, res.text).to.be.true;
+          done();
+        });
+    });
+
+    it('is possible to change password', function(done) {
+      var request = this.request.put('/account/settings/password');
+
+      agent.attachCookies(request);
+
+      request
+        .send({
+          newPassword: 'NewPassword123',
+          confirm: 'NewPassword123'
         })
         .set('X-Csrf-Token', csrfToken)
         .set('Accept', 'application/json')
