@@ -3,6 +3,7 @@ sudo: false
 env:
   - CXX=g++-4.8 NODE_ENV=test
 node_js:
+  - "5.5.0"
   - "4.2"
   - "4.1"
   - "4.0"
