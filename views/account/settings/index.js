@@ -393,21 +393,23 @@ exports.identity = function(req, res, next) {
     req.app.db.User.findOne({
       where: {
         username: req.body.username,
-        _id: {
+        id: {
           $ne: req.user.id
         }
       }
-    }, function(err, user) {
-      if (err) {
-        return workflow.emit('exception', err);
-      }
+    }).then(function(user) {
+      req.app.utility.debug('account.settings.identity.duplicateUsernameCheck.findOne:', user);
 
       if (user) {
+        req.app.utility.error('account.settings.identity.duplicateUsernameCheck.findOne: Username already taken');
         workflow.outcome.errfor.username = 'username already taken';
         return workflow.emit('response');
       }
 
       workflow.emit('duplicateEmailCheck');
+    }).catch(function(err) {
+      req.app.utility.error('account.settings.identity.duplicateUsernameCheck.findOne:', err);
+      return workflow.emit('exception', err);
     });
   });
 
@@ -415,95 +417,76 @@ exports.identity = function(req, res, next) {
     req.app.db.User.findOne({
       where: {
         email: req.body.email.toLowerCase(),
-        _id: {
+        id: {
           $ne: req.user.id
         }
       }
-    }, function(err, user) {
-      if (err) {
-        return workflow.emit('exception', err);
-      }
+    }).then(function(user) {
+      req.app.utility.debug('account.settings.identity.duplicateEmailCheck.findOne:', user);
 
       if (user) {
+        req.app.utility.error('account.settings.identity.duplicateEmailCheck.findOne: Email already taken');
         workflow.outcome.errfor.email = 'email already taken';
         return workflow.emit('response');
       }
 
       workflow.emit('patchUser');
+    }).catch(function(err) {
+      req.app.utility.error('account.settings.identity.duplicateEmailCheck.findOne:', err);
+      return workflow.emit('exception', err);
     });
   });
 
   workflow.on('patchUser', function() {
-    var fieldsToSet = {
-      username: req.body.username,
-      email: req.body.email.toLowerCase(),
-      search: [
-        req.body.username,
-        req.body.email
-      ]
-    };
-    var options = {
-      select: 'username email twitter.id github.id facebook.id google.id'
-    };
+    req.app.db.User.findById(req.user.id).then(function(user) {
+      req.app.utility.debug('account.settings.identity.patchUser.findById:', user);
 
-    req.app.db.User.findByIdAndUpdate(req.user.id, fieldsToSet, options, function(err, user) {
-      if (err) {
+      user.username = req.body.username;
+      user.email = req.body.email.toLowerCase();
+      user.save().then(function(user) {
+        req.app.utility.debug('account.settings.identity.patchUser.save:', user);
+        workflow.emit('patchAdmin', user);
+      }).catch(function(err) {
+        req.app.utility.error('account.settings.identity.patchUser.save:', err);
         return workflow.emit('exception', err);
-      }
-
-      workflow.emit('patchAdmin', user);
+      });
+    }).catch(function(err) {
+      req.app.utility.error('account.settings.identity.patchUser.findById:', err);
+      return workflow.emit('exception', err);
     });
   });
 
   workflow.on('patchAdmin', function(user) {
-    if (user.roles.admin) {
-      var fieldsToSet = {
-        user: {
-          id: req.user.id,
-          name: user.username
-        }
-      };
-      req.app.db.Admin.findByIdAndUpdate(user.roles.admin, fieldsToSet, function(err, admin) {
-        if (err) {
-          return workflow.emit('exception', err);
-        }
+    req.app.utility.debug('account.settings.identity.patchAdmin:', user);
 
-        workflow.emit('patchMember', user);
+    if (user && user.canPlayRoleOf('admin')) {
+      req.app.db.Admin.findById(user.id).then(function(admin) {
+        // TODO: Does it make sense to set the admin's name to the user's username? @asbjornu
+        admin.name = user.username;
+        admin.save().then(function(admin) {
+          req.app.utility.debug('account.settings.identity.patchAdmin.save:', admin);
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.identity.patchAdmin.save:', err);
+          workflow.emit('exception', err);
+        });
+      }).catch(function(err) {
+        req.app.utility.error('account.settings.identity.patchAdmin.findById:', err);
+        workflow.emit('exception', err);
       });
-    } else {
-      workflow.emit('patchMember', user);
     }
+
+    workflow.emit('patchMember', user);
   });
 
   workflow.on('patchMember', function(user) {
-    if (user.roles.account) {
-      var fieldsToSet = {
-        user: {
-          id: req.user.id,
-          name: user.username
-        }
-      };
-      req.app.db.Account.findByIdAndUpdate(user.roles.account, fieldsToSet, function(err, account) {
-        if (err) {
-          return workflow.emit('exception', err);
-        }
-
-        workflow.emit('populateRoles', user);
-      });
-    } else {
-      workflow.emit('populateRoles', user);
-    }
+    // TODO: Do we need to patch the member when the identity changes? @asbjornu
+    workflow.emit('populateRoles', user);
   });
 
   workflow.on('populateRoles', function(user) {
-    user.populate('roles.admin roles.account', 'name.full', function(err, populatedUser) {
-      if (err) {
-        return workflow.emit('exception', err);
-      }
-
-      workflow.outcome.user = populatedUser;
-      workflow.emit('response');
-    });
+    // TODO: Do we need to populate the roles? @asbjornu
+    workflow.outcome.user = user;
+    workflow.emit('response');
   });
 
   workflow.emit('validate');
