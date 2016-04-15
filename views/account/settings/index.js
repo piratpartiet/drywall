@@ -534,27 +534,29 @@ exports.password = function(req, res, next) {
 
   workflow.on('patchUser', function() {
     req.app.db.User.encryptPassword(req.body.newPassword, function(err, hash) {
+      req.app.utility.debug('account.settings.password.patchUser.encryptPassword:', hash);
+
       if (err) {
+        req.app.utility.error('account.settings.password.patchUser.encryptPassword:', err);
         return workflow.emit('exception', err);
       }
 
-      var fieldsToSet = {
-        password: hash
-      };
-      req.app.db.models.User.findByIdAndUpdate(req.user.id, fieldsToSet, function(err, user) {
-        if (err) {
-          return workflow.emit('exception', err);
-        }
+      req.app.db.User.findById(req.user.id).then(function(user) {
+        req.app.utility.debug('account.settings.password.patchUser.findById:', user);
+        user.password = hash;
 
-        user.populate('roles.admin roles.account', 'name.full', function(err, user) {
-          if (err) {
-            return workflow.emit('exception', err);
-          }
-
+        user.save().then(function(user) {
+          req.app.utility.debug('account.settings.password.patchUser.save:', user);
           workflow.outcome.newPassword = '';
           workflow.outcome.confirm = '';
-          workflow.emit('response');
+          return workflow.emit('response');
+        }).catch(function(err) {
+          req.app.utility.error('account.settings.password.patchUser.save:', err);
+          return workflow.emit('exception', err);
         });
+      }).catch(function(err) {
+        req.app.utility.error('account.settings.password.patchUser.findById:', err);
+        return workflow.emit('exception', err);
       });
     });
   });
